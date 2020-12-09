@@ -1,6 +1,6 @@
 # Mockup  
 
-Screenshots of the Android App prototype created using figma are to be added here.
+<img width="75%" src="https://i.ibb.co/WKJVqLb/Frame-1.png"> 
 
 ## Rough Sketch of the UI  
 
