@@ -1,5 +1,8 @@
 package com.nsu.group06.cse299.sec02.firebasesdk.auth;
 
+/*
+Auth user with email & password
+ */
 public class EmailPasswordAuthUser extends AuthenticationUser {
 
     private String mEmail;
