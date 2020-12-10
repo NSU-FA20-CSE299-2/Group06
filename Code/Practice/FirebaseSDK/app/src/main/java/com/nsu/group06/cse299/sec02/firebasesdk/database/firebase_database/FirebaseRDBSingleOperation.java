@@ -84,8 +84,6 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
                         Log.d(TAG, "onDataChange: "+data.toString());
 
                         singleOperationDatabaseCallback.onDataRead(data);
-
-                        return; // fetch only one data
                     }
                 }
 
