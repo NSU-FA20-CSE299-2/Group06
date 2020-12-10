@@ -7,6 +7,10 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nsu.group06.cse299.sec02.firebasesdk.auth.Authentication;
+import com.nsu.group06.cse299.sec02.firebasesdk.auth.AuthenticationUser;
+import com.nsu.group06.cse299.sec02.firebasesdk.auth.EmailPasswordAuthUser;
+import com.nsu.group06.cse299.sec02.firebasesdk.auth.FirebaseEmailPasswordAuthentication;
 import com.nsu.group06.cse299.sec02.firebasesdk.database.Database;
 import com.nsu.group06.cse299.sec02.firebasesdk.database.firebase_database.FirebaseRDBRealtime;
 import com.nsu.group06.cse299.sec02.firebasesdk.database.firebase_database.FirebaseRDBSingleOperation;
@@ -18,8 +22,13 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTv;
 
+    // database access variables
     private Database.SingleOperationDatabase<DummyModel> mSingleOperationDatabase;
     private Database.RealtimeDatabase<DummyModel> mRealtimeDatabase;
+
+    // authentication variables
+    private Authentication mAuthentication;
+    private EmailPasswordAuthUser mEmailPasswordAuthUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +43,88 @@ public class MainActivity extends AppCompatActivity {
 
         mTv = findViewById(R.id.delete_text);
 
+        //testFirebaseRealtimeDatabase();
+
+        testFirebaseAuth();
+    }
+
+    /*
+    methods for testing authentication classes
+     */
+    private void testFirebaseAuth() {
+
+        //testSignUp();
+        testSignIn();
+    }
+
+    private void testSignUp() {
+
+        mEmailPasswordAuthUser = new EmailPasswordAuthUser("testmail@mail.co", "Abc12345!");
+
+        mAuthentication =
+                new FirebaseEmailPasswordAuthentication(
+
+                        new Authentication.RegisterUserAuthenticationCallbacks() {
+                            @Override
+                            public void onRegistrationSuccess(AuthenticationUser user) {
+
+                                Toast.makeText(MainActivity.this, "user = "+user.getmUid()+" signed up!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onRegistrationFailure(String message) {
+
+                                Toast.makeText(MainActivity.this, "user sign up failed", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "onRegistrationFailure: "+message);
+                            }
+                        },
+
+                        mEmailPasswordAuthUser
+                );
+
+        mAuthentication.registerUserAuthentication();
+    }
+
+    private void testSignIn() {
+
+        mEmailPasswordAuthUser = new EmailPasswordAuthUser("testmail@mail.co", "Abc12345!");
+
+        mAuthentication =
+                new FirebaseEmailPasswordAuthentication(
+
+                        new Authentication.AuthenticationCallbacks() {
+                            @Override
+                            public void onAuthenticationSuccess(AuthenticationUser user) {
+
+                                Toast.makeText(MainActivity.this, "user = "+user.getmUid()+" logged in.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAuthenticationFailure(String message) {
+
+                                Toast.makeText(MainActivity.this, "user login failed", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "onAuthenticationFailure: "+message);
+                            }
+                        },
+
+                        mEmailPasswordAuthUser
+                );
+
+        mAuthentication.authenticateUser();
+    }
+
+
+    /*
+    methods for testing database classes
+     */
+    private void testFirebaseRealtimeDatabase() {
+
         //testRead();
         //testWrite();
 
         //testSingleDataChangeRealtime();
         //testListDataChangeRealtime();
     }
-
-
-
-    /*
-    methods for testing newly written database classes
-     */
 
     private void testRead() {
 
@@ -192,6 +271,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        mRealtimeDatabase.stopListeningForDataChange();
+        if(mAuthentication!=null) mAuthentication.signOut();
+
+        if(mRealtimeDatabase!=null) {
+            // clear out any attached listeners
+            mRealtimeDatabase.stopListeningForDataChange();
+        }
     }
 }
