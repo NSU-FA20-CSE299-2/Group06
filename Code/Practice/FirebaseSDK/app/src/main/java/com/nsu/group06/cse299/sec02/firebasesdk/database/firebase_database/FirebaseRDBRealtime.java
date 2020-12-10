@@ -17,17 +17,24 @@ public class FirebaseRDBRealtime<T> extends Database.RealtimeDatabase<T> {
     // needed for turning dataSnapshots to model class's object
     // courtesy-
     // https://stackoverflow.com/questions/3437897/how-do-i-get-a-class-instance-of-generic-type-t
-    final Class<T> typeParameterClass;
+    private final Class<T> mTypeParameterClass;
 
-    FirebaseRDBApiEndPoint apiEndPoint;
+    private FirebaseRDBApiEndPoint mApiEndPoint;
 
-    public FirebaseRDBRealtime(Class<T> typeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
+    public FirebaseRDBRealtime(Class<T> mTypeParameterClass) {
+
+        super();
+
+        this.mTypeParameterClass = mTypeParameterClass;
+    }
+
+    public FirebaseRDBRealtime(Class<T> mTypeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
                                Database.RealtimeDatabase.RealtimeChangesDatabaseCallback<T> databaseCallback) {
 
         super(databaseCallback);
 
-        this.typeParameterClass = typeParameterClass;
-        this.apiEndPoint = apiEndPoint;
+        this.mTypeParameterClass = mTypeParameterClass;
+        this.mApiEndPoint = apiEndPoint;
     }
 
 
@@ -37,7 +44,7 @@ public class FirebaseRDBRealtime<T> extends Database.RealtimeDatabase<T> {
         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             realtimeChangesDatabaseCallback.onDataAddition(
-                    snapshot.getValue(FirebaseRDBRealtime.this.typeParameterClass)
+                    snapshot.getValue(FirebaseRDBRealtime.this.mTypeParameterClass)
             );
         }
 
@@ -45,7 +52,7 @@ public class FirebaseRDBRealtime<T> extends Database.RealtimeDatabase<T> {
         public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             realtimeChangesDatabaseCallback.onDataUpdate(
-                    snapshot.getValue(FirebaseRDBRealtime.this.typeParameterClass)
+                    snapshot.getValue(FirebaseRDBRealtime.this.mTypeParameterClass)
             );
         }
 
@@ -53,7 +60,7 @@ public class FirebaseRDBRealtime<T> extends Database.RealtimeDatabase<T> {
         public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
             realtimeChangesDatabaseCallback.onDataDeletion(
-                    snapshot.getValue(FirebaseRDBRealtime.this.typeParameterClass)
+                    snapshot.getValue(FirebaseRDBRealtime.this.mTypeParameterClass)
             );
         }
 
@@ -65,20 +72,33 @@ public class FirebaseRDBRealtime<T> extends Database.RealtimeDatabase<T> {
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
 
-            realtimeChangesDatabaseCallback.onDatabaseOperationFailed("failed to detect realtime changes at = "+apiEndPoint.getmUrl());
+            realtimeChangesDatabaseCallback.onDatabaseOperationFailed("failed to detect realtime changes at = "+mApiEndPoint.getmUrl());
         }
     };
 
     @Override
     public void listenForDataChange() {
 
-        apiEndPoint.toApiEndPoint().addChildEventListener(mChildEventListener);
+        mApiEndPoint.toApiEndPoint().addChildEventListener(mChildEventListener);
     }
+
 
     @Override
     public void stopListeningForDataChange() {
 
-        apiEndPoint.toApiEndPoint().removeEventListener(mChildEventListener);
+        mApiEndPoint.toApiEndPoint().removeEventListener(mChildEventListener);
+    }
+
+    public Class<T> getmTypeParameterClass() {
+        return mTypeParameterClass;
+    }
+
+    public FirebaseRDBApiEndPoint getmApiEndPoint() {
+        return mApiEndPoint;
+    }
+
+    public void setmApiEndPoint(FirebaseRDBApiEndPoint mApiEndPoint) {
+        this.mApiEndPoint = mApiEndPoint;
     }
 
 }

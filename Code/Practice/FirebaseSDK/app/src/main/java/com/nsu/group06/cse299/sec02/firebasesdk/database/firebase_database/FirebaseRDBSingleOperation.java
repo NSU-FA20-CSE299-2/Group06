@@ -18,57 +18,83 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
     // needed for turning dataSnapshots to model class's object
     // courtesy-
     // https://stackoverflow.com/questions/3437897/how-do-i-get-a-class-instance-of-generic-type-t
-    private final Class<T> typeParameterClass;
+    private final Class<T> mTypeParameterClass;
 
-    private  FirebaseRDBApiEndPoint apiEndPoint;
+    private  FirebaseRDBApiEndPoint mApiEndPoint;
 
-    public FirebaseRDBSingleOperation(Class<T> typeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
+    public FirebaseRDBSingleOperation(Class<T> mTypeParameterClass) {
+
+        super();
+
+        this.mTypeParameterClass = mTypeParameterClass;
+    }
+
+    public FirebaseRDBSingleOperation(Class<T> mTypeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
                                       Database.SingleOperationDatabase.SingleOperationDatabaseCallback singleOperationDatabaseCallback) {
 
         super(singleOperationDatabaseCallback);
 
-        this.typeParameterClass = typeParameterClass;
-        this.apiEndPoint = apiEndPoint;
+        this.mTypeParameterClass = mTypeParameterClass;
+        this.mApiEndPoint = apiEndPoint;
     }
+
 
     @Override
     public void create(T data) {
 
-        apiEndPoint.toApiEndPoint().setValue(data,
-                (OnFailureListener) e -> singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to create entry = " + data.toString()));
+        // generate new data id here
+        String id = mApiEndPoint.toApiEndPoint().getRef().push().getKey();
+
+        Log.d(TAG, "create: create new data = "+data.toString()+"-"+id);
+
+        mApiEndPoint.toApiEndPoint().getRef().child(id).setValue(data)
+                .addOnFailureListener(e -> {
+                    singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to create data = "+data.toString());
+                });
+
     }
 
     @Override
     public void read() {
 
-        apiEndPoint.toApiEndPoint().addListenerForSingleValueEvent(new ValueEventListener() {
+        mApiEndPoint.toApiEndPoint().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if(!snapshot.exists()){
+
                     Log.d(TAG, "onDataChange: data doesn't exist");
+
                     singleOperationDatabaseCallback.onDataRead(null);
+
+                    return;
                 }
 
+                /*
+                Have to do this because apiEndPoint.toApiEndPoint() returns Query and not Reference
+                queries in FirebaseEDB always return data list we have to loop through it's children
+                to get the queried data, even if it's only one data
+                 */
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
 
-                    T t = dataSnapshot.getValue(FirebaseRDBSingleOperation.this.typeParameterClass);
+                    T data = dataSnapshot.getValue(FirebaseRDBSingleOperation.this.mTypeParameterClass);
 
-                    if(t!=null){
+                    if(data!=null){
 
-                        Log.d(TAG, "onDataChange: "+t.toString());
+                        Log.d(TAG, "onDataChange: "+data.toString());
 
-                        singleOperationDatabaseCallback.onDataRead(
-                                dataSnapshot.getValue(FirebaseRDBSingleOperation.this.typeParameterClass)
-                        );
+                        singleOperationDatabaseCallback.onDataRead(data);
+
+                        return; // fetch only one data
                     }
                 }
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-                singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to read at = "+apiEndPoint.getmUrl());
+                singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to read at = "+mApiEndPoint.getmUrl());
             }
         });
     }
@@ -76,14 +102,31 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
     @Override
     public void update(T data) {
 
-        apiEndPoint.toApiEndPoint().setValue(data,
-                (OnFailureListener) e -> singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to update entry = " + data.toString()));
+        mApiEndPoint.toApiEndPoint().getRef().setValue(data)
+                .addOnFailureListener(e -> {
+                    singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to update entry = " + data.toString());
+                });
     }
 
     @Override
     public void delete(T data) {
 
-        apiEndPoint.toApiEndPoint().setValue(null,
-                (OnFailureListener) e -> singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to delete entry = " + data.toString()));
+        mApiEndPoint.toApiEndPoint().getRef().setValue(null)
+                .addOnFailureListener(e -> {
+                    singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to delete entry = " + data.toString());
+                });
+    }
+
+
+    public Class<T> getmTypeParameterClass() {
+        return mTypeParameterClass;
+    }
+
+    public FirebaseRDBApiEndPoint getmApiEndPoint() {
+        return mApiEndPoint;
+    }
+
+    public void setmApiEndPoint(FirebaseRDBApiEndPoint mApiEndPoint) {
+        this.mApiEndPoint = mApiEndPoint;
     }
 }

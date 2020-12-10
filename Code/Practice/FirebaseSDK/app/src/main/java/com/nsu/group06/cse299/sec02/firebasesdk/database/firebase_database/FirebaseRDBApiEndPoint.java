@@ -10,7 +10,7 @@ import com.nsu.group06.cse299.sec02.firebasesdk.database.ApiEndPoint;
 /*
     Convert api endpoint path to firebase realtime database reference node
  */
-public class FirebaseRDBApiEndPoint extends ApiEndPoint<DatabaseReference> {
+public class FirebaseRDBApiEndPoint extends ApiEndPoint<Query> {
 
     private static final String TAG = "FRDBAEP-debug";
 
@@ -22,41 +22,56 @@ public class FirebaseRDBApiEndPoint extends ApiEndPoint<DatabaseReference> {
     Breaks down urls into firebase realtime database understandable reference (DatabaseReference type)
      */
     @Override
-    public DatabaseReference toApiEndPoint() {
+    public Query toApiEndPoint() {
 
         if(mUrl == null) return null;
 
         Log.d(TAG, "toApiEndPoint: querying at = "+mUrl);
 
         Query query = null;
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
+        Log.d(TAG, "toApiEndPoint: endpoint = "+mUrl);
+
+        /*
+        TEMPLATE FOR API ENDPOINT USAGE START
+         */
         if(mUrl.equals("/dummyDataSet")){
+        // first child at node;
 
-            query = databaseReference.child("dummyDataSet");
-
+            query = firebaseDatabase.getReference().child("dummyDataSet");
         }
 
         else if(mUrl.startsWith("/dummyDataSet/data:")){
+        // child inside node with specific key/id
 
             String id = mUrl.substring(mUrl.lastIndexOf(":")+1).trim();
 
             Log.d(TAG, "toApiEndPoint: searching criteria: id == "+id);
 
-            query = databaseReference.child("dummyDataSet/"+id);
-
+            query = firebaseDatabase.getReference("dummyDataSet")
+                    .orderByKey().equalTo(id); //databaseReference.child("dummyDataSet/"+id);
         }
 
-        // TODO: not working as expected, fetched all data does not filter by textData field
         else if(mUrl.startsWith("/dummyDataSet/data?textData=")){
+        // child inside node with equal to particular field value
 
             String equalValue = mUrl.substring(mUrl.lastIndexOf("=")+1).trim();
 
             Log.d(TAG, "toApiEndPoint: searching criteria: textData == "+equalValue);
 
-            query = databaseReference.child("dummyDataSet").orderByChild("textData").equalTo(equalValue);
+            query = firebaseDatabase.getReference("dummyDataSet")
+                    .orderByChild("textData").equalTo(equalValue);
         }
+        /*
+        TEMPLATE FOR API ENDPOINT USAGE END
+         */
 
-        return query.getRef();
+        else{
+
+            Log.d(TAG, "toApiEndPoint: unknown URL!");
+        }
+        
+        return query;
     }
 }

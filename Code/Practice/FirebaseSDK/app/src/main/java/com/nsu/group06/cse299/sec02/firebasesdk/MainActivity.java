@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.nsu.group06.cse299.sec02.firebasesdk.database.Database;
+import com.nsu.group06.cse299.sec02.firebasesdk.database.firebase_database.FirebaseRDBRealtime;
 import com.nsu.group06.cse299.sec02.firebasesdk.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.firebasesdk.database.firebase_database.FirebaseRDBApiEndPoint;
 
@@ -20,20 +21,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        test();
+        init();
+    }
+
+    private void init() {
+
+        //testRead();
+        //testWrite();
     }
 
     /*
-    method for testing newly written database classes
+    methods for testing newly written database classes
      */
-    private void test() {
+
+    private void testRead() {
 
         TextView tv = findViewById(R.id.delete_text);
 
-        Database.SingleOperationDatabase singleOperationDatabase =
+        Database.SingleOperationDatabase<DummyModel> singleOperationDatabase =
                 new FirebaseRDBSingleOperation(
+
                         DummyModel.class,
-                        new FirebaseRDBApiEndPoint("/dummyDataSet/data?textData=some other name"),
+
+                        new FirebaseRDBApiEndPoint("/dummyDataSet/data?textData=someename"),
+
                         new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<DummyModel>() {
                             @Override
                             public void onDataRead(DummyModel data) {
@@ -60,4 +71,32 @@ public class MainActivity extends AppCompatActivity {
 
         singleOperationDatabase.read();
     }
+
+    private void testWrite() {
+
+        Database.SingleOperationDatabase<DummyModel> singleOperationDatabase =
+                new FirebaseRDBSingleOperation(
+
+                        DummyModel.class,
+
+                        new FirebaseRDBApiEndPoint("/dummyDataSet"),
+
+                        new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<DummyModel>() {
+                            @Override
+                            public void onDataRead(DummyModel data) {
+                                // keep blank not reading anything from here
+                            }
+
+                            @Override
+                            public void onDatabaseOperationFailed(String message) {
+
+                                Log.d(TAG, "onDatabaseOperationFailed: "+message);
+                            }
+                        }
+                );
+
+        singleOperationDatabase.create(new DummyModel("new data"));
+
+    }
+
 }

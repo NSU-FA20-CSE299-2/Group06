@@ -13,6 +13,9 @@ public interface Database {
 
         protected SingleOperationDatabaseCallback singleOperationDatabaseCallback;
 
+        public SingleOperationDatabase() {
+        }
+
         public SingleOperationDatabase(SingleOperationDatabaseCallback singleOperationDatabaseCallback) {
             this.singleOperationDatabaseCallback = singleOperationDatabaseCallback;
         }
@@ -30,12 +33,21 @@ public interface Database {
             void onDataRead(T data);
         }
 
+        public SingleOperationDatabaseCallback getSingleOperationDatabaseCallback() {
+            return singleOperationDatabaseCallback;
+        }
+
+        public void setSingleOperationDatabaseCallback(SingleOperationDatabaseCallback singleOperationDatabaseCallback) {
+            this.singleOperationDatabaseCallback = singleOperationDatabaseCallback;
+        }
     }
 
     abstract class RealtimeDatabase<T>{
 
         protected RealtimeChangesDatabaseCallback realtimeChangesDatabaseCallback;
 
+        public RealtimeDatabase() {
+        }
 
         public RealtimeDatabase(RealtimeChangesDatabaseCallback realtimeChangesDatabaseCallback) {
             this.realtimeChangesDatabaseCallback = realtimeChangesDatabaseCallback;
@@ -54,6 +66,13 @@ public interface Database {
             void onDataDeletion(T data);
         }
 
+        public RealtimeChangesDatabaseCallback getRealtimeChangesDatabaseCallback() {
+            return realtimeChangesDatabaseCallback;
+        }
+
+        public void setRealtimeChangesDatabaseCallback(RealtimeChangesDatabaseCallback realtimeChangesDatabaseCallback) {
+            this.realtimeChangesDatabaseCallback = realtimeChangesDatabaseCallback;
+        }
     }
 
 
