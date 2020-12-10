@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         //testFirebaseRealtimeDatabase();
 
-        testFirebaseAuth();
+        //testFirebaseAuth();
     }
 
     /*
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void testFirebaseAuth() {
 
         //testSignUp();
-        testSignIn();
+        //testSignIn();
     }
 
     private void testSignUp() {

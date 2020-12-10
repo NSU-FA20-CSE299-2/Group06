@@ -1,7 +1,7 @@
 package com.nsu.group06.cse299.sec02.firebasesdk.auth;
 
 /*
-    Abstraction for user signup/login authentication classes
+    Abstraction for user signUp/login authentication classes
  */
 public abstract class Authentication {
 
