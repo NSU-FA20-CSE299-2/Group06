@@ -15,6 +15,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MA-debug";
 
+    private TextView mTv;
+
+    private Database.SingleOperationDatabase<DummyModel> mSingleOperationDatabase;
+    private Database.RealtimeDatabase<DummyModel> mRealtimeDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
 
+
+        mTv = findViewById(R.id.delete_text);
+
         //testRead();
         //testWrite();
+
+        testReadRealtime();
     }
+
 
     /*
     methods for testing newly written database classes
@@ -36,9 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void testRead() {
 
-        TextView tv = findViewById(R.id.delete_text);
-
-        Database.SingleOperationDatabase<DummyModel> singleOperationDatabase =
+        mSingleOperationDatabase =
                 new FirebaseRDBSingleOperation(
 
                         DummyModel.class,
@@ -50,13 +58,15 @@ public class MainActivity extends AppCompatActivity {
                             public void onDataRead(DummyModel data) {
 
                                 if(data!=null){
-                                    tv.setText(data.getTextData());
+
+                                    mTv.setText(data.getTextData());
 
                                     Log.d(TAG, "onDataRead: data read = "+data.toString());
                                 }
 
                                 else{
-                                    tv.setText("no data found!");
+
+                                    mTv.setText("no data found!");
                                 }
 
                             }
@@ -69,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                 );
 
-        singleOperationDatabase.read();
+        mSingleOperationDatabase.read();
     }
 
     private void testWrite() {
 
-        Database.SingleOperationDatabase<DummyModel> singleOperationDatabase =
+        mSingleOperationDatabase =
                 new FirebaseRDBSingleOperation(
 
                         DummyModel.class,
@@ -95,8 +105,50 @@ public class MainActivity extends AppCompatActivity {
                         }
                 );
 
-        singleOperationDatabase.create(new DummyModel("new data"));
+        mSingleOperationDatabase.create(new DummyModel("new data"));
 
     }
 
+    private void testReadRealtime() {
+
+        mRealtimeDatabase =
+                new FirebaseRDBRealtime(
+
+                        DummyModel.class,
+
+                        new FirebaseRDBApiEndPoint("/dummyDataSet/data:data-1-id"),
+
+                        new Database.RealtimeDatabase.RealtimeChangesDatabaseCallback<DummyModel>() {
+                            @Override
+                            public void onDataAddition(DummyModel data) {
+                            }
+
+                            @Override
+                            public void onDataUpdate(DummyModel data) {
+
+                                mTv.setText(data.getTextData());
+                            }
+
+                            @Override
+                            public void onDataDeletion(DummyModel data) {
+                            }
+
+                            @Override
+                            public void onDatabaseOperationFailed(String message) {
+
+                                Log.d(TAG, "onDatabaseOperationFailed: "+message);
+                            }
+                        }
+
+                );
+
+        mRealtimeDatabase.listenForSingleDataChange();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        mRealtimeDatabase.stopListeningForDataChange();
+    }
 }

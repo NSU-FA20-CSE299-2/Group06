@@ -5,7 +5,7 @@ model class just for testing written database classes
  */
 public class DummyModel {
 
-    String textData;
+    private String textData;
 
     public DummyModel() {
     }

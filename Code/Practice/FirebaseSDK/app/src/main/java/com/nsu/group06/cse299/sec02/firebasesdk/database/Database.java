@@ -42,6 +42,9 @@ public interface Database {
         }
     }
 
+    /*
+    Realtime operations
+     */
     abstract class RealtimeDatabase<T>{
 
         protected RealtimeChangesDatabaseCallback realtimeChangesDatabaseCallback;
@@ -53,7 +56,9 @@ public interface Database {
             this.realtimeChangesDatabaseCallback = realtimeChangesDatabaseCallback;
         }
 
-        abstract public void listenForDataChange();
+        abstract public void listenForSingleDataChange();
+        abstract public void listenForListDataChange();
+
         abstract public void stopListeningForDataChange();
 
         /*
