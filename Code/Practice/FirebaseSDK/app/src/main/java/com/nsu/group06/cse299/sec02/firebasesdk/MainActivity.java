@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nsu.group06.cse299.sec02.firebasesdk.database.Database;
 import com.nsu.group06.cse299.sec02.firebasesdk.database.firebase_database.FirebaseRDBRealtime;
@@ -36,8 +37,10 @@ public class MainActivity extends AppCompatActivity {
         //testRead();
         //testWrite();
 
-        testReadRealtime();
+        //testSingleDataChangeRealtime();
+        //testListDataChangeRealtime();
     }
+
 
 
     /*
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void testReadRealtime() {
+    private void testSingleDataChangeRealtime() {
 
         mRealtimeDatabase =
                 new FirebaseRDBRealtime(
@@ -143,6 +146,46 @@ public class MainActivity extends AppCompatActivity {
                 );
 
         mRealtimeDatabase.listenForSingleDataChange();
+    }
+
+    private void testListDataChangeRealtime() {
+
+        mRealtimeDatabase =
+                new FirebaseRDBRealtime(
+
+                        DummyModel.class,
+
+                        new FirebaseRDBApiEndPoint("/dummyDataSet"),
+
+                        new Database.RealtimeDatabase.RealtimeChangesDatabaseCallback<DummyModel>() {
+                            @Override
+                            public void onDataAddition(DummyModel data) {
+
+                                Toast.makeText(MainActivity.this, "new data added -> "+data.toString(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onDataUpdate(DummyModel data) {
+
+                                Toast.makeText(MainActivity.this, "data updated -> "+data.toString(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onDataDeletion(DummyModel data) {
+
+                                Toast.makeText(MainActivity.this, "data deleted -> "+data.toString(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onDatabaseOperationFailed(String message) {
+
+                                Log.d(TAG, "onDatabaseOperationFailed: "+message);
+                            }
+                        }
+
+                );
+
+        mRealtimeDatabase.listenForListDataChange();
     }
 
     @Override
