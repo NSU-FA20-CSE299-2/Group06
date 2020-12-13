@@ -17,14 +17,14 @@ public abstract class LocationFetcher {
     // calling activity/context
     protected Context context;
 
-    protected LocationSetupListener locationSetupListener;
+    protected LocationSettingsSetupListener locationSettingsSetupListener;
     protected LocationUpdateListener locationUpdateListener;
 
-    public LocationFetcher(long interval, Context context, LocationSetupListener locationSetupListener,
+    public LocationFetcher(long interval, Context context, LocationSettingsSetupListener locationSettingsSetupListener,
                            LocationUpdateListener locationUpdateListener) {
         this.interval = interval;
         this.context = context;
-        this.locationSetupListener = locationSetupListener;
+        this.locationSettingsSetupListener = locationSettingsSetupListener;
         this.locationUpdateListener = locationUpdateListener;
     }
 
@@ -41,12 +41,12 @@ public abstract class LocationFetcher {
         this.interval = interval;
     }
 
-    public LocationSetupListener getLocationSetupListener() {
-        return locationSetupListener;
+    public LocationSettingsSetupListener getLocationSettingsSetupListener() {
+        return locationSettingsSetupListener;
     }
 
-    public void setLocationSetupListener(LocationSetupListener locationSetupListener) {
-        this.locationSetupListener = locationSetupListener;
+    public void setLocationSettingsSetupListener(LocationSettingsSetupListener locationSettingsSetupListener) {
+        this.locationSettingsSetupListener = locationSettingsSetupListener;
     }
 
     public LocationUpdateListener getLocationUpdateListener() {
@@ -57,7 +57,7 @@ public abstract class LocationFetcher {
         this.locationUpdateListener = locationUpdateListener;
     }
 
-    public interface LocationSetupListener{
+    public interface LocationSettingsSetupListener{
 
         void onLocationSettingsSetupSuccess();
         void onLocationSettingsSetupFailed(String message);

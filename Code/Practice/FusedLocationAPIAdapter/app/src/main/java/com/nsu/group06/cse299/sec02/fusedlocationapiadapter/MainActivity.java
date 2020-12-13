@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +18,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.nsu.group06.cse299.sec02.fusedlocationapiadapter.fetchLocation.FetchedLocation;
+import com.nsu.group06.cse299.sec02.fusedlocationapiadapter.fetchLocation.FusedLocationFetcherApiAdapter;
 import com.nsu.group06.cse299.sec02.fusedlocationapiadapter.fetchLocation.LocationFetcher;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MA-debug";
 
     private String LOCATION_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -29,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     // model
     private FetchedLocation mFetchedLocation = null;
 
+    // location fetchers
+    private LocationFetcher mLocationFetcher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +44,76 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+    private void init() {
+
+        mLocationTextView = findViewById(R.id.locationTextView);
+
+        mLocationFetcher =
+                new FusedLocationFetcherApiAdapter(1000, this,
+
+                        new LocationFetcher.LocationSettingsSetupListener() {
+                            @Override
+                            public void onLocationSettingsSetupSuccess() {
+
+                                mLocationFetcher.startLocationUpdate();
+                            }
+
+                            @Override
+                            public void onLocationSettingsSetupFailed(String message) {
+
+                                Log.d(TAG, "onLocationSettingsSetupFailed: location settings setup failed ->" + message);
+                            }
+                        },
+
+                        new LocationFetcher.LocationUpdateListener() {
+                            @Override
+                            public void onNewLocationUpdate(FetchedLocation fetchedLocation) {
+
+                                boolean locationDataUpdated = false;
+
+                                if(mFetchedLocation==null) {
+                                    mFetchedLocation = fetchedLocation;
+                                    locationDataUpdated = true;
+                                }
+                                else if(fetchedLocation.getmAccuracy() < mFetchedLocation.getmAccuracy()
+                                        || FetchedLocation.isLocationSignificantlyDifferent(mFetchedLocation, fetchedLocation)) {
+
+                                    mFetchedLocation = fetchedLocation;
+                                    locationDataUpdated = true;
+                                }
+
+                                if(locationDataUpdated)
+                                    mLocationTextView.setText(mFetchedLocation.toString());
+                            }
+
+                            @Override
+                            public void onPermissionNotGranted() {
+
+                                getLocationPermissions();
+                            }
+
+                            @Override
+                            public void onError(String message) {
+
+                                Toast.makeText(MainActivity.this, "An unexpected error occured", Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "onError: location update error -> "+message);
+                            }
+                        });
+
+        getLocationPermissions();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(mLocationFetcher!=null)
+            mLocationFetcher.stopLocationUpdate();
+    }
+
     /*
-    Required for setting up required location settings if it is not setup
+    Required for reacting to user response when setting up required location settings
+    user response to default "turn on location" dialog is handled through this method
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -50,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK){
                 // user enabled location settings
 
-                    startFetchingLocation();
+                    mLocationFetcher.startLocationUpdate();
                 }
 
                 else{
@@ -62,13 +137,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void init() {
-
-        mLocationTextView = findViewById(R.id.locationTextView);
-
-        getLocationPermissions();
     }
 
     /*
@@ -83,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
 
-                        checkLocationSettings();
+                        mLocationFetcher.setupLocationSettings(MainActivity.this);
                     }
 
                     @Override
@@ -112,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: bring in the strings from res/values/strings.xml
         String title = "Location Permission";
-        String explanation = "";
+        String explanation;
 
         if(isPermissionPermanentlyDenied)
             explanation = "Please allow location from for the app from your device Settings.";
@@ -147,33 +215,9 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setTitle(title);
         alertDialog.setMessage(explanation);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                (dialog, which) -> {
-
-                    //TODO: ask for location settings again
-
-                });
+                (dialog, which) -> mLocationFetcher.setupLocationSettings(MainActivity.this));
 
         alertDialog.show();
     }
-
-    /*
-    check device location settings
-     */
-    private void checkLocationSettings(){
-
-        // TODO: ask for location settings
-
-    }
-
-    /*
-    Fetch user's current best location
-     */
-    private void startFetchingLocation(){
-
-        // TODO: start fetching location
-
-        Toast.makeText(this, "fetching location", Toast.LENGTH_LONG).show();
-    }
-
 
 }

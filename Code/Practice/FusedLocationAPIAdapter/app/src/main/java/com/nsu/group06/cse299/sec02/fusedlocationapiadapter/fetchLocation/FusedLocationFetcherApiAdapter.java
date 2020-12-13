@@ -63,9 +63,9 @@ public class FusedLocationFetcherApiAdapter extends LocationFetcher {
     };
 
 
-    public FusedLocationFetcherApiAdapter(long interval, Context context, LocationSetupListener locationSetupListener,
+    public FusedLocationFetcherApiAdapter(long interval, Context context, LocationSettingsSetupListener locationSettingsSetupListener,
                                           LocationUpdateListener locationUpdateListener) {
-        super(interval, context, locationSetupListener, locationUpdateListener);
+        super(interval, context, locationSettingsSetupListener, locationUpdateListener);
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(super.interval);
@@ -88,12 +88,12 @@ public class FusedLocationFetcherApiAdapter extends LocationFetcher {
             // All location settings are satisfied. The client can initialize
             // location requests here.
 
-            locationSetupListener.onLocationSettingsSetupSuccess();
+            locationSettingsSetupListener.onLocationSettingsSetupSuccess();
         });
 
         task.addOnFailureListener(activity, e -> {
 
-            locationSetupListener.onLocationSettingsSetupFailed("location settings not met");
+            locationSettingsSetupListener.onLocationSettingsSetupFailed("location settings not met");
 
             if (e instanceof ResolvableApiException) {
                 // Location settings are not satisfied, but this can be fixed
