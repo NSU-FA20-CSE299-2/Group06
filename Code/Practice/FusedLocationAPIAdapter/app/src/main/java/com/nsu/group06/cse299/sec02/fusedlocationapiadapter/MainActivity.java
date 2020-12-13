@@ -51,10 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
 
-                        if(!permissionDeniedResponse.isPermanentlyDenied()) {
-
-                            showLocationPermissionExplanationDialog();
-                        }
+                        showLocationPermissionExplanationDialog(permissionDeniedResponse.isPermanentlyDenied());
                     }
 
                     @Override
@@ -67,19 +64,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-    show alert dialog explaining why location permission is required
-    with a simple alert dialog
+    show alert dialog explaining why location permission is a MUST
+    with a simple dialog, quit activity if permission is permanently denied
     courtesy - <https://stackoverflow.com/questions/26097513/android-simple-alert-dialog
      */
-    private void showLocationPermissionExplanationDialog() {
+    private void showLocationPermissionExplanationDialog(boolean isPermissionPermanentlyDenied) {
 
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
 
+        String title = "Location Permission";
+        String explanation = "";
+
+        if(isPermissionPermanentlyDenied)
+            explanation = "Please allow location from for the app from your device Settings.";
+        else
+            explanation = "Location permission is required to fetch your current location, permission MUST be provided!";
+
         // TODO: bring in strings from res/values/strings.xml
-        alertDialog.setTitle("Location Permission");
-        alertDialog.setMessage("Location permission is required to fetch your current location");
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(explanation);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                (dialog, which) -> getLocationPermissions());
+                (dialog, which) -> {
+                    if(!isPermissionPermanentlyDenied)
+                        getLocationPermissions();
+                    else
+                        finish();
+                });
 
         alertDialog.show();
     }
