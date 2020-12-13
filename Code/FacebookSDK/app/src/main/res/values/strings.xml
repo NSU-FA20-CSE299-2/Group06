@@ -2,4 +2,6 @@
     <string name="app_name">FacebookSDK</string>
     <string name="facebook_app_id">171317278066874</string>
     <string name="fb_login_protocol_scheme">fb171317278066874</string>
+    <string name="auth_id_will_be_displayed_here">Auth id will be displayed here!</string>
+    <string name="id">\"Auth ID: \"</string>
 </resources>
