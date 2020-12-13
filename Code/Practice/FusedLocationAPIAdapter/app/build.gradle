@@ -39,4 +39,7 @@ dependencies {
 
     // permissions library
     implementation 'com.karumi:dexter:6.2.2'
+
+    // fused location api
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 }
