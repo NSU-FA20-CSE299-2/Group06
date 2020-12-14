@@ -1,12 +1,9 @@
-package com.ece.nsu.fall2020.cse486.sec1.facebooksdk;
+package com.ece.nsu.fall2020.cse299.sec2.facebooksdk;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.telecom.Call;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +13,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.ece.nsu.fall2020.cse486.sec1.facebooksdk"
+        applicationId "com.ece.nsu.fall2020.cse299.sec2.facebooksdk"
         minSdkVersion 22
         targetSdkVersion 29
         versionCode 1

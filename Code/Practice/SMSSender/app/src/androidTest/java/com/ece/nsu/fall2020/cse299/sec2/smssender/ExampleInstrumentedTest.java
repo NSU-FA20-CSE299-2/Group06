@@ -1,4 +1,4 @@
-package com.ece.nsu.fall2020.cse486.sec1.smssender;
+package com.ece.nsu.fall2020.cse299.sec2.smssender;
 
 import android.content.Context;
 

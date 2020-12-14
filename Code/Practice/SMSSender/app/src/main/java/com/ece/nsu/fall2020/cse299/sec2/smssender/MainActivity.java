@@ -1,4 +1,4 @@
-package com.ece.nsu.fall2020.cse486.sec1.smssender;
+package com.ece.nsu.fall2020.cse299.sec2.smssender;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
