@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-Wrapper class for for all nearby connection classes
+Wrapper interface for for all nearby connection classes
 
 - One-to-one connections
 - sender looks for recevers
@@ -13,13 +13,13 @@ Wrapper class for for all nearby connection classes
 
 transfer of data is only bytes(Serializable Object)
  */
-public class NearbyConnection {
+public interface NearbyConnection {
 
     /*
     Abstract class for senders
     who are discoverers i.e search for nearby receivers
      */
-    public abstract class Sender{
+    abstract class Sender{
 
         protected byte[] dataToSend;
         protected List<NearbyConnectionPeer> alreadySentReceivers = new ArrayList<>();
@@ -69,6 +69,16 @@ public class NearbyConnection {
             this.authenticator = authenticator;
         }
 
+        public void addToAlreadySentReceivers(NearbyConnectionPeer receiver){
+
+            alreadySentReceivers.add(receiver);
+        }
+
+        public boolean isAlreadySentReceiver(NearbyConnectionPeer receiver){
+
+            return alreadySentReceivers.contains(receiver);
+        }
+
         public void clearAlreadySentReceivers(){
 
             alreadySentReceivers.clear();
@@ -77,7 +87,7 @@ public class NearbyConnection {
     /*
     Interface for NearbyConnection.Sender callbacks
      */
-    public interface SenderCallbacks{
+    interface SenderCallbacks{
 
         void onReceiverDiscovered(NearbyConnectionPeer receiver);
         void onDiscoveryError(String message);
@@ -92,7 +102,7 @@ public class NearbyConnection {
     Abstract class for receiver
     who are advertisers i.e advertise for nearby senders to find them
      */
-    public abstract class Receiver{
+    abstract class Receiver{
 
         protected ReceiverCallbacks receiverCallbacks;
 
@@ -132,7 +142,7 @@ public class NearbyConnection {
     /*
     Interface for NearbyConnection.Receiver callbacks
      */
-    public interface ReceiverCallbacks{
+    interface ReceiverCallbacks{
 
         void onAdvertisementSuccess();
         void onAdvertisementFailed(String message);
@@ -146,7 +156,7 @@ public class NearbyConnection {
     /*
     Abstract class to handle connection for one peer
      */
-    public abstract class Connection{
+    abstract class Connection{
 
         protected NearbyConnectionPeer me, peer;
         protected ConnectionCallbacks connectionCallbacks;
@@ -185,7 +195,7 @@ public class NearbyConnection {
     /*
     Interface for connection status callbacks
      */
-    public interface ConnectionCallbacks{
+    interface ConnectionCallbacks{
 
         void onConnectionInitiated(); // new connection initiated
         void onConnectionEstablished(NearbyConnectionPeer receiver);
@@ -201,7 +211,7 @@ public class NearbyConnection {
     'AuthToken' is the data that will be used for authentication
     should be a string most of the time
     */
-    public abstract class Authenticator<AuthTokenType>{
+    abstract class Authenticator<AuthTokenType>{
 
         private AuthTokenType mAuthToken;
         private AuthenticationCallbacks mAuthenticationCallbacks;
@@ -217,7 +227,7 @@ public class NearbyConnection {
     /*
     Interface for NearbyConnection.Authenticator
      */
-    public interface AuthenticationCallbacks{
+    interface AuthenticationCallbacks{
 
         void onAuthenticationSuccess();
         void onAuthenticationFailed(String message);
