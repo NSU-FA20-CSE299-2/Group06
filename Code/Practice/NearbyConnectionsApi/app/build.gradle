@@ -37,6 +37,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // nearby connections api
+    implementation 'com.google.android.gms:play-services-nearby:17.0.0'
+
     // dexter permissions library
     implementation 'com.karumi:dexter:6.2.2'
 }

@@ -3,17 +3,17 @@ package com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections;
 /*
 Peer model class for nearby connection
  */
-public class NearbyConnectionPeer<PeerIdType> {
+public class NearbyConnectionPeer {
 
     private String username;
-    private PeerIdType mPeerId; // uniquely identifies a peer
+    private String mPeerId; // uniquely identifies a peer
 
-    public NearbyConnectionPeer(String username, PeerIdType mPeerId) {
+    public NearbyConnectionPeer(String username, String mPeerId) {
         this.username = username;
         this.mPeerId = mPeerId;
     }
 
-    public NearbyConnectionPeer(PeerIdType mPeerId) {
+    public NearbyConnectionPeer(String mPeerId) {
         this.mPeerId = mPeerId;
     }
 
@@ -25,11 +25,11 @@ public class NearbyConnectionPeer<PeerIdType> {
         this.username = username;
     }
 
-    public PeerIdType getmPeerId() {
+    public String getmPeerId() {
         return mPeerId;
     }
 
-    public void setmPeerId(PeerIdType mPeerId) {
+    public void setmPeerId(String mPeerId) {
         this.mPeerId = mPeerId;
     }
 }

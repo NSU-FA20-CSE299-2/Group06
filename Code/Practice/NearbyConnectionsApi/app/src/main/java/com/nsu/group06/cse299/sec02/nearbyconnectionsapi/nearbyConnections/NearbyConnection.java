@@ -39,7 +39,7 @@ public interface NearbyConnection {
         }
 
         public abstract void discoverReceivers();
-        public abstract void sendDataToConnectedReceiver(NearbyConnectionData data);
+        public abstract void sendDataToConnectedReceiver();
 
         public byte[] getDataToSend() {
             return dataToSend;
@@ -213,16 +213,28 @@ public interface NearbyConnection {
     */
     abstract class Authenticator<AuthTokenType>{
 
-        private AuthTokenType mAuthToken;
-        private AuthenticationCallbacks mAuthenticationCallbacks;
+        protected AuthTokenType authToken;
+        protected AuthenticationCallbacks authenticationCallbacks;
 
-        public Authenticator(AuthTokenType mAuthToken, AuthenticationCallbacks mAuthenticationCallbacks) {
-            this.mAuthToken = mAuthToken;
-            this.mAuthenticationCallbacks = mAuthenticationCallbacks;
+        public Authenticator(AuthTokenType authToken, AuthenticationCallbacks authenticationCallbacks) {
+            this.authToken = authToken;
+            this.authenticationCallbacks = authenticationCallbacks;
         }
 
         // implementation of this method will be different for sender and receiver
         public abstract void authenticate();
+
+        public AuthTokenType getAuthToken() {
+            return authToken;
+        }
+
+        public void setAuthToken(AuthTokenType authToken) {
+            this.authToken = authToken;
+        }
+
+        public void setAuthenticationCallbacks(AuthenticationCallbacks authenticationCallbacks) {
+            this.authenticationCallbacks = authenticationCallbacks;
+        }
     }
     /*
     Interface for NearbyConnection.Authenticator
