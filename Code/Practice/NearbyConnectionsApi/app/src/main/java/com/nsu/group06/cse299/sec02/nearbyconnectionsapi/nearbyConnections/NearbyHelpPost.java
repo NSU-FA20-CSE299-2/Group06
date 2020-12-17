@@ -1,10 +1,18 @@
 package com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class NearbyHelpPost implements NearbyConnectionData {
+/*
+Model class for data to be sent/received via nearby connections
+ */
+
+                            // because we need to convert the model to byte array
+public class NearbyHelpPost implements Serializable {
 
     private String mAuthor, mContent;
     private double mLatitude, mLongitude;
@@ -59,15 +67,29 @@ public class NearbyHelpPost implements NearbyConnectionData {
         this.mWebPageUrl = mWebPageUrl;
     }
 
-    @Override
-    public byte[] toByteArray() throws IOException {
-    // courtesy- <https://www.tutorialspoint.com/How-to-convert-an-object-to-byte-array-in-java>
+    /*
+    convert an object of NearbyHelpPost to byte array
+    courtesy- <https://www.tutorialspoint.com/How-to-convert-an-object-to-byte-array-in-java>
+     */
+    public static byte[] toByteArray(NearbyHelpPost nearbyHelpPost) throws IOException {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(this);
+        oos.writeObject(nearbyHelpPost);
         oos.flush();
 
         return bos.toByteArray();
     }
+
+    /*
+    get an object of this class from byte code convert byte
+    courtesy- <https://stackoverflow.com/questions/3736058/java-object-to-byte-and-byte-to-object-converter-for-tokyo-cabinet>
+     */
+    public static NearbyHelpPost toNearbyHelpPost(byte[] bytes) throws IOException, ClassNotFoundException {
+
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        ObjectInputStream is = new ObjectInputStream(in);
+        return (NearbyHelpPost) is.readObject();
+    }
+
 }

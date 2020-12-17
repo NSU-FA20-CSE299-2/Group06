@@ -1,5 +1,7 @@
 package com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections;
 
+import com.google.android.gms.nearby.connection.Strategy;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,58 +17,65 @@ transfer of data is only bytes(Serializable Object)
  */
 public interface NearbyConnection {
 
+    // TODO: set to app package name
+    // id that advertiser is advertising with, MUST be unique to the app
+    String SERVICE_ID = "com.nsu.group06.cse299.sec02";
+
+    // only setup one-to-one connections
+    // <https://developers.google.com/nearby/connections/strategies#p2p_point_to_point>
+    Strategy STRATEGY = Strategy.P2P_POINT_TO_POINT;
+
+
+
     /*
     Abstract class for senders
     who are discoverers i.e search for nearby receivers
      */
     abstract class Sender{
 
-        protected byte[] dataToSend;
+        protected NearbyConnectionPeer me;
         protected List<NearbyConnectionPeer> alreadySentReceivers = new ArrayList<>();
 
         protected SenderCallbacks senderCallbacks;
+        protected ConnectionCallbacks connectionCallbacks;
 
-        protected Authenticator authenticator;
-        protected Connection connection;
+        protected AuthenticationCallbacks authenticationCallbacks;
 
-        public Sender(byte[] dataToSend, SenderCallbacks senderCallbacks,
-                      Authenticator authenticator, Connection connection) {
+        public Sender(NearbyConnectionPeer me, SenderCallbacks senderCallbacks,
+                      ConnectionCallbacks connectionCallbacks, AuthenticationCallbacks authenticationCallbacks) {
 
-            this.dataToSend = dataToSend;
+            this.me = me;
             this.senderCallbacks = senderCallbacks;
-            this.authenticator = authenticator;
-            this.connection = connection;
+            this.connectionCallbacks = connectionCallbacks;
+            this.authenticationCallbacks = authenticationCallbacks;
         }
 
         public abstract void discoverReceivers();
-        public abstract void sendDataToConnectedReceiver();
+        public abstract void stopReceiversDiscovery();
+        public abstract void authenticate();
+        public abstract void sendDataToConnectedReceiver(NearbyConnectionPeer peer, byte[] data);
+        public abstract void requestConnection(NearbyConnectionPeer peer); // request for new connection
+        public abstract void connect(NearbyConnectionPeer peer); // establish a connection
+        public abstract void disconnect(NearbyConnectionPeer peer); // disconnect an active connection
 
-        public byte[] getDataToSend() {
-            return dataToSend;
+        public NearbyConnectionPeer getMe() {
+            return me;
         }
 
-        public void setDataToSend(byte[] dataToSend) {
-            this.dataToSend = dataToSend;
-        }
-
-        public Connection getConnection() {
-            return connection;
-        }
-
-        public void setConnection(Connection connection) {
-            this.connection = connection;
+        public void setMe(NearbyConnectionPeer me) {
+            this.me = me;
         }
 
         public void setSenderCallbacks(SenderCallbacks senderCallbacks) {
             this.senderCallbacks = senderCallbacks;
         }
 
-        public Authenticator getAuthenticator() {
-            return authenticator;
+        public void setConnectionCallbacks(ConnectionCallbacks connectionCallbacks) {
+            this.connectionCallbacks = connectionCallbacks;
         }
 
-        public void setAuthenticator(Authenticator authenticator) {
-            this.authenticator = authenticator;
+        public void setAuthenticationCallbacks(AuthenticationCallbacks authenticationCallbacks) {
+            this.authenticationCallbacks = authenticationCallbacks;
         }
 
         public void addToAlreadySentReceivers(NearbyConnectionPeer receiver){
@@ -92,7 +101,7 @@ public interface NearbyConnection {
         void onReceiverDiscovered(NearbyConnectionPeer receiver);
         void onDiscoveryError(String message);
 
-        void onDataSent();
+        void onDataSendSuccess(NearbyConnectionPeer receiver);
         void onDataSendFailed(String message);
     }
 
@@ -104,67 +113,27 @@ public interface NearbyConnection {
      */
     abstract class Receiver{
 
+        protected NearbyConnectionPeer me;
+
         protected ReceiverCallbacks receiverCallbacks;
+        protected AuthenticationCallbacks authenticationCallbacks;
+        protected ConnectionCallbacks connectionCallbacks;
 
-        protected Authenticator authenticator;
-        protected Connection connection;
+        public Receiver(NearbyConnectionPeer me, ReceiverCallbacks receiverCallbacks,
+                        AuthenticationCallbacks authenticationCallbacks, ConnectionCallbacks connectionCallbacks) {
 
-        public Receiver(ReceiverCallbacks receiverCallbacks, Authenticator authenticator,
-                        Connection connection) {
-
+            this.me = me;
             this.receiverCallbacks = receiverCallbacks;
-            this.authenticator = authenticator;
-            this.connection = connection;
+            this.authenticationCallbacks = authenticationCallbacks;
+            this.connectionCallbacks = connectionCallbacks;
         }
 
         public abstract void advertiseToSenders();
-
-        public void setReceiverCallbacks(ReceiverCallbacks receiverCallbacks) {
-            this.receiverCallbacks = receiverCallbacks;
-        }
-
-        public Authenticator getAuthenticator() {
-            return authenticator;
-        }
-
-        public void setAuthenticator(Authenticator authenticator) {
-            this.authenticator = authenticator;
-        }
-
-        public Connection getConnection() {
-            return connection;
-        }
-
-        public void setConnection(Connection connection) {
-            this.connection = connection;
-        }
-    }
-    /*
-    Interface for NearbyConnection.Receiver callbacks
-     */
-    interface ReceiverCallbacks{
-
-        void onAdvertisementSuccess();
-        void onAdvertisementFailed(String message);
-
-        void onDataReceived(NearbyConnectionData receivedData);
-        void onDataReceiveFailed(String message);
-    }
-
-
-
-    /*
-    Abstract class to handle connection for one peer
-     */
-    abstract class Connection{
-
-        protected NearbyConnectionPeer me, peer;
-        protected ConnectionCallbacks connectionCallbacks;
-
-        public Connection(NearbyConnectionPeer me, ConnectionCallbacks connectionCallbacks) {
-            this.me = me;
-            this.connectionCallbacks = connectionCallbacks;
-        }
+        public abstract void stopAdvertising();
+        public abstract void authenticate();
+        public abstract void connect(NearbyConnectionPeer peer); // establish a connection
+        public abstract void rejectConnection(NearbyConnectionPeer peer); // reject incoming connection request
+        public abstract void disconnect(NearbyConnectionPeer peer); // disconnect an active connection
 
         public NearbyConnectionPeer getMe() {
             return me;
@@ -174,70 +143,45 @@ public interface NearbyConnection {
             this.me = me;
         }
 
-        public NearbyConnectionPeer getPeer() {
-            return peer;
+        public void setReceiverCallbacks(ReceiverCallbacks receiverCallbacks) {
+            this.receiverCallbacks = receiverCallbacks;
         }
 
-        public void setPeer(NearbyConnectionPeer peer) {
-            this.peer = peer;
+        public void setAuthenticationCallbacks(AuthenticationCallbacks authenticationCallbacks) {
+            this.authenticationCallbacks = authenticationCallbacks;
         }
 
         public void setConnectionCallbacks(ConnectionCallbacks connectionCallbacks) {
             this.connectionCallbacks = connectionCallbacks;
         }
-
-        public abstract void requestConnection(NearbyConnectionPeer peer); // request for new connection
-        public abstract void rejectConnection(NearbyConnectionPeer peer); // reject incoming connection request
-
-        public abstract void connect(NearbyConnectionPeer peer); // establish a connection
-        public abstract void disconnect(NearbyConnectionPeer peer); // disconnect an active connection
     }
+    /*
+    Interface for NearbyConnection.Receiver callbacks
+     */
+    interface ReceiverCallbacks{
+
+        void onAdvertisementError(String message);
+
+        void onDataReceived(NearbyHelpPost receivedData);
+        void onDataReceiveFailed(String message);
+    }
+
+
     /*
     Interface for connection status callbacks
      */
     interface ConnectionCallbacks{
 
         void onConnectionInitiated(); // new connection initiated
-        void onConnectionEstablished(NearbyConnectionPeer receiver);
-        void onConnectionRejected(NearbyConnectionPeer receiver);
-        void onConnectionSetupError(NearbyConnectionPeer receiver);
+        void onConnectionEstablished(NearbyConnectionPeer peer);
+        void onConnectionRejected(NearbyConnectionPeer peer);
+        void onConnectionDisconnected(NearbyConnectionPeer peer);
+        void onConnectionSetupError(String message);
     }
 
 
-
     /*
-    Abstract class for authenticating nearby connections
-
-    'AuthToken' is the data that will be used for authentication
-    should be a string most of the time
-    */
-    abstract class Authenticator<AuthTokenType>{
-
-        protected AuthTokenType authToken;
-        protected AuthenticationCallbacks authenticationCallbacks;
-
-        public Authenticator(AuthTokenType authToken, AuthenticationCallbacks authenticationCallbacks) {
-            this.authToken = authToken;
-            this.authenticationCallbacks = authenticationCallbacks;
-        }
-
-        // implementation of this method will be different for sender and receiver
-        public abstract void authenticate();
-
-        public AuthTokenType getAuthToken() {
-            return authToken;
-        }
-
-        public void setAuthToken(AuthTokenType authToken) {
-            this.authToken = authToken;
-        }
-
-        public void setAuthenticationCallbacks(AuthenticationCallbacks authenticationCallbacks) {
-            this.authenticationCallbacks = authenticationCallbacks;
-        }
-    }
-    /*
-    Interface for NearbyConnection.Authenticator
+    Interface for Authenticating a connection
      */
     interface AuthenticationCallbacks{
 

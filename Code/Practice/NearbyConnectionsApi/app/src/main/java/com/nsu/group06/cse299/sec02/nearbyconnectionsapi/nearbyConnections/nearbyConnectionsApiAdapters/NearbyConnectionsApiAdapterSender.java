@@ -6,15 +6,24 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.ConnectionInfo;
+import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
+import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
 import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
 import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.gms.nearby.connection.Strategy;
+import com.google.android.gms.nearby.connection.PayloadCallback;
+import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyConnection;
 import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyConnection.Sender;
-import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyConnectionData;
 import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyConnectionPeer;
+import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyHelpPost;
+
+import java.io.IOException;
 
 /*
 Sender(discoverer) implementation of Nearby Connections Api
@@ -25,15 +34,7 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
 
     private Context mContext;
 
-    // TODO: set to app package name
-    // id that advertiser is advertising with, MUST be unique to the app
-    private static final String SERVICE_ID = "com.nsu.group06.cse299.sec02";
-
-    // only setup one-to-one connections
-    // <https://developers.google.com/nearby/connections/strategies#p2p_point_to_point>
-    private static final Strategy STRATEGY = Strategy.P2P_POINT_TO_POINT;
-
-    private EndpointDiscoveryCallback mEndpointDiscoveryCallback = new EndpointDiscoveryCallback() {
+    private final EndpointDiscoveryCallback mEndpointDiscoveryCallback = new EndpointDiscoveryCallback() {
         @Override
         public void onEndpointFound(@NonNull String endPointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
 
@@ -48,22 +49,97 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
         }
     };
 
-    public NearbyConnectionsApiAdapterSender(Context context, byte[] dataToSend, NearbyConnection.SenderCallbacks senderCallbacks,
-                                             NearbyConnectionCustomAuthenticator authenticator,
-                                             NearbyConnectionsApiAdapterConnection connection) {
+    private final ConnectionLifecycleCallback mConnectionLifecycleCallback =
+            new ConnectionLifecycleCallback() {
+                @Override
+                public void onConnectionInitiated(@NonNull String endPointId, @NonNull ConnectionInfo connectionInfo) {
 
-        super(dataToSend, senderCallbacks, authenticator, connection);
+                    connectionCallbacks.onConnectionInitiated();
+                }
 
-        this.mContext = context;
+                @Override
+                public void onConnectionResult(@NonNull String endPointId, @NonNull ConnectionResolution connectionResolution) {
+
+                    NearbyConnectionPeer peer = new NearbyConnectionPeer(endPointId);
+
+                    switch (connectionResolution.getStatus().getStatusCode()) {
+                        case ConnectionsStatusCodes.STATUS_OK:
+                            // We're connected! Can now start sending and receiving data.
+
+                            connectionCallbacks.onConnectionEstablished(peer);
+                            break;
+
+                        case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
+                            // The connection was rejected by one or both sides.
+
+                            connectionCallbacks.onConnectionRejected(peer);
+                            break;
+
+                        case ConnectionsStatusCodes.STATUS_ERROR:
+                            // The connection broke before it was able to be accepted.
+
+                            connectionCallbacks.onConnectionSetupError("failed to connect with -> " + peer.getmPeerId());
+                            break;
+
+                        default:
+                            // Unknown status code
+                    }
+
+                }
+
+                @Override
+                public void onDisconnected(@NonNull String endPointId) {
+
+                    NearbyConnectionPeer peer = new NearbyConnectionPeer(endPointId);
+                    connectionCallbacks.onConnectionDisconnected(peer);
+                }
+            };
+
+    private final PayloadCallback mPayloadCallback =
+            new PayloadCallback() {
+                @Override
+                public void onPayloadReceived(@NonNull String endPointId, @NonNull Payload payload) {
+                    // empty because the sender will not be receiving any data
+                }
+
+                @Override
+                public void onPayloadTransferUpdate(@NonNull String endPointId, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
+
+                    NearbyConnectionPeer receiver = new NearbyConnectionPeer(endPointId);
+
+                    switch (payloadTransferUpdate.getStatus()){
+
+                        case ConnectionsStatusCodes.SUCCESS:
+
+                            senderCallbacks.onDataSendSuccess(receiver);
+                            break;
+
+                        case ConnectionsStatusCodes.ERROR:
+
+                            senderCallbacks.onDataSendFailed("data send failed to peer -> " +endPointId);
+                            break;
+
+                        default:
+                    }
+                }
+            };
+
+    public NearbyConnectionsApiAdapterSender(Context mContext, NearbyConnectionPeer me,
+                                             NearbyConnection.SenderCallbacks senderCallbacks,
+                                             NearbyConnection.ConnectionCallbacks connectionCallbacks,
+                                             NearbyConnection.AuthenticationCallbacks authenticationCallbacks) {
+
+        super(me, senderCallbacks, connectionCallbacks, authenticationCallbacks);
+        this.mContext = mContext;
     }
 
     @Override
     public void discoverReceivers() {
 
-        DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(STRATEGY).build();
+        DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(NearbyConnection.STRATEGY).build();
 
         Nearby.getConnectionsClient(mContext)
-                .startDiscovery(SERVICE_ID, mEndpointDiscoveryCallback, discoveryOptions)
+                .startDiscovery(NearbyConnection.SERVICE_ID, mEndpointDiscoveryCallback, discoveryOptions)
                 .addOnSuccessListener(
 
                         (Void unused) -> Log.d(TAG, "discoverReceivers: discovery started!")
@@ -79,16 +155,60 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
     }
 
     @Override
-    public void sendDataToConnectedReceiver() {
+    public void authenticate() {
 
-        if(connection.getPeer() == null){
+        // no authentication implemented just call authentication success
+        authenticationCallbacks.onAuthenticationSuccess();
+    }
+
+    @Override
+    public void sendDataToConnectedReceiver(NearbyConnectionPeer peer, byte[] dataToSend) {
+
+        if(peer == null){
 
             senderCallbacks.onDataSendFailed("no connected peer connected");
             return;
         }
 
         Payload bytesPayload = Payload.fromBytes(dataToSend);
-        String peerId = connection.getPeer().getmPeerId();
+        String peerId = peer.getmPeerId();
         Nearby.getConnectionsClient(mContext).sendPayload(peerId, bytesPayload);
+    }
+
+    @Override
+    public void requestConnection(NearbyConnectionPeer peer) {
+
+        Nearby.getConnectionsClient(mContext).requestConnection(me.getUsername(), peer.getmPeerId(), mConnectionLifecycleCallback)
+
+                .addOnSuccessListener(aVoid -> {
+                    // We successfully requested a connection. Now both sides
+                    // must accept before the connection is established
+                    Log.d(TAG, "requestConnection: connection requested");
+                })
+
+                .addOnFailureListener(e -> {
+
+                    Log.d(TAG, "requestConnection: connection request failed -> "+e.getMessage());
+                    connectionCallbacks.onConnectionSetupError(e.getMessage());
+                });
+    }
+
+
+    @Override
+    public void connect(NearbyConnectionPeer peer) {
+
+        Nearby.getConnectionsClient(mContext).acceptConnection(peer.getmPeerId(), mPayloadCallback);
+    }
+
+    @Override
+    public void disconnect(NearbyConnectionPeer peer) {
+
+        Nearby.getConnectionsClient(mContext).disconnectFromEndpoint(peer.getmPeerId());
+    }
+
+    @Override
+    public void stopReceiversDiscovery() {
+
+        Nearby.getConnectionsClient(mContext).stopDiscovery();
     }
 }
