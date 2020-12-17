@@ -172,7 +172,7 @@ public interface NearbyConnection {
      */
     interface ConnectionCallbacks{
 
-        void onConnectionInitiated(); // new connection initiated
+        void onConnectionInitiated(NearbyConnectionPeer peer); // new connection initiated
         void onConnectionEstablished(NearbyConnectionPeer peer);
         void onConnectionRejected(NearbyConnectionPeer peer);
         void onConnectionDisconnected(NearbyConnectionPeer peer);
@@ -186,7 +186,7 @@ public interface NearbyConnection {
     interface AuthenticationCallbacks{
 
         void onAuthenticationSuccess(NearbyConnectionPeer peer);
-        void onAuthenticationFailed(String message);
+        void onAuthenticationFailed(String message, NearbyConnectionPeer peer);
     }
 
 }

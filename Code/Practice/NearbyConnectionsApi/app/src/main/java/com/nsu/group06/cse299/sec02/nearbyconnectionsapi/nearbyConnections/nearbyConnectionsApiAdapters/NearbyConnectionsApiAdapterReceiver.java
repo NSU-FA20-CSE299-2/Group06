@@ -35,7 +35,7 @@ public class NearbyConnectionsApiAdapterReceiver extends NearbyConnection.Receiv
                 @Override
                 public void onConnectionInitiated(@NonNull String endPointId, @NonNull ConnectionInfo connectionInfo) {
 
-                    connectionCallbacks.onConnectionInitiated();
+                    connectionCallbacks.onConnectionInitiated(new NearbyConnectionPeer(endPointId));
                 }
 
                 @Override
@@ -159,7 +159,7 @@ public class NearbyConnectionsApiAdapterReceiver extends NearbyConnection.Receiv
 
         if(authToken!=null) authenticationCallbacks.onAuthenticationSuccess(peer);
 
-        else authenticationCallbacks.onAuthenticationFailed("no authentication token");
+        else authenticationCallbacks.onAuthenticationFailed("no authentication token", peer);
     }
 
     @Override
