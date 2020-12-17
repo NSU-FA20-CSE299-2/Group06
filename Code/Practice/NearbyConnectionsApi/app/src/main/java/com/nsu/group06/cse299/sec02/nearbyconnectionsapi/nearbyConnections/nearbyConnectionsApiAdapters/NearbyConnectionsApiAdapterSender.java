@@ -116,7 +116,7 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
 
                         case ConnectionsStatusCodes.ERROR:
 
-                            senderCallbacks.onDataSendFailed("data send failed to peer -> " +endPointId);
+                            senderCallbacks.onDataSendFailed(receiver, "data send failed to peer -> " +endPointId);
                             break;
 
                         default:
@@ -168,7 +168,7 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
 
         if(peer == null){
 
-            senderCallbacks.onDataSendFailed("no connected peer connected");
+            senderCallbacks.onDataSendFailed(peer, "no connected peer connected");
             return;
         }
 

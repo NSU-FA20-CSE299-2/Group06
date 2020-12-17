@@ -102,7 +102,7 @@ public interface NearbyConnection {
         void onDiscoveryError(String message);
 
         void onDataSendSuccess(NearbyConnectionPeer receiver);
-        void onDataSendFailed(String message);
+        void onDataSendFailed(NearbyConnectionPeer receiver, String message);
     }
 
 
