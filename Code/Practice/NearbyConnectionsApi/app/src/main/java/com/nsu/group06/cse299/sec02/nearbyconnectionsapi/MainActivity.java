@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -19,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MA-debug";
 
+    // ui
+    private TextView receivedDataTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
+
+        receivedDataTextView = findViewById(R.id.receivedMessage_TextView);
 
         getNearbyPermissions();
     }
@@ -109,6 +116,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
+    public void proceedToSendDataClick(View view) {
+    }
 }
