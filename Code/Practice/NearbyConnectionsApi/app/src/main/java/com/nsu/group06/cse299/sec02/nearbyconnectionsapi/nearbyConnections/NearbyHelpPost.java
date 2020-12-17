@@ -10,7 +10,6 @@ import java.io.Serializable;
 /*
 Model class for data to be sent/received via nearby connections
  */
-
                             // because we need to convert the model to byte array
 public class NearbyHelpPost implements Serializable {
 
@@ -65,6 +64,16 @@ public class NearbyHelpPost implements Serializable {
 
     public void setmWebPageUrl(String mWebPageUrl) {
         this.mWebPageUrl = mWebPageUrl;
+    }
+
+    /*
+    Validate if all fields of the object
+     */
+    public boolean isValid(){
+
+        return this.getmAuthor()!=null && this.getmContent()!=null
+                && this.getmLatitude()<=180 && this.getmLatitude()>=-180
+                && this.getmLongitude()<=180 && this.getmLongitude()>=-180;
     }
 
     /*
