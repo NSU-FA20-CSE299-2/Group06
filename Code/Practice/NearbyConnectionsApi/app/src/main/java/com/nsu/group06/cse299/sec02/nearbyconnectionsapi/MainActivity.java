@@ -8,12 +8,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyConnection;
+import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyConnectionPeer;
+import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.NearbyHelpPost;
+import com.nsu.group06.cse299.sec02.nearbyconnectionsapi.nearbyConnections.nearbyConnectionsApiAdapters.NearbyConnectionsApiAdapterReceiver;
 
 import java.util.List;
 
@@ -24,12 +29,112 @@ public class MainActivity extends AppCompatActivity {
     // ui
     private TextView receivedDataTextView;
 
+    // model
+    private NearbyHelpPost mReceivedNearbyHelpPost;
+
+    /*
+     Nearby connection variables START
+     */
+    private NearbyConnection.Receiver mNearbyReceiver;
+
+    private NearbyConnection.ReceiverCallbacks mReceiverCallbacks = new NearbyConnection.ReceiverCallbacks() {
+        @Override
+        public void onAdvertisementError(String message) {
+
+            Log.d(TAG, "onAdvertisementError: error -> "+message);
+            showToast("error starting advertisement!");
+        }
+
+        @Override
+        public void onDataReceived(NearbyHelpPost receivedData) {
+
+            Log.d(TAG, "onDataReceived: data received from -> "+receivedData.getmAuthor());
+            mReceivedNearbyHelpPost = receivedData;
+            showReceivedData(receivedData.toString());
+        }
+
+        @Override
+        public void onDataReceiveFailed(String message) {
+
+            Log.d(TAG, "onDataReceiveFailed: error -> "+message);
+            showToast("failed to receive data!");
+        }
+    };
+
+    private NearbyConnection.AuthenticationCallbacks mReceiverAuthenticationCallbacks = new NearbyConnection.AuthenticationCallbacks() {
+        @Override
+        public void onAuthenticationSuccess(NearbyConnectionPeer peer) {
+
+            if(mNearbyReceiver!=null) mNearbyReceiver.connect(peer);
+            else {
+
+                Log.d(TAG, "onAuthenticationSuccess: null pointer exception");
+            }
+        }
+
+        @Override
+        public void onAuthenticationFailed(String message, NearbyConnectionPeer peer) {
+
+            if(mNearbyReceiver!=null) mNearbyReceiver.rejectConnection(peer);
+
+            Log.d(TAG, "onAuthenticationFailed: error -> "+message);
+            showToast("authentication failed!");
+        }
+    };
+
+    private NearbyConnection.ConnectionCallbacks mReceiverConnectionCallbacks = new NearbyConnection.ConnectionCallbacks() {
+        @Override
+        public void onConnectionInitiated(NearbyConnectionPeer peer) {
+
+            if(mNearbyReceiver!=null) mNearbyReceiver.authenticate("dummy-auth-token", peer);
+
+            else Log.d(TAG, "onConnectionInitiated: null pointer exception");
+        }
+
+        @Override
+        public void onConnectionEstablished(NearbyConnectionPeer peer) {
+        // sit back and wait for data
+
+            showToast("nearby user found!");
+            Log.d(TAG, "onConnectionEstablished: connection established!");
+        }
+
+        @Override
+        public void onConnectionRejected(NearbyConnectionPeer peer) {
+
+            Log.d(TAG, "onConnectionRejected: connection rejected by -> "+peer.getmPeerId());
+        }
+
+        @Override
+        public void onConnectionDisconnected(NearbyConnectionPeer peer) {
+
+            Log.d(TAG, "onConnectionDisconnected: connection disconnected -> "+peer.getmPeerId());
+        }
+
+        @Override
+        public void onConnectionSetupError(String message) {
+
+            Log.d(TAG, "onConnectionSetupError: error -> "+message);
+            showToast("error setting up connection");
+        }
+    };
+    /*
+     Nearby connection variables END
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         init();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(mNearbyReceiver!=null) mNearbyReceiver.stopAdvertising();
     }
 
     private void init() {
@@ -82,6 +187,11 @@ public class MainActivity extends AppCompatActivity {
     start advertising device for nearby connections
      */
     private void startNearbyConnections() {
+
+        mNearbyReceiver = new NearbyConnectionsApiAdapterReceiver(this, new NearbyConnectionPeer("demichi", ""),
+                mReceiverCallbacks, mReceiverAuthenticationCallbacks, mReceiverConnectionCallbacks);
+
+        mNearbyReceiver.advertiseToSenders();
     }
 
     /*
@@ -113,6 +223,20 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         alertDialog.show();
+    }
+
+    private void showToast(String message){
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showReceivedData(String data){
+
+        if(receivedDataTextView!=null){
+
+            receivedDataTextView.setVisibility(View.VISIBLE);
+            receivedDataTextView.setText(mReceivedNearbyHelpPost.toString());
+        }
     }
 
 
