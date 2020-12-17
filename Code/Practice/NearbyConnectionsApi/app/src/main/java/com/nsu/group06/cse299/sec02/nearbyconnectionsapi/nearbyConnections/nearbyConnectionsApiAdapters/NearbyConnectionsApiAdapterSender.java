@@ -155,10 +155,12 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
     }
 
     @Override
-    public void authenticate() {
+    public void authenticate(String authToken, NearbyConnectionPeer peer) {
+        // do no authentication
 
-        // no authentication implemented just call authentication success
-        authenticationCallbacks.onAuthenticationSuccess();
+        if(authToken!=null) authenticationCallbacks.onAuthenticationSuccess(peer);
+
+        else authenticationCallbacks.onAuthenticationFailed("no authentication token");
     }
 
     @Override

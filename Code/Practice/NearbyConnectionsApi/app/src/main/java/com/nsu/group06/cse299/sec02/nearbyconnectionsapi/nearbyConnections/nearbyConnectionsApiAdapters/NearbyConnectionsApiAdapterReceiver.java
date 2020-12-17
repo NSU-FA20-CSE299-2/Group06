@@ -84,7 +84,7 @@ public class NearbyConnectionsApiAdapterReceiver extends NearbyConnection.Receiv
                     try {
 
                         receiverCallbacks.onDataReceived(NearbyHelpPost.toNearbyHelpPost(payload.asBytes()));
-                        Log.d(TAG, "onPayloadReceived: receved payload!");
+                        Log.d(TAG, "onPayloadReceived: received payload!");
 
                     } catch (IOException | ClassNotFoundException e) {
 
@@ -154,10 +154,12 @@ public class NearbyConnectionsApiAdapterReceiver extends NearbyConnection.Receiv
     }
 
     @Override
-    public void authenticate() {
-    // no authentication just call authentication success
+    public void authenticate(String authToken, NearbyConnectionPeer peer) {
+        // do no authentication
 
-        authenticationCallbacks.onAuthenticationSuccess();
+        if(authToken!=null) authenticationCallbacks.onAuthenticationSuccess(peer);
+
+        else authenticationCallbacks.onAuthenticationFailed("no authentication token");
     }
 
     @Override

@@ -52,7 +52,7 @@ public interface NearbyConnection {
 
         public abstract void discoverReceivers();
         public abstract void stopReceiversDiscovery();
-        public abstract void authenticate();
+        public abstract void authenticate(String authToken, NearbyConnectionPeer peer);
         public abstract void sendDataToConnectedReceiver(NearbyConnectionPeer peer, byte[] data);
         public abstract void requestConnection(NearbyConnectionPeer peer); // request for new connection
         public abstract void connect(NearbyConnectionPeer peer); // establish a connection
@@ -130,7 +130,7 @@ public interface NearbyConnection {
 
         public abstract void advertiseToSenders();
         public abstract void stopAdvertising();
-        public abstract void authenticate();
+        public abstract void authenticate(String authToken, NearbyConnectionPeer peer);
         public abstract void connect(NearbyConnectionPeer peer); // establish a connection
         public abstract void rejectConnection(NearbyConnectionPeer peer); // reject incoming connection request
         public abstract void disconnect(NearbyConnectionPeer peer); // disconnect an active connection
@@ -185,7 +185,7 @@ public interface NearbyConnection {
      */
     interface AuthenticationCallbacks{
 
-        void onAuthenticationSuccess();
+        void onAuthenticationSuccess(NearbyConnectionPeer peer);
         void onAuthenticationFailed(String message);
     }
 
