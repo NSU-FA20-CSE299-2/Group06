@@ -1,4 +1,4 @@
-package com.nsu.group06.cse299.sec02.helpmeapp;
+package com.nsu.group06.cse299.sec02.helpmeapp.utils;
 
 import java.util.regex.Pattern;
 

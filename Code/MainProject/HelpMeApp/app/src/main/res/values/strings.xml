@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">HelpMeApp</string>
+    <string name="app_name">Help Me App</string>
+
+    <!--Signup Activity -->
+    <string name="invalid_email">invalid email!</string>
+    <string name="invalid_password">invalid password!</string>
+    <string name="registration_error">An unexpected error occurred! please check your internet</string>
+    <string name="signup_button_label">Sign up</string>
+    <string name="signup_button_label_signing_up">signing up…</string>
+
 </resources>

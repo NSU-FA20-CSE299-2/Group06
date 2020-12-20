@@ -22,6 +22,8 @@ public class FirebaseEmailPasswordAuthentication extends Authentication{
 
     public FirebaseEmailPasswordAuthentication(AuthenticationCallbacks mAuthenticationCallbacks) {
         super(mAuthenticationCallbacks);
+
+        mUser = new EmailPasswordAuthUser();
         this.mFirebaseAuth = FirebaseAuth.getInstance();
     }
 

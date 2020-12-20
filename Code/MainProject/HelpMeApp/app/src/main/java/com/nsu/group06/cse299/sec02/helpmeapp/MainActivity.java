@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
                 // user is logged in start the menu activity
                 startActivity(new Intent(MainActivity.this, MenuActivity.class));
+
+                // disable going back to MainActivity
+                finish();
             }
 
             @Override
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
                 // user needs to login or signup
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+                // disable going back to MainActivity
+                finish();
             }
         });
 
