@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Help Me App</string>
+
+    <!--Signup Activity -->
+    <string name="invalid_email">invalid email!</string>
+    <string name="invalid_password">invalid password!</string>
+    <string name="registration_error">An unexpected error occurred! please check your internet</string>
+    <string name="signup_button_label">Sign up</string>
+    <string name="signup_button_label_signing_up">signing up…</string>
+
+    <!--Login Activity -->
+    <string name="login_auth_failed">no such user exists!</string>
+    <string name="login_button_label">Login</string>
+    <string name="login_button_label_logging_in">logging in…</string>
+
+</resources>
