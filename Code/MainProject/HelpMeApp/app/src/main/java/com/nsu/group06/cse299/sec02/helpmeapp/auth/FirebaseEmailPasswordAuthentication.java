@@ -100,7 +100,7 @@ public class FirebaseEmailPasswordAuthentication extends Authentication{
         }
 
         // user not logged in need to authenticate credentials
-        if(mUser==null){
+        if(mFirebaseAuth.getCurrentUser()==null || mUser==null || mUser.getmEmail().isEmpty() || mUser.getmPassword().isEmpty()){
             mAuthenticationCallbacks.onAuthenticationFailure("auth user is null");
             return;
         }
