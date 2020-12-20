@@ -17,14 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SignupActivity"
             android:label="Signup" />
-
         <activity
             android:name=".LoginActivity"
-            android:label="Login"/>
+            android:label="Login" />
+
+        <activity
+            android:name=".MenuActivity"
+            android:label="Menu" />
 
     </application>
 
