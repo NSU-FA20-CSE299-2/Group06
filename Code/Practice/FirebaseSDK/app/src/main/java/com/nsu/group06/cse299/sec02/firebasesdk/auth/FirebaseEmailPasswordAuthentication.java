@@ -20,10 +20,20 @@ public class FirebaseEmailPasswordAuthentication extends Authentication{
     private FirebaseAuth mFirebaseAuth;
     private EmailPasswordAuthUser mUser;
 
-    // needed for running
-    private Context context;
+    public FirebaseEmailPasswordAuthentication() {
 
-    public FirebaseEmailPasswordAuthentication(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks, EmailPasswordAuthUser mUser) {
+        this.mFirebaseAuth = FirebaseAuth.getInstance();
+    }
+
+    public FirebaseEmailPasswordAuthentication(AuthenticationCallbacks mAuthenticationCallbacks) {
+        super(mAuthenticationCallbacks);
+
+        mUser = new EmailPasswordAuthUser();
+        this.mFirebaseAuth = FirebaseAuth.getInstance();
+    }
+
+    public FirebaseEmailPasswordAuthentication(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks,
+                                               EmailPasswordAuthUser mUser) {
         super(mRegisterUserAuthenticationCallbacks);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -90,29 +100,26 @@ public class FirebaseEmailPasswordAuthentication extends Authentication{
         }
 
         // user not logged in need to authenticate credentials
-        if(mUser==null){
+        if(mUser==null || mUser.getmEmail()==null || mUser.getmPassword()==null){
             mAuthenticationCallbacks.onAuthenticationFailure("auth user is null");
             return;
         }
 
         mFirebaseAuth.signInWithEmailAndPassword(mUser.getmEmail(), mUser.getmPassword())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(task -> {
 
-                        if(task.isSuccessful()){
+                    if(task.isSuccessful()){
 
-                            mUser.setmUid(mFirebaseAuth.getUid());
-                            mAuthenticationCallbacks.onAuthenticationSuccess(mUser);
+                        mUser.setmUid(mFirebaseAuth.getUid());
+                        mAuthenticationCallbacks.onAuthenticationSuccess(mUser);
 
-                            Log.d(TAG, "onComplete: firebase auth user login success");
-                        }
+                        Log.d(TAG, "onComplete: firebase auth user login success");
+                    }
 
-                        else{
+                    else{
 
-                            mAuthenticationCallbacks.onAuthenticationFailure("firebase auth user login failed");
-                            Log.d(TAG, "onComplete: firebase auth user login failed");
-                        }
+                        mAuthenticationCallbacks.onAuthenticationFailure("firebase auth user login failed");
+                        Log.d(TAG, "onComplete: firebase auth user login failed");
                     }
                 });
     }

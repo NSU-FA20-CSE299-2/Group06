@@ -8,6 +8,9 @@ public abstract class Authentication {
     protected RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks;
     protected AuthenticationCallbacks mAuthenticationCallbacks;
 
+    public Authentication() {
+    }
+
     public Authentication(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks) {
         this.mRegisterUserAuthenticationCallbacks = mRegisterUserAuthenticationCallbacks;
     }
