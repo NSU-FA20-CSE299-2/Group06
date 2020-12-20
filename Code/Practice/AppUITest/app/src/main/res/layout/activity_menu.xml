@@ -1,6 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ic_vector_header"
+        android:elevation="-.1dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/menuButtons">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_applogo"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/segoeui"
+            android:layout_marginStart="10dp"
+            android:textSize="25sp"
+            android:textColor="#FFF"
+            android:text="@string/menu"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:elevation="1.5dp"
+        android:background="@drawable/menu_button">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+            <Button
+                android:id="@+id/btn_emgContacts"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="9dp"
+                android:background="@drawable/menu_button"
+                android:drawableTop="@drawable/ic_phonebook_menu"
+                android:fontFamily="@font/segoeui"
+                android:text="@string/emergency_contacts"
+                android:textColor="#FF2B2B"
+                android:padding="5dp"/>
+            <Button
+                android:id="@+id/btn_postForHelp"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_margin="9dp"
+                android:background="@drawable/menu_button"
+                android:drawableTop="@drawable/ic_help_menu"
+                android:fontFamily="@font/segoeui"
+                android:text="@string/post_for_help"
+                android:textColor="#FF2B2B"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_helpFeed"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="9dp"
+                android:background="@drawable/menu_button"
+                android:drawableTop="@drawable/ic_social_media_menu"
+                android:fontFamily="@font/segoeui"
+                android:padding="5dp"
+                android:text="@string/help_feed"
+                android:textColor="#FF2B2B" />
+
+            <Button
+                android:id="@+id/btn_profile"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_margin="9dp"
+                android:background="@drawable/menu_button"
+                android:drawableTop="@drawable/ic_user_profile_menu"
+                android:fontFamily="@font/segoeui"
+                android:padding="5dp"
+                android:text="@string/profile"
+                android:textColor="#FF2B2B" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginBottom="15dp">
+
+            <Button
+                android:id="@+id/btn_monitorUser"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="9dp"
+                android:background="@drawable/menu_button"
+                android:drawableTop="@drawable/ic_report_menu"
+                android:fontFamily="@font/segoeui"
+                android:padding="5dp"
+                android:text="@string/monitor_user"
+                android:textColor="#FF2B2B" />
+
+            <Button
+                android:id="@+id/btn_settings"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_margin="9dp"
+                android:background="@drawable/menu_button"
+                android:drawableTop="@drawable/ic_settings_menu"
+                android:fontFamily="@font/segoeui"
+                android:padding="5dp"
+                android:text="@string/settings"
+                android:textColor="#FF2B2B" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
