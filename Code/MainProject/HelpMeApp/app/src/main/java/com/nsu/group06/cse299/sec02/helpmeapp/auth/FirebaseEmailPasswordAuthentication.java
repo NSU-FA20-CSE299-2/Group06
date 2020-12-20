@@ -20,10 +20,13 @@ public class FirebaseEmailPasswordAuthentication extends Authentication{
     private FirebaseAuth mFirebaseAuth;
     private EmailPasswordAuthUser mUser;
 
-    // needed for running
-    private Context context;
+    public FirebaseEmailPasswordAuthentication(AuthenticationCallbacks mAuthenticationCallbacks) {
+        super(mAuthenticationCallbacks);
+        this.mFirebaseAuth = FirebaseAuth.getInstance();
+    }
 
-    public FirebaseEmailPasswordAuthentication(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks, EmailPasswordAuthUser mUser) {
+    public FirebaseEmailPasswordAuthentication(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks,
+                                               EmailPasswordAuthUser mUser) {
         super(mRegisterUserAuthenticationCallbacks);
 
         mFirebaseAuth = FirebaseAuth.getInstance();

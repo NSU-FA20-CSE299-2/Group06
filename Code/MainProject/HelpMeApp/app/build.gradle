@@ -47,3 +47,6 @@ dependencies {
     // Declare the dependency for the Firebase Authentication library
     implementation 'com.google.firebase:firebase-auth'
 }
+
+// ADD THIS AT THE BOTTOM for firebase
+apply plugin: 'com.google.gms.google-services'
