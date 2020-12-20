@@ -15,6 +15,9 @@ import com.nsu.group06.cse299.sec02.helpmeapp.auth.EmailPasswordAuthUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserInputValidator;
 
+/**
+ * Activity for new users to sign up
+ */
 public class SignupActivity extends AppCompatActivity {
 
     // ui
