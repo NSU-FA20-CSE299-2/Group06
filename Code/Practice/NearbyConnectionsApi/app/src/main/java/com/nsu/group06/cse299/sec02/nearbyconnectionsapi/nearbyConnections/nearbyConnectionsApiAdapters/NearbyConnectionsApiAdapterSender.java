@@ -54,7 +54,8 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
                 @Override
                 public void onConnectionInitiated(@NonNull String endPointId, @NonNull ConnectionInfo connectionInfo) {
 
-                    connectionCallbacks.onConnectionInitiated(new NearbyConnectionPeer(endPointId));
+                    NearbyConnectionPeer peer = new NearbyConnectionPeer(endPointId);
+                    connectionCallbacks.onConnectionInitiated(peer);
                 }
 
                 @Override
@@ -107,20 +108,7 @@ public class NearbyConnectionsApiAdapterSender extends Sender {
 
                     NearbyConnectionPeer receiver = new NearbyConnectionPeer(endPointId);
 
-                    switch (payloadTransferUpdate.getStatus()){
-
-                        case ConnectionsStatusCodes.SUCCESS:
-
-                            senderCallbacks.onDataSendSuccess(receiver);
-                            break;
-
-                        case ConnectionsStatusCodes.ERROR:
-
-                            senderCallbacks.onDataSendFailed(receiver, "data send failed to peer -> " +endPointId);
-                            break;
-
-                        default:
-                    }
+                    senderCallbacks.onDataSendSuccess(receiver);
                 }
             };
 

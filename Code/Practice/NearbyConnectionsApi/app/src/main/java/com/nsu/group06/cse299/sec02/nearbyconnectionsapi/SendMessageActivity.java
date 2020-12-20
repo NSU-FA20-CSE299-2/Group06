@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class SendMessageActivity extends AppCompatActivity {
 
     // ui
     private EditText mMessageEditText;
+    private Button mSendButton;
 
     // model
     private NearbyHelpPost mHelpPost;
@@ -38,7 +40,11 @@ public class SendMessageActivity extends AppCompatActivity {
 
             if(mNearbySender!=null) {
                 
-                if (!mNearbySender.isAlreadySentReceiver(receiver)) mNearbySender.requestConnection(receiver);
+                if (!mNearbySender.isAlreadySentReceiver(receiver)){
+
+                    mNearbySender.requestConnection(receiver);
+                    Log.d(TAG, "onReceiverDiscovered: sending to new user -> "+receiver.getmPeerId());
+                }
             }
             
             else Log.d(TAG, "onReceiverDiscovered: null pointer exception");
@@ -58,6 +64,10 @@ public class SendMessageActivity extends AppCompatActivity {
             if(mNearbySender!=null) {
              
                 mNearbySender.addToAlreadySentReceivers(receiver);
+
+                Log.d(TAG, "onDataSendSuccess: sent to user -> "+receiver.getmPeerId());
+
+                // MUST disconnect from both ends
                 mNearbySender.disconnect(receiver);
             }
             
@@ -158,6 +168,7 @@ public class SendMessageActivity extends AppCompatActivity {
     private void init() {
 
         mMessageEditText = findViewById(R.id.message_EditText);
+        mSendButton = findViewById(R.id.send_Button);
 
         mMe = new NearbyConnectionPeer();
         mMe.setUsername("shelock221b");
@@ -176,15 +187,23 @@ public class SendMessageActivity extends AppCompatActivity {
         mHelpPost = new NearbyHelpPost(mMe.getUsername(), message, 23.798856, 90.358793);
         mHelpPost.setmWebPageUrl("www.helpme.bd.org/posts/2394");
 
-        if(mHelpPost.isValid()) startReceiversDiscovery();
+        if(mHelpPost.isValid()){
+            startReceiversDiscovery();
 
-        else showToast("empty filed!");
+            mMessageEditText.setEnabled(false);
+
+            mSendButton.setEnabled(false);
+            mSendButton.setText("sending message...");
+        }
+
+        else showToast("empty field!");
     }
 
     /*
     Start searching for nearby users to send mNearbyHelpPost
      */
     private void startReceiversDiscovery() {
+
 
         mNearbySender.discoverReceivers();
     }

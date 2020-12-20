@@ -81,14 +81,16 @@ public class NearbyConnectionsApiAdapterReceiver extends NearbyConnection.Receiv
                 @Override
                 public void onPayloadReceived(@NonNull String endPointId, @NonNull Payload payload) {
 
+                    NearbyConnectionPeer peer = new NearbyConnectionPeer(endPointId);
+
                     try {
 
-                        receiverCallbacks.onDataReceived(NearbyHelpPost.toNearbyHelpPost(payload.asBytes()));
+                        receiverCallbacks.onDataReceived(peer, NearbyHelpPost.toNearbyHelpPost(payload.asBytes()));
                         Log.d(TAG, "onPayloadReceived: received payload!");
 
                     } catch (IOException | ClassNotFoundException e) {
 
-                        receiverCallbacks.onDataReceiveFailed(e.getMessage());
+                        receiverCallbacks.onDataReceiveFailed(peer, e.getMessage());
                         Log.d(TAG, "onPayloadReceived: failed to receive payload -> "+e.getMessage());
 
                     }
@@ -101,7 +103,7 @@ public class NearbyConnectionsApiAdapterReceiver extends NearbyConnection.Receiv
 
                     if (payloadTransferUpdate.getStatus() == ConnectionsStatusCodes.ERROR){
 
-                        receiverCallbacks.onDataReceiveFailed("connection error! " +
+                        receiverCallbacks.onDataReceiveFailed(receiver, "connection error! " +
                                 "data receive failed from peer -> " +receiver.getmPeerId());
                     }
 

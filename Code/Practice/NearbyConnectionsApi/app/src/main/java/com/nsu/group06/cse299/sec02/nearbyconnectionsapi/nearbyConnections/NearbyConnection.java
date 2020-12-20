@@ -162,8 +162,8 @@ public interface NearbyConnection {
 
         void onAdvertisementError(String message);
 
-        void onDataReceived(NearbyHelpPost receivedData);
-        void onDataReceiveFailed(String message);
+        void onDataReceived(NearbyConnectionPeer peer, NearbyHelpPost receivedData);
+        void onDataReceiveFailed(NearbyConnectionPeer peer, String message);
     }
 
 

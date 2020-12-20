@@ -76,10 +76,21 @@ public class NearbyHelpPost implements Serializable {
                 && this.getmLongitude()<=180 && this.getmLongitude()>=-180;
     }
 
+    @Override
+    public String toString() {
+        return "NearbyHelpPost{" +
+                "mAuthor='" + mAuthor + '\'' +
+                ", mContent='" + mContent + '\'' +
+                ", mLatitude=" + mLatitude +
+                ", mLongitude=" + mLongitude +
+                ", mWebPageUrl='" + mWebPageUrl + '\'' +
+                '}';
+    }
+
     /*
-    convert an object of NearbyHelpPost to byte array
-    courtesy- <https://www.tutorialspoint.com/How-to-convert-an-object-to-byte-array-in-java>
-     */
+        convert an object of NearbyHelpPost to byte array
+        courtesy- <https://www.tutorialspoint.com/How-to-convert-an-object-to-byte-array-in-java>
+         */
     public static byte[] toByteArray(NearbyHelpPost nearbyHelpPost) throws IOException {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

@@ -47,15 +47,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDataReceived(NearbyHelpPost receivedData) {
+        public void onDataReceived(NearbyConnectionPeer peer, NearbyHelpPost receivedData) {
 
             Log.d(TAG, "onDataReceived: data received from -> "+receivedData.getmAuthor());
             mReceivedNearbyHelpPost = receivedData;
             showReceivedData(receivedData.toString());
+
+            // MUST disconnect from both ends
+            mNearbyReceiver.disconnect(peer);
         }
 
         @Override
-        public void onDataReceiveFailed(String message) {
+        public void onDataReceiveFailed(NearbyConnectionPeer peer, String message) {
 
             Log.d(TAG, "onDataReceiveFailed: error -> "+message);
             showToast("failed to receive data!");
