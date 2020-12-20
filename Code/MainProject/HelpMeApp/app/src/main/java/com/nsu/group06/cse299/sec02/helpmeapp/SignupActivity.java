@@ -130,6 +130,9 @@ public class SignupActivity extends AppCompatActivity {
     public void alreadyHaveAccountClick(View view) {
 
         startActivity(new Intent(this, LoginActivity.class));
+
+        // to prevent possible infinite back stack formation
+        finish();
     }
 
     private void showToast(String message){

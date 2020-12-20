@@ -27,5 +27,4 @@ public class UserInputValidator {
 
         return password.length()>=6;
     }
-
 }

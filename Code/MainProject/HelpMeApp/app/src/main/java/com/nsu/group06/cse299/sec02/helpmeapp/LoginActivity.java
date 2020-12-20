@@ -121,6 +121,9 @@ public class LoginActivity extends AppCompatActivity {
     public void dontHaveAccountClick(View view) {
 
         startActivity(new Intent(this, SignupActivity.class));
+
+        // to prevent possible infinite back stack formation
+        finish();
     }
 
     private void showToast(String message){
