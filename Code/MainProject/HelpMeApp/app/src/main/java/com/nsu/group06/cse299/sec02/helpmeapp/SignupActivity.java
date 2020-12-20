@@ -31,6 +31,8 @@ public class SignupActivity extends AppCompatActivity {
         @Override
         public void onRegistrationSuccess(AuthenticationUser user) {
 
+            // TODO: store newly registered user email, uid into database
+
             progressCompleteUI();
 
             startActivity(new Intent(SignupActivity.this, MenuActivity.class));
