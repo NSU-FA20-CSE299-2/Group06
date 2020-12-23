@@ -23,13 +23,29 @@ public class FirebaseEmailPasswordAuthentication extends Authentication{
     public FirebaseEmailPasswordAuthentication() {
 
         this.mFirebaseAuth = FirebaseAuth.getInstance();
+        setupMUser();
     }
 
     public FirebaseEmailPasswordAuthentication(AuthenticationCallbacks mAuthenticationCallbacks) {
         super(mAuthenticationCallbacks);
 
-        mUser = new EmailPasswordAuthUser();
         this.mFirebaseAuth = FirebaseAuth.getInstance();
+        setupMUser();
+    }
+
+    private void setupMUser() {
+
+        this.mUser = new EmailPasswordAuthUser();
+        mUser.setmUid(mFirebaseAuth.getUid());
+
+        try {
+            mUser.setmEmail(mFirebaseAuth.getCurrentUser().getEmail());
+        }catch (NullPointerException e){
+
+            Log.d(TAG, "setupMUser: user was not logged in!");
+            
+            mUser.setmEmail(null);
+        }
     }
 
     public FirebaseEmailPasswordAuthentication(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks,
