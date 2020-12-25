@@ -71,7 +71,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress|textNoSuggestions"
+                android:inputType="textPassword"
                 android:background="@drawable/custom_edittext"
                 android:hint="@string/password"
                 android:fontFamily="@font/segoeui"
@@ -120,6 +120,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/userinputs">
 
@@ -152,6 +153,5 @@
             android:textSize="15sp"
             android:textAllCaps="false"
             android:drawableStart="@drawable/ic_facebook_logo"/>
-
     </LinearLayout>
 </RelativeLayout>

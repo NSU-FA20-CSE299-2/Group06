@@ -71,7 +71,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress|textNoSuggestions"
+                android:inputType="textPassword"
                 android:background="@drawable/custom_edittext"
                 android:hint="@string/password"
                 android:fontFamily="@font/segoeui"
