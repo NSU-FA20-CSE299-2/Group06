@@ -29,7 +29,7 @@ public interface Database {
         /*
         callback for a single database operation event (read once)
          */
-        public interface SingleOperationDatabaseCallback<T> extends FailureStatus{
+        public interface SingleOperationDatabaseCallback<T> extends StatusUpdate{
 
             void onDataRead(T data);
         }
@@ -46,7 +46,7 @@ public interface Database {
     /*
     Realtime operations
      */
-    abstract class RealtimeDatabase<T>{
+    abstract class RealtimeDatabase{
 
         protected RealtimeChangesDatabaseCallback realtimeChangesDatabaseCallback;
 
@@ -65,7 +65,7 @@ public interface Database {
         /*
         callbacks for realtime changes in database
          */
-        public interface RealtimeChangesDatabaseCallback<T> extends FailureStatus{
+        public interface RealtimeChangesDatabaseCallback<T> extends StatusUpdate{
 
             void onDataAddition(T data);
             void onDataUpdate(T data);
@@ -83,10 +83,11 @@ public interface Database {
 
 
     /*
-    callback for database operation fail
+    callback for database operation status
      */
-    interface FailureStatus{
+    interface StatusUpdate{
 
+        void onDatabaseOperationSuccess();
         void onDatabaseOperationFailed(String message);
     }
 
