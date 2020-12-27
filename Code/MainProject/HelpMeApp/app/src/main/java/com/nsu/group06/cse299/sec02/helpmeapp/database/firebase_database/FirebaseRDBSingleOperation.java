@@ -28,7 +28,7 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
         this.mTypeParameterClass = mTypeParameterClass;
     }
 
-    public FirebaseRDBSingleOperation(Class<T> mTypeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
+        public FirebaseRDBSingleOperation(Class<T> mTypeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
                                       Database.SingleOperationDatabase.SingleOperationDatabaseCallback singleOperationDatabaseCallback) {
 
         super(singleOperationDatabaseCallback);

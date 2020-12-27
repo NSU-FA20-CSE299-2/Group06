@@ -31,9 +31,9 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onAuthenticationSuccess(AuthenticationUser user) {
 
-            progressCompleteUI();
-
             startActivity(new Intent(LoginActivity.this, MenuActivity.class));
+
+            //progressCompleteUI();
 
             // prevent user to come back to this activity
             // by pressing back button

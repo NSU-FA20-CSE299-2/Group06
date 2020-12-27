@@ -15,7 +15,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
     Firebase Realtime-database SDK integration class
  */
 @SuppressWarnings("unchecked")
-public class FirebaseRDBRealtime<T> extends Database.RealtimeDatabase<T> {
+public class FirebaseRDBRealtime<T> extends Database.RealtimeDatabase {
 
     private static final String TAG = "FRDBR-debug";
 
