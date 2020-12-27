@@ -20,10 +20,11 @@ public interface Database {
             this.singleOperationDatabaseCallback = singleOperationDatabaseCallback;
         }
 
-        abstract public void create(T data);
-        abstract public void read(); // read single data
-        abstract public void update(T data);
-        abstract public void delete(T data);
+        public abstract void createWithId(String id, T data);
+        public abstract void create(T data);
+        public abstract void read(); // read single data
+        public abstract void update(T data);
+        public abstract void delete(T data);
 
         /*
         callback for a single database operation event (read once)

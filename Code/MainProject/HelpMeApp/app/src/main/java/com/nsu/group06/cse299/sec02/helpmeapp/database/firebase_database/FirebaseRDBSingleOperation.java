@@ -36,6 +36,16 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
         this.mApiEndPoint = apiEndPoint;
     }
 
+    @Override
+    public void createWithId(String id, T data) {
+
+        Log.d(TAG, "create: create new data with provided id = "+data.toString()+"-"+id);
+
+        mApiEndPoint.toApiEndPoint().getRef().child(id).setValue(data)
+                .addOnFailureListener(e ->
+                        singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to create data = "+data.toString()));
+
+    }
 
     @Override
     public void create(T data) {
