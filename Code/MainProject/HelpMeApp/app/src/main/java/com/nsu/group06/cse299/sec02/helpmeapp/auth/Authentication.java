@@ -8,13 +8,24 @@ public abstract class Authentication {
     protected RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks;
     protected AuthenticationCallbacks mAuthenticationCallbacks;
 
+    /*
+    Constructor for when user is expected to have been already logged in
+    this constructor is needed only to call "signOut()" method
+     */
     public Authentication() {
     }
 
+    /*
+    Constructor for when user is expected to be trying to sign up with a new account
+     */
     public Authentication(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks) {
         this.mRegisterUserAuthenticationCallbacks = mRegisterUserAuthenticationCallbacks;
     }
 
+    /*
+    Constructor for when user is expected to be trying to log in
+    or to authenticate if user is logged in
+     */
     public Authentication(AuthenticationCallbacks mAuthenticationCallbacks) {
         this.mAuthenticationCallbacks = mAuthenticationCallbacks;
     }

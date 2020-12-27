@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.ApiEndPoint;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 
 /*
     Convert api endpoint path to firebase realtime database reference node
@@ -64,6 +65,20 @@ public class FirebaseRDBApiEndPoint extends ApiEndPoint<Query> {
         }
         /*
         TEMPLATE FOR API ENDPOINT USAGE END
+         */
+
+        /*
+          endpoint for 'users' node START
+         */
+
+        // reference to the whole "users" node
+        else if( mUrl.equals("/"+NosqlDatabasePathUtils.USER_NODE) ){
+
+            query = firebaseDatabase.getReference().child(NosqlDatabasePathUtils.USER_NODE);
+        }
+
+        /*
+          endpoint for 'users' node END
          */
 
         else{

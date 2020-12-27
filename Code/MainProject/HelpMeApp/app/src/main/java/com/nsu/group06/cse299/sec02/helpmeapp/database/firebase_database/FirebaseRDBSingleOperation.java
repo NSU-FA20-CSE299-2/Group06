@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -27,7 +28,7 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
         this.mTypeParameterClass = mTypeParameterClass;
     }
 
-    public FirebaseRDBSingleOperation(Class<T> mTypeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
+        public FirebaseRDBSingleOperation(Class<T> mTypeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
                                       Database.SingleOperationDatabase.SingleOperationDatabaseCallback singleOperationDatabaseCallback) {
 
         super(singleOperationDatabaseCallback);
@@ -36,6 +37,19 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
         this.mApiEndPoint = apiEndPoint;
     }
 
+    @Override
+    public void createWithId(String id, T data) {
+
+        Log.d(TAG, "create: create new data with provided id = "+data.toString()+"-"+id);
+
+        mApiEndPoint.toApiEndPoint().getRef().child(id).setValue(data)
+
+                .addOnSuccessListener(aVoid -> singleOperationDatabaseCallback.onDatabaseOperationSuccess())
+
+                .addOnFailureListener(e ->
+                        singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to create data = "+data.toString()));
+
+    }
 
     @Override
     public void create(T data) {
@@ -46,6 +60,9 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
         Log.d(TAG, "create: create new data = "+data.toString()+"-"+id);
 
         mApiEndPoint.toApiEndPoint().getRef().child(id).setValue(data)
+
+                .addOnSuccessListener(aVoid -> singleOperationDatabaseCallback.onDatabaseOperationSuccess())
+
                 .addOnFailureListener(e ->
                         singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to create data = "+data.toString()));
 
@@ -98,6 +115,9 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
     public void update(T data) {
 
         mApiEndPoint.toApiEndPoint().getRef().setValue(data)
+
+                .addOnSuccessListener(aVoid -> singleOperationDatabaseCallback.onDatabaseOperationSuccess())
+
                 .addOnFailureListener(e ->
                         singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to update entry = " + data.toString()));
     }
@@ -106,6 +126,9 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
     public void delete(T data) {
 
         mApiEndPoint.toApiEndPoint().getRef().setValue(null)
+
+                .addOnSuccessListener(aVoid -> singleOperationDatabaseCallback.onDatabaseOperationSuccess())
+
                 .addOnFailureListener(e ->
                         singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to delete entry = " + data.toString()));
     }

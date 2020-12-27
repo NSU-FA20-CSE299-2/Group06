@@ -20,15 +20,16 @@ public interface Database {
             this.singleOperationDatabaseCallback = singleOperationDatabaseCallback;
         }
 
-        abstract public void create(T data);
-        abstract public void read(); // read single data
-        abstract public void update(T data);
-        abstract public void delete(T data);
+        public abstract void createWithId(String id, T data);
+        public abstract void create(T data);
+        public abstract void read(); // read single data
+        public abstract void update(T data);
+        public abstract void delete(T data);
 
         /*
         callback for a single database operation event (read once)
          */
-        public interface SingleOperationDatabaseCallback<T> extends FailureStatus{
+        public interface SingleOperationDatabaseCallback<T> extends StatusUpdate{
 
             void onDataRead(T data);
         }
@@ -45,7 +46,7 @@ public interface Database {
     /*
     Realtime operations
      */
-    abstract class RealtimeDatabase<T>{
+    abstract class RealtimeDatabase{
 
         protected RealtimeChangesDatabaseCallback realtimeChangesDatabaseCallback;
 
@@ -64,7 +65,7 @@ public interface Database {
         /*
         callbacks for realtime changes in database
          */
-        public interface RealtimeChangesDatabaseCallback<T> extends FailureStatus{
+        public interface RealtimeChangesDatabaseCallback<T> extends StatusUpdate{
 
             void onDataAddition(T data);
             void onDataUpdate(T data);
@@ -82,10 +83,11 @@ public interface Database {
 
 
     /*
-    callback for database operation fail
+    callback for database operation status
      */
-    interface FailureStatus{
+    interface StatusUpdate{
 
+        void onDatabaseOperationSuccess();
         void onDatabaseOperationFailed(String message);
     }
 
