@@ -11,14 +11,14 @@
         android:elevation="-.1dp"/>
 
     <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:orientation="horizontal"
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/menuButtons">
+        android:layout_alignParentTop="true">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,9 @@
         android:layout_centerInParent="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
         android:elevation="1.5dp"
+        android:layout_below="@id/header"
         android:background="@drawable/menu_button">
         <LinearLayout
             android:layout_width="match_parent"

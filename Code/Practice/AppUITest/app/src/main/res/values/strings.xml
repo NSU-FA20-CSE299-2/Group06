@@ -11,7 +11,6 @@
     <string name="username_or_email">Username or Email</string>
     <string name="password">Password</string>
     <string name="don_t_have_an_account_sign_up_here">Don’t have an account? Sign up here.</string>
-    <string name="login">Login</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_with_google">Login with Google</string>
     <string name="sign_up_with_facebook">Sign Up with Facebook</string>
