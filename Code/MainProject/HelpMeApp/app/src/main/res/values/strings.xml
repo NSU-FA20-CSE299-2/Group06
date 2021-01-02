@@ -33,5 +33,15 @@
     <string name="already_have_an_account_log_in_here">Already have an account? Log in here.</string>
     <string name="create_an_account">Create an Account</string>
     <string name="add_icon_Alt">add</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone number</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="invalid_phone_number">invalid phone number</string>
+    <string name="invalid_username">invalid username</string>
+    <string name="emergencyContactUsernameHint_TextView">Username are atleast 4 letters</string>
+    <string name="emergencyContactPhoneHint_TextView">A valid 11 digit phone number</string>
+    <string name="emergencyContactDialogTitle_TextView">New emergency contact</string>
+    <string name="invalid_emergency_contact">Invalid username and/or phone number!</string>
 
 </resources>
