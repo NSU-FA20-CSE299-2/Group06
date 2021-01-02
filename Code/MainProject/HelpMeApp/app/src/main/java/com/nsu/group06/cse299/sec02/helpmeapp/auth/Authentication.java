@@ -35,9 +35,17 @@ public abstract class Authentication {
 
     public abstract void signOut();
 
+    public void setmRegisterUserAuthenticationCallbacks(RegisterUserAuthenticationCallbacks mRegisterUserAuthenticationCallbacks) {
+        this.mRegisterUserAuthenticationCallbacks = mRegisterUserAuthenticationCallbacks;
+    }
+
+    public void setmAuthenticationCallbacks(AuthenticationCallbacks mAuthenticationCallbacks) {
+        this.mAuthenticationCallbacks = mAuthenticationCallbacks;
+    }
+
     /*
-        callbacks for register new user events
-     */
+            callbacks for register new user events
+         */
     public interface RegisterUserAuthenticationCallbacks{
 
         void onRegistrationSuccess(AuthenticationUser user);

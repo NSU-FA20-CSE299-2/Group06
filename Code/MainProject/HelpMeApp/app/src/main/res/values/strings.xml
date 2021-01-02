@@ -43,5 +43,6 @@
     <string name="emergencyContactPhoneHint_TextView">A valid 11 digit phone number</string>
     <string name="emergencyContactDialogTitle_TextView">New emergency contact</string>
     <string name="invalid_emergency_contact">Invalid username and/or phone number!</string>
+    <string name="hard_logout">Sorry, you have to login again!</string>
 
 </resources>
