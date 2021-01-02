@@ -77,6 +77,12 @@ public class FirebaseRDBApiEndPoint extends ApiEndPoint<Query> {
             query = firebaseDatabase.getReference().child(NosqlDatabasePathUtils.USER_NODE);
         }
 
+        else if(mUrl.startsWith("/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_NODE)
+                && mUrl.endsWith("/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_PHONE_NODE)){
+
+            query = firebaseDatabase.getReference().child(mUrl.substring(1));
+        }
+
         /*
           endpoint for 'users' node END
          */

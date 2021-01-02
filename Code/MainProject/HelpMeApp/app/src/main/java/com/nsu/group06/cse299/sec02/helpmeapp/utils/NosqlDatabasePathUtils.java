@@ -12,4 +12,10 @@ public class NosqlDatabasePathUtils {
     public static final String USER_ADDRESS = "mAddress";
     public static final String USER_PHONE_NUMBER = "mPhoneNumber";
 
+    public static final String EMERGENCY_CONTACTS_NODE = "emergencyContacts";
+    public static final String EMERGENCY_CONTACTS_PHONE_NODE = "phoneNumbers";
+    public static final String PHONE_NUMBER = "mPhoneNumber";
+    public static final String NAME = "mName";
+
+
 }
