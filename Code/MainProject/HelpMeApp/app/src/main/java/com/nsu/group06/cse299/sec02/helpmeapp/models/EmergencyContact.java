@@ -2,6 +2,8 @@ package com.nsu.group06.cse299.sec02.helpmeapp.models;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Objects;
+
 public class EmergencyContact {
 
     private String mName, mPhoneNumber;
@@ -45,5 +47,26 @@ public class EmergencyContact {
 
     public void setmPhoneNumber(String mPhoneNumber) {
         this.mPhoneNumber = mPhoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "EmergencyContact{" +
+                "mName='" + mName + '\'' +
+                ", mPhoneNumber='" + mPhoneNumber + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmergencyContact that = (EmergencyContact) o;
+        return mPhoneNumber.equals(that.mPhoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mPhoneNumber);
     }
 }
