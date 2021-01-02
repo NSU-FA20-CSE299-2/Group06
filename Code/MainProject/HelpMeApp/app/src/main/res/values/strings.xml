@@ -46,5 +46,8 @@
     <string name="hard_logout">Sorry, you have to login again!</string>
     <string name="name">Name</string>
     <string name="failed_to_connect">An unexpected error occurred! please check your internet.</string>
+    <string name="delete_icon_Alt">delete</string>
+    <string name="emergencyContactName_TextView">Name</string>
+    <string name="emergencyContactPhone_TextView">+880 12345678910</string>
 
 </resources>
