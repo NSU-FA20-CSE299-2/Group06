@@ -1,6 +1,8 @@
 package com.nsu.group06.cse299.sec02.helpmeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.Firebas
 import com.nsu.group06.cse299.sec02.helpmeapp.dialogFragments.AddEmergencyContactDialogFragment;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.User;
+import com.nsu.group06.cse299.sec02.helpmeapp.recyclerViewAdapters.EmergencyContactsAdapter;
 import com.nsu.group06.cse299.sec02.helpmeapp.sharedPreferences.EmergencyContactsSharedPref;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 
@@ -32,18 +35,12 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
 
     // ui
     private AddEmergencyContactDialogFragment mAddEmergencyContactDialogFragment;
-
-    // models
-    private ArrayList<EmergencyContact> mExistingEmergencyContacts;
+    private RecyclerView mEmergencyContactsRecyclerView;
+    private EmergencyContactsAdapter mEmergencyContactsAdapter;
 
     // variables used for fetching user uid
     private AuthenticationUser mAuthenticationUser;
     private Authentication mAuth;
-
-    // variables used to read existing emergency contacts from database
-    // TODO: this should be done inside Adapter?
-    private Database.RealtimeDatabase mReadEmergencyContactsRealtimeDatabase;
-    private FirebaseRDBApiEndPoint mReadEmergencyContactsApiEndPoint;
 
     // variables used to save emergency contact to database
     private Database.SingleOperationDatabase<EmergencyContact> mAddEmergencyContactSingleOperationDatabase;
@@ -62,6 +59,8 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
     }
 
     private void init() {
+
+        mEmergencyContactsRecyclerView = findViewById(R.id.emergencyContacts_RecyclerView);
 
         mAddEmergencyContactDialogFragment =
                 new AddEmergencyContactDialogFragment(this);
@@ -85,68 +84,21 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
         mAuth.authenticateUser();
     }
 
-    /*
-    Read existing emergency contacts from remote database
+    /**
+     * populate the recycler view
      */
     private void loadExistingEmergencyContacts() {
 
-        // TODO: this should be done inside Adapter?
-
-        mExistingEmergencyContacts = new ArrayList<>();
-
-        mReadEmergencyContactsApiEndPoint = new FirebaseRDBApiEndPoint(
-                "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_NODE
-                        + "/" + mAuthenticationUser.getmUid()
-                        + "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_PHONE_NODE);
-
-        mReadEmergencyContactsRealtimeDatabase = new FirebaseRDBRealtime<EmergencyContact>(
-
-                EmergencyContact.class,
-
-                mReadEmergencyContactsApiEndPoint,
-
-                new Database.RealtimeDatabase.RealtimeChangesDatabaseCallback<EmergencyContact>() {
-                    @Override
-                    public void onDataAddition(EmergencyContact data) {
-
-                        mExistingEmergencyContacts.add(data);
-
-                        //showToast(data.toString());
-                    }
-
-                    @Override
-                    public void onDataUpdate(EmergencyContact data) {
-                        // not required
-                    }
-
-                    @Override
-                    public void onDataDeletion(EmergencyContact data) {
-
-                        mExistingEmergencyContacts.remove(data);
-                    }
-
-                    @Override
-                    public void onDatabaseOperationSuccess() {
-                        // not required
-                    }
-
-                    @Override
-                    public void onDatabaseOperationFailed(String message) {
-
-                        showToast(getString(R.string.failed_to_connect));
-                    }
-                }
-        );
-
-        mReadEmergencyContactsRealtimeDatabase.listenForListDataChange();
+        mEmergencyContactsAdapter = new EmergencyContactsAdapter(this, mAuthenticationUser.getmUid());
+        mEmergencyContactsRecyclerView.setAdapter(mEmergencyContactsAdapter);
+        mEmergencyContactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
 
     @Override
     protected void onStop() {
 
-        // MUST CALL THIS TO AVOID UNNECESSARY DOWNLOAD
-        mReadEmergencyContactsRealtimeDatabase.stopListeningForDataChange();
-
+        mEmergencyContactsAdapter.onDestroy();
         super.onStop();
     }
 
