@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".EmergencyContactsActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/emergencyContacts_RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
@@ -19,4 +28,5 @@
         android:onClick="addClick"
         app:srcCompat="@drawable/ic_action_add"
         android:contentDescription="@string/add_icon_Alt" />
+
 </RelativeLayout>
