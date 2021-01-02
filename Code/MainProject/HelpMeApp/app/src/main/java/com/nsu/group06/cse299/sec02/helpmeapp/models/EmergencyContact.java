@@ -1,5 +1,7 @@
 package com.nsu.group06.cse299.sec02.helpmeapp.models;
 
+import com.google.firebase.database.Exclude;
+
 public class EmergencyContact {
 
     private String mName, mPhoneNumber;
@@ -12,11 +14,13 @@ public class EmergencyContact {
         this.mPhoneNumber = mPhoneNumber;
     }
 
+    @Exclude // otherwise unnecessarily gets saved in firebase
     public boolean isNameValid(){
 
         return mName!=null && !mName.isEmpty();
     }
 
+    @Exclude // otherwise unnecessarily gets saved in firebase
     public boolean isPhoneNumberValid(){
 
         if(mPhoneNumber!=null && !mPhoneNumber.startsWith("+88")) {
