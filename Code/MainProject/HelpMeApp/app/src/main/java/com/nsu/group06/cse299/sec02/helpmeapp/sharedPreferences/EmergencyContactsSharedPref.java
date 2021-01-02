@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class EmergencyContactsSharedPref extends SharedPrefsUtil {
 
-    public EmergencyContactsSharedPref build(Context context){
+    public static EmergencyContactsSharedPref build(Context context){
 
         return new EmergencyContactsSharedPref(SharedPrefKeysUtil.EMERGENCY_CONTACTS_ID, context);
     }

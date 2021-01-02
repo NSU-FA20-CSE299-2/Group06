@@ -16,6 +16,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.Firebas
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.dialogFragments.AddEmergencyContactDialogFragment;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
+import com.nsu.group06.cse299.sec02.helpmeapp.sharedPreferences.EmergencyContactsSharedPref;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 
 /**
@@ -39,6 +40,9 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
     private Database.SingleOperationDatabase<EmergencyContact> mAddEmergencyContactSingleOperationDatabase;
     private FirebaseRDBApiEndPoint mAddEmergencyContactApiEndPoint;
 
+    // variables used to save emergency contact locally
+    private EmergencyContactsSharedPref mEmergencyContactsSharedPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +63,6 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
             public void onAuthenticationSuccess(AuthenticationUser user) {
 
                 mAuthenticationUser = user;
-
-                showToast(mAuthenticationUser.getmUid());
             }
 
             @Override
@@ -114,9 +116,8 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
 
         saveToRemoteDatabase(emergencyContact);
 
-        //saveToLocalDatabase(emergencyContact);
+        saveToLocalDatabase(emergencyContact);
 
-        showToast(emergencyContact.getmName());
     }
 
     private void saveToRemoteDatabase(EmergencyContact emergencyContact) {
@@ -156,6 +157,9 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
 
     private void saveToLocalDatabase(EmergencyContact emergencyContact) {
         //TODO: store emergency contact locally
+
+        mEmergencyContactsSharedPref = EmergencyContactsSharedPref.build(this);
+        mEmergencyContactsSharedPref.addPhoneNumber(emergencyContact.getmPhoneNumber());
     }
 
 
