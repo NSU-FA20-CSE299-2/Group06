@@ -13,11 +13,15 @@ import com.nsu.group06.cse299.sec02.helpmeapp.auth.AuthenticationUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBApiEndPoint;
+import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBRealtime;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.dialogFragments.AddEmergencyContactDialogFragment;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
+import com.nsu.group06.cse299.sec02.helpmeapp.models.User;
 import com.nsu.group06.cse299.sec02.helpmeapp.sharedPreferences.EmergencyContactsSharedPref;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
+
+import java.util.ArrayList;
 
 /**
  * Activity for "Emergency Contact" screen
@@ -30,11 +34,16 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
     private AddEmergencyContactDialogFragment mAddEmergencyContactDialogFragment;
 
     // models
-
+    private ArrayList<EmergencyContact> mExistingEmergencyContacts;
 
     // variables used for fetching user uid
     private AuthenticationUser mAuthenticationUser;
     private Authentication mAuth;
+
+    // variables used to read existing emergency contacts from database
+    // TODO: this should be done inside Adapter?
+    private Database.RealtimeDatabase mReadEmergencyContactsRealtimeDatabase;
+    private FirebaseRDBApiEndPoint mReadEmergencyContactsApiEndPoint;
 
     // variables used to save emergency contact to database
     private Database.SingleOperationDatabase<EmergencyContact> mAddEmergencyContactSingleOperationDatabase;
@@ -63,6 +72,8 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
             public void onAuthenticationSuccess(AuthenticationUser user) {
 
                 mAuthenticationUser = user;
+
+                loadExistingEmergencyContacts();
             }
 
             @Override
@@ -75,8 +86,73 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
     }
 
     /*
-    Authentication failed, logout immediately
+    Read existing emergency contacts from remote database
      */
+    private void loadExistingEmergencyContacts() {
+
+        // TODO: this should be done inside Adapter?
+
+        mExistingEmergencyContacts = new ArrayList<>();
+
+        mReadEmergencyContactsApiEndPoint = new FirebaseRDBApiEndPoint(
+                "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_NODE
+                        + "/" + mAuthenticationUser.getmUid()
+                        + "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_PHONE_NODE);
+
+        mReadEmergencyContactsRealtimeDatabase = new FirebaseRDBRealtime<EmergencyContact>(
+
+                EmergencyContact.class,
+
+                mReadEmergencyContactsApiEndPoint,
+
+                new Database.RealtimeDatabase.RealtimeChangesDatabaseCallback<EmergencyContact>() {
+                    @Override
+                    public void onDataAddition(EmergencyContact data) {
+
+                        mExistingEmergencyContacts.add(data);
+
+                        //showToast(data.toString());
+                    }
+
+                    @Override
+                    public void onDataUpdate(EmergencyContact data) {
+                        // not required
+                    }
+
+                    @Override
+                    public void onDataDeletion(EmergencyContact data) {
+
+                        mExistingEmergencyContacts.remove(data);
+                    }
+
+                    @Override
+                    public void onDatabaseOperationSuccess() {
+                        // not required
+                    }
+
+                    @Override
+                    public void onDatabaseOperationFailed(String message) {
+
+                        showToast(getString(R.string.failed_to_connect));
+                    }
+                }
+        );
+
+        mReadEmergencyContactsRealtimeDatabase.listenForListDataChange();
+    }
+
+    @Override
+    protected void onStop() {
+
+        // MUST CALL THIS TO AVOID UNNECESSARY DOWNLOAD
+        mReadEmergencyContactsRealtimeDatabase.stopListeningForDataChange();
+
+        super.onStop();
+    }
+
+    /*
+        Authentication failed, logout immediately
+         */
     private void doHardLogout() {
 
         showToast(getString(R.string.hard_logout));
@@ -156,7 +232,6 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
     }
 
     private void saveToLocalDatabase(EmergencyContact emergencyContact) {
-        //TODO: store emergency contact locally
 
         mEmergencyContactsSharedPref = EmergencyContactsSharedPref.build(this);
         mEmergencyContactsSharedPref.addPhoneNumber(emergencyContact.getmPhoneNumber());
