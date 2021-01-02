@@ -27,4 +27,13 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
+
+    /**
+     * Menu option click listeners
+     */
+
+    public void emergencyContactsClick(View view) {
+
+        startActivity(new Intent(this, EmergencyContactsActivity.class));
+    }
 }
