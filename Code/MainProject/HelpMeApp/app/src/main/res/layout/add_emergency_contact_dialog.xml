@@ -23,14 +23,14 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/emergencyContactUsernameEditText"
+            android:id="@+id/emergencyContactNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_edittext"
             android:drawableStart="@drawable/ic_user_logo"
             android:drawablePadding="5dp"
             android:fontFamily="@font/segoeui"
-            android:hint="@string/username"
+            android:hint="@string/name"
             android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
             android:paddingStart="18dp"

@@ -2,19 +2,19 @@ package com.nsu.group06.cse299.sec02.helpmeapp.models;
 
 public class EmergencyContact {
 
-    private String mUsername, mPhoneNumber;
+    private String mName, mPhoneNumber;
 
     public EmergencyContact() {
     }
 
-    public EmergencyContact(String mUsername, String mPhoneNumber) {
-        this.mUsername = mUsername;
+    public EmergencyContact(String mName, String mPhoneNumber) {
+        this.mName = mName;
         this.mPhoneNumber = mPhoneNumber;
     }
 
-    public boolean isUsernameValid(){
+    public boolean isNameValid(){
 
-        return mUsername!=null && mUsername.length()>=4;
+        return mName!=null && !mName.isEmpty();
     }
 
     public boolean isPhoneNumberValid(){
@@ -27,12 +27,12 @@ public class EmergencyContact {
         return mPhoneNumber!=null && mPhoneNumber.length()==14;
     }
 
-    public String getmUsername() {
-        return mUsername;
+    public String getmName() {
+        return mName;
     }
 
-    public void setmUsername(String mUsername) {
-        this.mUsername = mUsername;
+    public void setmName(String mName) {
+        this.mName = mName;
     }
 
     public String getmPhoneNumber() {

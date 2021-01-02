@@ -1,7 +1,6 @@
 package com.nsu.group06.cse299.sec02.helpmeapp.dialogFragments;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.EditText;
@@ -61,7 +60,7 @@ public class AddEmergencyContactDialogFragment extends DialogFragment {
 
     private void init() {
 
-        mUsernameEditText = getDialog().findViewById(R.id.emergencyContactUsernameEditText);
+        mUsernameEditText = getDialog().findViewById(R.id.emergencyContactNameEditText);
         mPhoneNumberEditText = getDialog().findViewById(R.id.emergencyContactPhoneNumberEditText);
 
         mEmergencyContact = new EmergencyContact();
@@ -72,10 +71,10 @@ public class AddEmergencyContactDialogFragment extends DialogFragment {
         String username = mUsernameEditText.getText().toString();
         String phoneNumber = mPhoneNumberEditText.getText().toString();
 
-        mEmergencyContact.setmUsername(username);
+        mEmergencyContact.setmName(username);
         mEmergencyContact.setmPhoneNumber(phoneNumber);
 
-        if(!mEmergencyContact.isUsernameValid() || !mEmergencyContact.isPhoneNumberValid()){
+        if(!mEmergencyContact.isNameValid() || !mEmergencyContact.isPhoneNumberValid()){
 
             showToast(getString(R.string.invalid_emergency_contact));
         }
