@@ -14,13 +14,12 @@ import com.nsu.group06.cse299.sec02.helpmeapp.auth.Authentication;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.AuthenticationUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.EmailPasswordAuthUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
-import com.nsu.group06.cse299.sec02.helpmeapp.database.ApiEndPoint;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBApiEndPoint;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.User;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
-import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserInputValidator;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserSignupInputValidator;
 
 /**
  * Activity for new users to sign up
@@ -170,14 +169,14 @@ public class SignupActivity extends AppCompatActivity {
      */
     private boolean validateInputs(String email, String password) {
 
-        if( UserInputValidator.isEmailValid(email) && UserInputValidator.isPasswordValid(password)){
+        if( UserSignupInputValidator.isEmailValid(email) && UserSignupInputValidator.isPasswordValid(password)){
 
             return true;
         }
 
-        if(!UserInputValidator.isEmailValid(email)) mEmailEditText.setError("invalid email!");
+        if(!UserSignupInputValidator.isEmailValid(email)) mEmailEditText.setError("invalid email!");
 
-        if(!UserInputValidator.isPasswordValid(password)) mPasswordEditText.setError("invalid password!");
+        if(!UserSignupInputValidator.isPasswordValid(password)) mPasswordEditText.setError("invalid password!");
 
         return false;
     }
