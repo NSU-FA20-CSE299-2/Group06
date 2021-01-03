@@ -1,6 +1,7 @@
 package com.nsu.group06.cse299.sec02.helpmeapp.recyclerViewAdapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nsu.group06.cse299.sec02.helpmeapp.R;
+import com.nsu.group06.cse299.sec02.helpmeapp.database.ApiEndPoint;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBApiEndPoint;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBRealtime;
+import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 
 import java.util.ArrayList;
 
 public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyContactsAdapter.ViewHolder> {
+
+    private static final String TAG = "ECsA-debug";
 
     // calling activity/fragment
     private Context mContext;
@@ -35,8 +40,18 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
     private FirebaseRDBApiEndPoint mReadEmergencyContactsApiEndPoint;
     private String mUid;
 
-    public EmergencyContactsAdapter(Context context, String uid) {
+    // variables used to delete an existing emergency contact from database
+    private Database.SingleOperationDatabase<EmergencyContact> mDeleteEmergencyContactSingleOperationDatabase;
+    private FirebaseRDBApiEndPoint mDeleteEmergencyContactApiEndPoint;
+
+    // variable to let calling activity know if data list is empty or not
+    private CallerActivityCallbacks mCallerActivityCallbacks;
+    private boolean isDataListEmpty;
+
+    public EmergencyContactsAdapter(Context context, CallerActivityCallbacks callerActivityCallbacks, String uid) {
         this.mContext = context;
+        this.mCallerActivityCallbacks = callerActivityCallbacks;
+        this.isDataListEmpty = true;
         this.mUid = uid;
         this.mEmergencyContacts = new ArrayList<>();
 
@@ -64,6 +79,12 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
                 new Database.RealtimeDatabase.RealtimeChangesDatabaseCallback<EmergencyContact>() {
                     @Override
                     public void onDataAddition(EmergencyContact data) {
+
+                        if(isDataListEmpty){
+
+                            mCallerActivityCallbacks.onDataListNotEmpty();
+                            isDataListEmpty = false;
+                        }
 
                         mEmergencyContacts.add(data);
 
@@ -108,7 +129,6 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
 
                     @Override
                     public void onDatabaseOperationSuccess() {
-                        // not required
                     }
 
                     @Override
@@ -116,6 +136,8 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
 
                         Toast.makeText(mContext, R.string.failed_to_connect, Toast.LENGTH_SHORT)
                                 .show();
+
+                        Log.d(TAG, "onDatabaseOperationFailed: realtime listener error -> "+message);
                     }
                 }
         );
@@ -129,8 +151,49 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
      */
     private void deleteEmergencyContact(EmergencyContact emergencyContact){
 
-        Toast.makeText(mContext, "Deleting "+emergencyContact.getmPhoneNumber(), Toast.LENGTH_SHORT)
-                .show();
+        mReadEmergencyContactsApiEndPoint = new FirebaseRDBApiEndPoint(
+                "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_NODE
+                        + "/" + mUid
+                        + "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_PHONE_NODE
+                        + "/phoneNumber:" + emergencyContact.getmPhoneNumber()
+        );
+
+        mDeleteEmergencyContactSingleOperationDatabase =
+                new FirebaseRDBSingleOperation<EmergencyContact>(
+
+                        EmergencyContact.class,
+
+                        mReadEmergencyContactsApiEndPoint,
+
+                        new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<EmergencyContact>() {
+                            @Override
+                            public void onDataRead(EmergencyContact data) {
+                                // not reading anything
+                            }
+
+                            @Override
+                            public void onDatabaseOperationSuccess() {
+                                // should reflect in the recycler view automatically
+                            }
+
+                            @Override
+                            public void onDatabaseOperationFailed(String message) {
+
+                                Toast.makeText(mContext, R.string.failed_to_connect, Toast.LENGTH_SHORT)
+                                        .show();
+
+                                Log.d(TAG, "onDatabaseOperationFailed: database delete error -> "+message);
+                            }
+                        }
+
+                );
+
+        mDeleteEmergencyContactSingleOperationDatabase.delete(emergencyContact);
+    }
+
+    public interface CallerActivityCallbacks{
+
+        void onDataListNotEmpty();
     }
 
     @NonNull

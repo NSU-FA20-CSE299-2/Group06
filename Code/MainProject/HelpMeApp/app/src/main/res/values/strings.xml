@@ -49,5 +49,6 @@
     <string name="delete_icon_Alt">delete</string>
     <string name="emergencyContactName_TextView">Name</string>
     <string name="emergencyContactPhone_TextView">+880 12345678910</string>
+    <string name="emergencyContactsEmpty_TextView">No emergency contacts found.</string>
 
 </resources>

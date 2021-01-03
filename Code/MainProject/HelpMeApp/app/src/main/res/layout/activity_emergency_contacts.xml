@@ -29,4 +29,13 @@
         app:srcCompat="@drawable/ic_action_add"
         android:contentDescription="@string/add_icon_Alt" />
 
+    <TextView
+        android:id="@+id/emergencyContactsEmpty_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/segoeui"
+        android:text="@string/emergencyContactsEmpty_TextView"
+        android:textSize="18sp" />
+
 </RelativeLayout>

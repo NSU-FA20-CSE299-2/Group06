@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.Authentication;
@@ -29,11 +30,13 @@ import java.util.ArrayList;
 /**
  * Activity for "Emergency Contact" screen
  */
-public class EmergencyContactsActivity extends AppCompatActivity implements AddEmergencyContactDialogFragment.InputListener{
+public class EmergencyContactsActivity extends AppCompatActivity
+        implements AddEmergencyContactDialogFragment.InputListener, EmergencyContactsAdapter.CallerActivityCallbacks{
 
     private static final String TAG = "ECA-debug";
 
     // ui
+    private TextView mEmergencyContactsEmptyTextView;
     private AddEmergencyContactDialogFragment mAddEmergencyContactDialogFragment;
     private RecyclerView mEmergencyContactsRecyclerView;
     private EmergencyContactsAdapter mEmergencyContactsAdapter;
@@ -59,6 +62,8 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
     }
 
     private void init() {
+
+        mEmergencyContactsEmptyTextView = findViewById(R.id.emergencyContactsEmpty_TextView);
 
         mEmergencyContactsRecyclerView = findViewById(R.id.emergencyContacts_RecyclerView);
 
@@ -89,9 +94,20 @@ public class EmergencyContactsActivity extends AppCompatActivity implements AddE
      */
     private void loadExistingEmergencyContacts() {
 
-        mEmergencyContactsAdapter = new EmergencyContactsAdapter(this, mAuthenticationUser.getmUid());
+        mEmergencyContactsAdapter =
+                new EmergencyContactsAdapter(this, this, mAuthenticationUser.getmUid());
         mEmergencyContactsRecyclerView.setAdapter(mEmergencyContactsAdapter);
         mEmergencyContactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    /**
+     * Listener to notify that
+     * existing emergency contacts is not empty
+     */
+    @Override
+    public void onDataListNotEmpty() {
+
+        mEmergencyContactsEmptyTextView.setVisibility(View.GONE);
     }
 
 
