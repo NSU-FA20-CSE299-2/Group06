@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".SetupProfileActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,7 @@
             android:label="Menu" />
         <activity
             android:name=".EmergencyContactsActivity"
-            android:label="Emergency Contacts"/>
+            android:label="Emergency Contacts" />
     </application>
 
 </manifest>
