@@ -71,6 +71,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_marginTop="15dp">
+
             <Button
                 android:id="@+id/btn_emgContacts"
                 android:layout_width="150dp"
@@ -79,9 +80,10 @@
                 android:background="@drawable/menu_button"
                 android:drawableTop="@drawable/ic_phonebook_menu"
                 android:fontFamily="@font/segoeui"
+                android:onClick="emergencyContactsClick"
+                android:padding="5dp"
                 android:text="@string/emergency_contacts"
-                android:textColor="#FF2B2B"
-                android:padding="5dp"/>
+                android:textColor="#FF2B2B" />
             <Button
                 android:id="@+id/btn_postForHelp"
                 android:layout_width="150dp"

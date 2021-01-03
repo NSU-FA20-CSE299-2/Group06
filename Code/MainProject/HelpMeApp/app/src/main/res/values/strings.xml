@@ -32,6 +32,26 @@
     <string name="sign_up">Sign up</string>
     <string name="already_have_an_account_log_in_here">Already have an account? Log in here.</string>
     <string name="create_an_account">Create an Account</string>
+
+    <string name="add_icon_Alt">add</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone number</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="invalid_phone_number">invalid phone number</string>
+    <string name="invalid_username">invalid username</string>
+    <string name="emergencyContactUsernameHint_TextView">Username are atleast 4 letters</string>
+    <string name="emergencyContactPhoneHint_TextView">A valid 11 digit phone number</string>
+    <string name="emergencyContactDialogTitle_TextView">New emergency contact</string>
+    <string name="invalid_emergency_contact">Invalid name and/or phone number!</string>
+    <string name="hard_logout">Sorry, you have to login again!</string>
+    <string name="name">Name</string>
+    <string name="failed_to_connect">An unexpected error occurred! please check your internet.</string>
+    <string name="delete_icon_Alt">delete</string>
+    <string name="emergencyContactName_TextView">Name</string>
+    <string name="emergencyContactPhone_TextView">+880 12345678910</string>
+    <string name="emergencyContactsEmpty_TextView">No emergency contacts found.</string>
+
     <string name="full_name">Full Name</string>
 
     <!--Setup Profile Activity -->
@@ -40,5 +60,6 @@
     <string name="phone_number">Phone Number</string>
     <string name="save">Save</string>
     <string name="setup_profile">Setup Profile</string>
+
 
 </resources>
