@@ -61,6 +61,7 @@
     <string name="invalid_address">Invalid address</string>
     <string name="saving">Saving…</string>
     <string name="loading">Loading…</string>
+    <string name="success">success</string>
 
 
 </resources>
