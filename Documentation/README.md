@@ -10,7 +10,7 @@ link - <https://lucid.app/lucidchart/invitations/accept/402a9747-2f5c-4ae1-bbb9-
 
 ## Database Structure- Nosql JSON  
 
-![database-structure](./database_structure_json_nosql.png)  
+![database-structure](./nosql_database_structure.png)  
 
 ## Changes in initial features  
 
