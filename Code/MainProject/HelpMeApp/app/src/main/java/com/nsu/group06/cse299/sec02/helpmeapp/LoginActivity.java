@@ -13,7 +13,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.auth.Authentication;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.AuthenticationUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.EmailPasswordAuthUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
-import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserSignupInputValidator;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserInputValidator;
 
 /**
  * User login Activity
@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private boolean validateInputs(String email, String password) {
 
-        return UserSignupInputValidator.isEmailValid(email) && UserSignupInputValidator.isPasswordValid(password);
+        return UserInputValidator.isEmailValid(email) && UserInputValidator.isPasswordValid(password);
     }
 
     /*

@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * Validate user inputs- email, password
  */
-public class UserSignupInputValidator {
+public class UserInputValidator {
 
     /*
     courtesy- <https://www.geeksforgeeks.org/check-email-address-valid-not-java/>
