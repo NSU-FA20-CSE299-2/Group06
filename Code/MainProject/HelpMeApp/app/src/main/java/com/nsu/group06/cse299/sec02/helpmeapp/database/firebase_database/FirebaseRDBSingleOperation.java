@@ -84,6 +84,7 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
                     singleOperationDatabaseCallback.onDataRead(data);
                 }
 
+                singleOperationDatabaseCallback.onDatabaseOperationSuccess();
             }
 
             @Override
@@ -127,6 +128,7 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
                     }
                 }
 
+                singleOperationDatabaseCallback.onDatabaseOperationSuccess();
             }
 
             @Override

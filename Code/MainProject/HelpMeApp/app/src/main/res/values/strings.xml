@@ -59,6 +59,8 @@
     <string name="setup_profile">Setup Profile</string>
     <string name="invalid_date_of_birth">date format: dd/mm/yyyy</string>
     <string name="invalid_address">Invalid address</string>
+    <string name="saving">Saving…</string>
+    <string name="loading">Loading…</string>
 
 
 </resources>

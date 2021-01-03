@@ -2,10 +2,10 @@ package com.nsu.group06.cse299.sec02.helpmeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,6 +26,7 @@ public class SetupProfileActivity extends AppCompatActivity {
 
     // ui
     private EditText mUsernameEditText, mDateOfBirhtEditText, mAddressEditText, mPhoneNumberEditText;
+    private Button mSaveButton;
 
     // model
     private User mUser;
@@ -67,6 +68,7 @@ public class SetupProfileActivity extends AppCompatActivity {
                 @Override
                 public void onDatabaseOperationSuccess() {
                     // not required
+                    databaseOperationCompleteUI();
                 }
 
                 @Override
@@ -94,6 +96,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         mDateOfBirhtEditText = findViewById(R.id.dateOfBirth_setupProfile_EditText);
         mAddressEditText = findViewById(R.id.address_setupProfile_EditText);
         mPhoneNumberEditText = findViewById(R.id.phoneNumber_setupProfile_EditText);
+        mSaveButton = findViewById(R.id.btn_setupProfile_save);
 
         mUser = new User();
 
@@ -121,6 +124,7 @@ public class SetupProfileActivity extends AppCompatActivity {
     private void loadUserProfileInformation() {
 
         mUserInfoFirebaseRDBSingleOperation.readSingle();
+        loadingProfileInfoUI();
     }
 
     /*
@@ -144,6 +148,7 @@ public class SetupProfileActivity extends AppCompatActivity {
 
         //TODO: update database
         mUserInfoFirebaseRDBSingleOperation.update(mUser);
+        updatingProfileUI();
     }
 
     /*
@@ -180,6 +185,48 @@ public class SetupProfileActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    /*
+    set UI during user info is being downloaded
+     */
+    private void loadingProfileInfoUI(){
+
+        mSaveButton.setEnabled(false);
+        mSaveButton.setText(getString(R.string.loading));
+
+        mUsernameEditText.setEnabled(false);
+        mDateOfBirhtEditText.setEnabled(false);
+        mAddressEditText.setEnabled(false);
+        mPhoneNumberEditText.setEnabled(false);
+    }
+
+    /*
+    set UI during user info update is in progress
+     */
+    private void updatingProfileUI(){
+
+        mSaveButton.setEnabled(false);
+        mSaveButton.setText(getString(R.string.saving));
+
+        mUsernameEditText.setEnabled(false);
+        mDateOfBirhtEditText.setEnabled(false);
+        mAddressEditText.setEnabled(false);
+        mPhoneNumberEditText.setEnabled(false);
+    }
+
+    /*
+    set UI when database operation (load/update profile info) is complete
+     */
+    private void databaseOperationCompleteUI() {
+
+        mSaveButton.setEnabled(true);
+        mSaveButton.setText(getString(R.string.save));
+
+        mUsernameEditText.setEnabled(true);
+        mDateOfBirhtEditText.setEnabled(true);
+        mAddressEditText.setEnabled(true);
+        mPhoneNumberEditText.setEnabled(true);
     }
 
     private void showToast(String message){
