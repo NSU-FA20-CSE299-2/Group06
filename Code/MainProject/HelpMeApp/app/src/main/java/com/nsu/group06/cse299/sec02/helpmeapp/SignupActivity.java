@@ -19,7 +19,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.Firebas
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.User;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
-import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserSignupInputValidator;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserInputValidator;
 
 /**
  * Activity for new users to sign up
@@ -169,14 +169,14 @@ public class SignupActivity extends AppCompatActivity {
      */
     private boolean validateInputs(String email, String password) {
 
-        if( UserSignupInputValidator.isEmailValid(email) && UserSignupInputValidator.isPasswordValid(password)){
+        if( UserInputValidator.isEmailValid(email) && UserInputValidator.isPasswordValid(password)){
 
             return true;
         }
 
-        if(!UserSignupInputValidator.isEmailValid(email)) mEmailEditText.setError("invalid email!");
+        if(!UserInputValidator.isEmailValid(email)) mEmailEditText.setError("invalid email!");
 
-        if(!UserSignupInputValidator.isPasswordValid(password)) mPasswordEditText.setError("invalid password!");
+        if(!UserInputValidator.isPasswordValid(password)) mPasswordEditText.setError("invalid password!");
 
         return false;
     }

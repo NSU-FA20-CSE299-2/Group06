@@ -34,7 +34,7 @@
             android:padding="4dp"
             android:text="@string/emergencyContactPhone_TextView"
             android:textSize="18sp"
-            app:drawableStartCompat="@drawable/ic_action_phone" />
+            app:drawableStartCompat="@drawable/ic_phone_icon" />
     </LinearLayout>
 
     <ImageButton

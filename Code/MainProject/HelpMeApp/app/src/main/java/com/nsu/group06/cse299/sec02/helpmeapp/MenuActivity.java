@@ -36,4 +36,9 @@ public class MenuActivity extends AppCompatActivity {
 
         startActivity(new Intent(this, EmergencyContactsActivity.class));
     }
+
+    public void setupProfileClick(View view) {
+
+        startActivity(new Intent(this, SetupProfileActivity.class));
+    }
 }

@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_edittext"
-            android:drawableStart="@drawable/ic_action_phone"
+            android:drawableStart="@drawable/ic_phone_icon"
             android:drawablePadding="5dp"
             android:fontFamily="@font/segoeui"
             android:hint="@string/phone_number"

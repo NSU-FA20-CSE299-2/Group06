@@ -69,7 +69,34 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
     }
 
     @Override
-    public void read() {
+    public void readSingle() {
+
+        mApiEndPoint.toApiEndPoint().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                T data = snapshot.getValue(FirebaseRDBSingleOperation.this.mTypeParameterClass);
+
+                if(data!=null){
+
+                    Log.d(TAG, "onDataChange: data -> "+data.toString());
+
+                    singleOperationDatabaseCallback.onDataRead(data);
+                }
+
+                singleOperationDatabaseCallback.onDatabaseOperationSuccess();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                singleOperationDatabaseCallback.onDatabaseOperationFailed("failed to read at = "+mApiEndPoint.getmUrl());
+            }
+        });
+    }
+
+    @Override
+    public void readList() {
 
         mApiEndPoint.toApiEndPoint().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -101,6 +128,7 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
                     }
                 }
 
+                singleOperationDatabaseCallback.onDatabaseOperationSuccess();
             }
 
             @Override
