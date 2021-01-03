@@ -35,6 +35,11 @@ public class EmergencyContactsSharedPref extends SharedPrefsUtil {
         removeDataFromList(SharedPrefKeysUtil.PHONE_NUMBERS_KEY, phoneNumber);
     }
 
+    public boolean doesPhoneNumberAlreadyExist(String phoneNumber){
+
+        return doesDataExistInList(SharedPrefKeysUtil.PHONE_NUMBERS_KEY, phoneNumber);
+    }
+
     public void addUsername(String username){
 
         appendDataToList(SharedPrefKeysUtil.USERNAME_KEY, username);

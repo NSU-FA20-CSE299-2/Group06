@@ -77,6 +77,21 @@ public abstract class SharedPrefsUtil {
                 .putStringSet(key, dataSet).apply();
     }
 
+    /**
+     * Method contains redundant code to check if
+     * String exists in Sharedpreference
+     * @param key key of the shared preference
+     * @param data data to be searched
+     * @return if data exists or not
+     */
+    protected boolean doesDataExistInList(String key, String data){
+
+        Set<String> dataSet =
+                getSharedPreference().getStringSet(key, new HashSet<>());
+
+        return dataSet.contains(data);
+    }
+
     public String getmSharedPreferenceId() {
         return mSharedPreferenceId;
     }

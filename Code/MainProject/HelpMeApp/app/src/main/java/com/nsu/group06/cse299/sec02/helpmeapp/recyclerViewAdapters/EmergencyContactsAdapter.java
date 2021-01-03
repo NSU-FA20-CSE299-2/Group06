@@ -21,6 +21,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.Firebas
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBRealtime;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
+import com.nsu.group06.cse299.sec02.helpmeapp.sharedPreferences.EmergencyContactsSharedPref;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
     private Database.SingleOperationDatabase<EmergencyContact> mDeleteEmergencyContactSingleOperationDatabase;
     private FirebaseRDBApiEndPoint mDeleteEmergencyContactApiEndPoint;
 
+    // variables used to delete an existing emergency contact from local storage
+    private EmergencyContactsSharedPref mEmergencyContactsSharedPref;
+
     // variable to let calling activity know if data list is empty or not
     private CallerActivityCallbacks mCallerActivityCallbacks;
     private boolean isDataListEmpty;
@@ -54,6 +58,9 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
         this.isDataListEmpty = true;
         this.mUid = uid;
         this.mEmergencyContacts = new ArrayList<>();
+
+        // need to initialize local database variable here
+        mEmergencyContactsSharedPref = EmergencyContactsSharedPref.build(mContext);
 
         loadEmergencyContacts();
     }
@@ -87,6 +94,13 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
                         }
 
                         mEmergencyContacts.add(data);
+
+                        // store emergency contacts read from the database to the local database
+                        // if they aren't saved already
+                        if(!mEmergencyContactsSharedPref.doesPhoneNumberAlreadyExist(data.getmPhoneNumber())) {
+
+                            mEmergencyContactsSharedPref.addPhoneNumber(data.getmPhoneNumber());
+                        }
 
                         EmergencyContactsAdapter.this.notifyItemInserted(mEmergencyContacts.size()-1);
                     }
@@ -151,7 +165,8 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
      */
     private void deleteEmergencyContact(EmergencyContact emergencyContact){
 
-        mReadEmergencyContactsApiEndPoint = new FirebaseRDBApiEndPoint(
+        // delete from remote database
+        mDeleteEmergencyContactApiEndPoint = new FirebaseRDBApiEndPoint(
                 "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_NODE
                         + "/" + mUid
                         + "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_PHONE_NODE
@@ -163,7 +178,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
 
                         EmergencyContact.class,
 
-                        mReadEmergencyContactsApiEndPoint,
+                        mDeleteEmergencyContactApiEndPoint,
 
                         new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<EmergencyContact>() {
                             @Override
@@ -189,6 +204,9 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
                 );
 
         mDeleteEmergencyContactSingleOperationDatabase.delete(emergencyContact);
+
+        // delete from local storage
+        mEmergencyContactsSharedPref.removePhoneNumber(emergencyContact.getmPhoneNumber());
     }
 
     public interface CallerActivityCallbacks{
