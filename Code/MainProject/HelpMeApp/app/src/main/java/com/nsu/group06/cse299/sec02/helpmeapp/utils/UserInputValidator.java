@@ -25,6 +25,26 @@ public class UserInputValidator {
 
     public static boolean isPasswordValid(String password){
 
-        return password.length()>=6;
+        return password!=null && password.length()>=6;
+    }
+
+    public static boolean isNameValid(String name){
+
+        return name!=null && !name.isEmpty();
+    }
+
+    public static boolean isDateOfBirthValid(String dateOfBirth){
+
+        return dateOfBirth!=null && !dateOfBirth.isEmpty() /*&&*/ ;
+    }
+
+    public static boolean isAddressValid(String address){
+
+        return address!=null && !address.isEmpty();
+    }
+
+    public static boolean isPhoneNumberValid(String phoneNumber){
+
+        return phoneNumber.startsWith("+880") && phoneNumber.length() == 14;
     }
 }

@@ -57,6 +57,8 @@
     <string name="address">Address</string>
     <string name="save">Save</string>
     <string name="setup_profile">Setup Profile</string>
+    <string name="invalid_date_of_birth">date format: dd/mm/yyyy</string>
+    <string name="invalid_address">Invalid address</string>
 
 
 </resources>

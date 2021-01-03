@@ -18,6 +18,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.Firebas
 import com.nsu.group06.cse299.sec02.helpmeapp.models.User;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.SessionUtils;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserInputValidator;
 
 public class SetupProfileActivity extends AppCompatActivity {
 
@@ -34,7 +35,7 @@ public class SetupProfileActivity extends AppCompatActivity {
 
     // variables to read existing information of users from the database
     private Database.SingleOperationDatabase<User> mReadUserInfoFirebaseRDBSingleOperation;
-    private FirebaseRDBApiEndPoint mReadUserInfoApiEndPoint;
+    private FirebaseRDBApiEndPoint mUserInfoApiEndPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,11 @@ public class SetupProfileActivity extends AppCompatActivity {
 
                 mUser.setmUid(user.getmUid());
 
+                // set the path to user info api endpoint
+                mUserInfoApiEndPoint = new FirebaseRDBApiEndPoint(
+                        "/"+ NosqlDatabasePathUtils.USER_NODE +
+                                ":" + mUser.getmUid());
+
                 loadUserProfileInformation();
             }
 
@@ -78,18 +84,12 @@ public class SetupProfileActivity extends AppCompatActivity {
     private void loadUserProfileInformation() {
         //TODO: implement
 
-        mReadUserInfoApiEndPoint =
-                new FirebaseRDBApiEndPoint(
-                        "/"+ NosqlDatabasePathUtils.USER_NODE +
-                                ":" + mUser.getmUid()
-                );
-
         mReadUserInfoFirebaseRDBSingleOperation =
                 new FirebaseRDBSingleOperation(
 
                         User.class,
 
-                        mReadUserInfoApiEndPoint,
+                        mUserInfoApiEndPoint,
 
                         new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<User>() {
                             @Override
@@ -133,6 +133,40 @@ public class SetupProfileActivity extends AppCompatActivity {
     "save profile" click listener
      */
     public void saveProfileClick(View view) {
+
+        if(validateInputs()==false) return;
+
+        //TODO: update database
+    }
+
+    /*
+    Validate user input
+     */
+    private boolean validateInputs() {
+
+        String name = mUsernameEditText.getText().toString();
+        String dateOfBirth = mDateOfBirhtEditText.getText().toString();
+        String address = mAddressEditText.getText().toString();
+        String phoneNumber = mPhoneNumberEditText.getText().toString();
+
+        if(!UserInputValidator.isNameValid(name)) mUsernameEditText.setError(getString(R.string.invalid_username));
+        if(!UserInputValidator.isDateOfBirthValid(dateOfBirth)) mDateOfBirhtEditText.setError(getString(R.string.invalid_date_of_birth));
+        if(UserInputValidator.isAddressValid(address)) mAddressEditText.setError(getString(R.string.invalid_address));
+        if(UserInputValidator.isPhoneNumberValid(phoneNumber)) mPhoneNumberEditText.setError(getString(R.string.invalid_phone_number));
+
+        else{
+
+            if(!mUser.getmUsername().equals(name)
+                    || !mUser.getmDateOfBirth().equals(dateOfBirth)
+                    || !mUser.getmAddress().equals(address)
+                    || !mUser.getmPhoneNumber().equals(phoneNumber)
+            ){
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void showToast(String message){
