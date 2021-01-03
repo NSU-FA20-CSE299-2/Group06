@@ -32,6 +32,7 @@
     <string name="sign_up">Sign up</string>
     <string name="already_have_an_account_log_in_here">Already have an account? Log in here.</string>
     <string name="create_an_account">Create an Account</string>
+
     <string name="add_icon_Alt">add</string>
     <string name="username">Username</string>
     <string name="phone_number">Phone number</string>
@@ -50,5 +51,15 @@
     <string name="emergencyContactName_TextView">Name</string>
     <string name="emergencyContactPhone_TextView">+880 12345678910</string>
     <string name="emergencyContactsEmpty_TextView">No emergency contacts found.</string>
+
+    <string name="full_name">Full Name</string>
+
+    <!--Setup Profile Activity -->
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="address">Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="save">Save</string>
+    <string name="setup_profile">Setup Profile</string>
+
 
 </resources>
