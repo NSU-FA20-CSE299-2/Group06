@@ -22,7 +22,8 @@ public interface Database {
 
         public abstract void createWithId(String id, T data);
         public abstract void create(T data);
-        public abstract void read(); // read single data
+        public abstract void readSingle(); // read single data
+        public abstract void readList(); // read list matching query
         public abstract void update(T data);
         public abstract void delete(T data);
 

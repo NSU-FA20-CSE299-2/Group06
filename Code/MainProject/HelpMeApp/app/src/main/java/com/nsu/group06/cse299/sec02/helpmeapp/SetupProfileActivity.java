@@ -30,11 +30,54 @@ public class SetupProfileActivity extends AppCompatActivity {
     // model
     private User mUser;
 
+
     // variable used for fetching user uid
     private Authentication mAuth;
+    private Authentication.AuthenticationCallbacks mAuthenticationCallbacks = new Authentication.AuthenticationCallbacks() {
+        @Override
+        public void onAuthenticationSuccess(AuthenticationUser user) {
 
-    // variables to read existing information of users from the database
-    private Database.SingleOperationDatabase<User> mReadUserInfoFirebaseRDBSingleOperation;
+            mUser.setmUid(user.getmUid());
+
+            // setup database variables
+            initDatabaseVars();
+
+            loadUserProfileInformation();
+        }
+
+        @Override
+        public void onAuthenticationFailure(String message) {
+
+            SessionUtils.doHardLogout(SetupProfileActivity.this, mAuth);
+        }
+    };
+
+
+    // variables to read/write information of users to/from the database
+    private Database.SingleOperationDatabase<User> mUserInfoFirebaseRDBSingleOperation;
+    private Database.SingleOperationDatabase.SingleOperationDatabaseCallback<User> mUserInfoSingleOperationDatabaseCallback =
+            new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<User>() {
+                @Override
+                public void onDataRead(User data) {
+
+                    mUser = data;
+                    showReadUserInfoInUI();
+                }
+
+                @Override
+                public void onDatabaseOperationSuccess() {
+                    // not required
+                }
+
+                @Override
+                public void onDatabaseOperationFailed(String message) {
+
+                    showToast(getString(R.string.failed_to_connect));
+
+                    Log.d(TAG, "onDatabaseOperationFailed: user data read error -> "+message);
+                }
+            };
+
     private FirebaseRDBApiEndPoint mUserInfoApiEndPoint;
 
     @Override
@@ -55,66 +98,29 @@ public class SetupProfileActivity extends AppCompatActivity {
         mUser = new User();
 
         // authenticate user, because we need uid here
-        mAuth = new FirebaseEmailPasswordAuthentication(new Authentication.AuthenticationCallbacks() {
-            @Override
-            public void onAuthenticationSuccess(AuthenticationUser user) {
-
-                mUser.setmUid(user.getmUid());
-
-                // set the path to user info api endpoint
-                mUserInfoApiEndPoint = new FirebaseRDBApiEndPoint(
-                        "/"+ NosqlDatabasePathUtils.USER_NODE +
-                                ":" + mUser.getmUid());
-
-                loadUserProfileInformation();
-            }
-
-            @Override
-            public void onAuthenticationFailure(String message) {
-
-                SessionUtils.doHardLogout(SetupProfileActivity.this, mAuth);
-            }
-        });
+        mAuth = new FirebaseEmailPasswordAuthentication(mAuthenticationCallbacks);
         mAuth.authenticateUser();
+    }
+
+    /*
+    Initialize database variables
+     */
+    private void initDatabaseVars() {
+
+        mUserInfoApiEndPoint = new FirebaseRDBApiEndPoint(
+                "/"+ NosqlDatabasePathUtils.USER_NODE +
+                        ":" + mUser.getmUid());
+
+        mUserInfoFirebaseRDBSingleOperation =
+                new FirebaseRDBSingleOperation(User.class, mUserInfoApiEndPoint, mUserInfoSingleOperationDatabaseCallback);
     }
 
     /*
      Download user profile information from the database
      */
     private void loadUserProfileInformation() {
-        //TODO: implement
 
-        mReadUserInfoFirebaseRDBSingleOperation =
-                new FirebaseRDBSingleOperation(
-
-                        User.class,
-
-                        mUserInfoApiEndPoint,
-
-                        new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<User>() {
-                            @Override
-                            public void onDataRead(User data) {
-
-                                mUser = data;
-                                showReadUserInfoInUI();
-                            }
-
-                            @Override
-                            public void onDatabaseOperationSuccess() {
-                                // not required
-                            }
-
-                            @Override
-                            public void onDatabaseOperationFailed(String message) {
-
-                                showToast(getString(R.string.failed_to_connect));
-
-                                Log.d(TAG, "onDatabaseOperationFailed: user data read error -> "+message);
-                            }
-                        }
-
-                );
-        mReadUserInfoFirebaseRDBSingleOperation.read();
+        mUserInfoFirebaseRDBSingleOperation.readSingle();
     }
 
     /*
@@ -137,6 +143,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         if(validateInputs()==false) return;
 
         //TODO: update database
+        mUserInfoFirebaseRDBSingleOperation.update(mUser);
     }
 
     /*
@@ -148,11 +155,12 @@ public class SetupProfileActivity extends AppCompatActivity {
         String dateOfBirth = mDateOfBirhtEditText.getText().toString();
         String address = mAddressEditText.getText().toString();
         String phoneNumber = mPhoneNumberEditText.getText().toString();
+        if(phoneNumber.charAt(0)=='0') phoneNumber = "+88" + phoneNumber;
 
         if(!UserInputValidator.isNameValid(name)) mUsernameEditText.setError(getString(R.string.invalid_username));
         if(!UserInputValidator.isDateOfBirthValid(dateOfBirth)) mDateOfBirhtEditText.setError(getString(R.string.invalid_date_of_birth));
-        if(UserInputValidator.isAddressValid(address)) mAddressEditText.setError(getString(R.string.invalid_address));
-        if(UserInputValidator.isPhoneNumberValid(phoneNumber)) mPhoneNumberEditText.setError(getString(R.string.invalid_phone_number));
+        if(!UserInputValidator.isAddressValid(address)) mAddressEditText.setError(getString(R.string.invalid_address));
+        if(!UserInputValidator.isPhoneNumberValid(phoneNumber)) mPhoneNumberEditText.setError(getString(R.string.invalid_phone_number));
 
         else{
 
@@ -161,6 +169,11 @@ public class SetupProfileActivity extends AppCompatActivity {
                     || !mUser.getmAddress().equals(address)
                     || !mUser.getmPhoneNumber().equals(phoneNumber)
             ){
+
+                mUser.setmUsername(name);
+                mUser.setmDateOfBirth(dateOfBirth);
+                mUser.setmAddress(address);
+                mUser.setmPhoneNumber(phoneNumber);
 
                 return true;
             }
