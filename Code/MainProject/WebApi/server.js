@@ -126,6 +126,38 @@ app.get('/posts', function (req, res) {
 });
 
 
+//For viewing all posts (dev)
+app.get('/allPosts', function (req, res) {
+
+    usersRef.once("value", function (snapshot) {
+        if (snapshot.val() == null) {
+
+            res.json({ message: "Error: No data found", "result": false });
+
+        } else {
+
+            res.json(snapshot.val());
+        }
+    });
+});
+
+
+//API Home
+app.get('/', (req, res) => {
+    res.send("<center><h1>Help Post API Home</h1></center>")
+})
+
+
+//View API Logs
+app.get('/devlog', (req, res) => {
+    fs.readFile('logs.txt', (e, data) => {
+        if (e) throw e;
+        let htmlHeader = "<h1>API Logs (Dev) </h1>\n"
+        res.send(htmlHeader + data.toString());
+    });
+})
+
+
 
 app.listen(PORT, ()=>console.log("Server is running on PORT " + PORT))
 
