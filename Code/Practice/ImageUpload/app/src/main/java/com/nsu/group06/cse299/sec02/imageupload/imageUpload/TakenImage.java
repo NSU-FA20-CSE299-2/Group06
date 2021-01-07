@@ -15,9 +15,11 @@ import java.util.Date;
  */
 public class TakenImage {
 
-    private String mPhotoFilePath;
     private File mPhotoFile;
     private Uri mPhotoUri;
+
+    private String mPhotoFilePath;
+    private String mPhotoFileName;
 
     public static TakenImage build(Context context) throws IOException {
 
@@ -46,9 +48,9 @@ public class TakenImage {
                 storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mPhotoFilePath = image.getAbsolutePath();
         mPhotoFile = image;
+        mPhotoFilePath = image.getAbsolutePath();
+        mPhotoFileName = image.getName();
     }
 
     public String getmPhotoFilePath() {
@@ -65,5 +67,9 @@ public class TakenImage {
 
     public void setmPhotoUri(Uri mPhotoUri) {
         this.mPhotoUri = mPhotoUri;
+    }
+
+    public String getmPhotoFileName() {
+        return mPhotoFileName;
     }
 }
