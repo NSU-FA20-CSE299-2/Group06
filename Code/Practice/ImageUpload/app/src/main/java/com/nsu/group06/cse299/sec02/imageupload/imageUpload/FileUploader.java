@@ -7,51 +7,19 @@ package com.nsu.group06.cse299.sec02.imageupload.imageUpload;
  */
 public abstract class FileUploader<UploadFileType, DownloadLinkType> {
 
-    private UploadFileType mFileToUpload;
-    private DownloadLinkType mDownloadLink;
+    public abstract void uploadFile(UploadFileType file);
+    public abstract void downloadFile(DownloadLinkType downloadLink);
 
-    private FileUploadCallbacks mFileUploadCallbacks;
-    private FileDownloadCallbacks mFileDownloadCallbacks;
+    public interface FileUploadCallbacks<UploadedImageLinkType>{
 
-    public FileUploader(UploadFileType mFileToUpload, FileUploadCallbacks mFileUploadCallbacks) {
-        this.mFileToUpload = mFileToUpload;
-        this.mFileUploadCallbacks = mFileUploadCallbacks;
-    }
-
-    public FileUploader(DownloadLinkType mDownloadLink, FileDownloadCallbacks mFileDownloadCallbacks) {
-        this.mDownloadLink = mDownloadLink;
-        this.mFileDownloadCallbacks = mFileDownloadCallbacks;
-    }
-
-    public UploadFileType getmFileToUpload() {
-        return mFileToUpload;
-    }
-
-    public void setmFileToUpload(UploadFileType mFileToUpload) {
-        this.mFileToUpload = mFileToUpload;
-    }
-
-    public DownloadLinkType getmDownloadLink() {
-        return mDownloadLink;
-    }
-
-    public void setmDownloadLink(DownloadLinkType mDownloadLink) {
-        this.mDownloadLink = mDownloadLink;
-    }
-
-    public abstract void uploadFile();
-    public abstract void downloadFile();
-
-    public interface FileUploadCallbacks{
-
-        void uploadComplete();
-        void uploadFailed(String message);
+        void onUploadComplete(UploadedImageLinkType uploadedImageLink);
+        void onUploadFailed(String message);
     }
 
     public interface FileDownloadCallbacks<DownloadedImageType>{
 
-        void downloadComplete(DownloadedImageType downloadedImage);
-        void downloadFailed(String message);
+        void onDownloadComplete(DownloadedImageType downloadedImage);
+        void onDownloadFailed(String message);
     }
 
 }
