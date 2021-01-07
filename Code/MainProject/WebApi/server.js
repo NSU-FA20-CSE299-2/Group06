@@ -81,6 +81,50 @@ app.get('/post', function (req, res) {
 
 });
 
+//For viewing all posts by UID (user)
+app.get('/posts', function (req, res) {
+
+    const uid = req.query.uid
+
+    let date_ob = new Date();
+    let logdata = {
+        time: date_ob.toLocaleTimeString(),
+        date: date_ob.toLocaleDateString(),
+        uid: uid,
+        pid: pid,
+        request: "user query by uid",
+        status: "success"
+    }
+
+
+    if (uid == null) { //
+
+        logdata.status = "failed"
+        res.json({ message: "Error: Invalid query parameter.", result: false });
+
+    }
+    else if (uid.length < 5) //firebase uid length: 20
+    {
+        logdata.status = "failed"
+        res.json({ message: "Error: Invalid UID/PID.", result: false });
+    }
+    else {
+        usersRef.child(uid).once("value", function (snapshot) {
+            if (snapshot.val() == null) {
+
+                res.json({ message: "Error: No data found", "result": false });
+
+            } else {
+
+                res.json(snapshot.val());
+            }
+        });
+    }
+    fs.appendFile('logs.txt', JSON.stringify(logdata) + "\n", function (err) {
+        if (err) throw err;
+    });
+});
+
 
 
 app.listen(PORT, ()=>console.log("Server is running on PORT " + PORT))
