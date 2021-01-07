@@ -24,13 +24,13 @@ public class FirebaseStorageFileUploader extends FileUploader<TakenImage, String
     private String mDBPath;
 
     public FirebaseStorageFileUploader(FileUploadCallbacks<Uri> mFileUploadCallbacks, String mDBPath) {
-
+        this.mFileUploadCallbacks = mFileUploadCallbacks;
         this.mDBPath = mDBPath;
         mFirebaseStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     public FirebaseStorageFileUploader(FileDownloadCallbacks<Uri> mFileDownloadCallbacks, String mDBPath) {
-
+        this.mFileDownloadCallbacks = mFileDownloadCallbacks;
         this.mDBPath = mDBPath;
         mFirebaseStorageRef = FirebaseStorage.getInstance().getReference();
     }

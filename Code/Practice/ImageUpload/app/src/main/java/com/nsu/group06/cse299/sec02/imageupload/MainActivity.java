@@ -1,26 +1,27 @@
 package com.nsu.group06.cse299.sec02.imageupload;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.nsu.group06.cse299.sec02.imageupload.imageUpload.FileUploader;
+import com.nsu.group06.cse299.sec02.imageupload.imageUpload.FirebaseStorageFileUploader;
 import com.nsu.group06.cse299.sec02.imageupload.imageUpload.TakenImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,10 +34,36 @@ public class MainActivity extends AppCompatActivity {
     private static final String FILE_PROVIDER_AUTHORITY = "com.nsu.group06.cse299.sec02.imageupload.fileprovider";
 
     // ui
-    private ImageView mTakenImageView;
+    private Button mTakeImageButton, mUploadImageButton;
 
     // model
     private TakenImage mTakenImage;
+    private boolean mImageIsTaken = false;
+
+    // variables to upload photo to firebase storage
+    private FirebaseStorageFileUploader mFirebaseStorageFileUploader;
+    private FileUploader.FileUploadCallbacks<Uri> mFileUploadCallbacks = new FileUploader.FileUploadCallbacks<Uri>() {
+        @Override
+        public void onUploadComplete(Uri uploadedImageLink) {
+
+            imageUploadFinishedUI(true);
+
+            try {
+                URL link = new URL(uploadedImageLink.toString());
+                Log.d(TAG, "onUploadComplete: upload link -> "+link.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onUploadFailed(String message) {
+
+            imageUploadFinishedUI(false);
+
+            Log.d(TAG, "onUploadFailed: error->" + message);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             case REQUEST_IMAGE_CAPTURE:
 
-                showToast("image taken!");
+                mImageIsTaken = true;
 
                 break;
         }
@@ -64,7 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void init(){
 
-        mTakenImageView = findViewById(R.id.photoTaken_ImageView);
+        mTakeImageButton = findViewById(R.id.takePhoto_Button);
+        mUploadImageButton = findViewById(R.id.uploadPhoto_Button);
+
+        mFirebaseStorageFileUploader = new FirebaseStorageFileUploader(mFileUploadCallbacks,
+                "testImages");
     }
 
     public void takePhotoClick(View view) {
@@ -111,6 +142,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void uploadPhotoClick(View view) {
+
+        if(mTakenImage!=null && mImageIsTaken){
+
+            mImageIsTaken = false;
+            mFirebaseStorageFileUploader.setmDBPath("testImages/"+mTakenImage.getmPhotoFileName());
+            mFirebaseStorageFileUploader.uploadFile(mTakenImage);
+
+            uploadingImageUI();
+        }
+
+        else showToast("Take a photo first man");
+    }
+
+
+    private void uploadingImageUI() {
+
+        mTakeImageButton.setEnabled(false);
+
+        mUploadImageButton.setEnabled(false);
+        mUploadImageButton.setText("uploading...");
+    }
+
+    private void imageUploadFinishedUI(boolean success) {
+
+        mTakeImageButton.setEnabled(true);
+
+        mUploadImageButton.setEnabled(true);
+        mUploadImageButton.setText("Upload Photo");
+
+        if(success) showToast("image uploaded successfully!");
+
+        else showToast("Failed to upload image");
     }
 
     private void showToast(String message){
