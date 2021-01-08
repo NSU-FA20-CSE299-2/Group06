@@ -11,7 +11,7 @@ app.use(express.static(__dirname + '/views'));
 
 
 //help post route
-app.use('/post', postRoute)
+app.use('/help', postRoute)
 
 
 //home page router
