@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const path = require('path')
 
+//for help post 
 router.get('/', (req,res,next) =>{
     axios({
         method: 'get',
