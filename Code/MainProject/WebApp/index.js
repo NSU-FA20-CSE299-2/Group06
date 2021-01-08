@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const postRoute = require('./help')
 const path = require('path')
-const port = 3000
+const port = process.env.PORT || 3000
 
 app.set('views', path.join(__dirname, 'views/pages'));
 app.set('view engine', 'jade');
