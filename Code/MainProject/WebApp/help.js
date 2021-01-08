@@ -21,7 +21,7 @@ router.get('/', (req,res,next) =>{
         else {
             const time = "Confused Unga Bunga" //timeStamp will be converted to real time and date
             const date = "Also Confused Unga Bunga"
-            res.render('index', { data: post, time: time, date: date })
+            res.render('help', { data: post, time: time, date: date })
         }
     })
         .catch(err => console.error(err))

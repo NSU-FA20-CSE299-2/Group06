@@ -9,14 +9,16 @@ app.set('views', path.join(__dirname, 'views/pages'));
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/views'));
 
+
 //help post route
 app.use('/post', postRoute)
 
+
 //home page router
 app.get('/', (req, res) => {
-    //console.log(req.query.id,req.query.pid)
-    res.send("App Lander")
+    res.render('index')
 })
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
