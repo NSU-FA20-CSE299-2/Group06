@@ -5,35 +5,45 @@ const path = require('path')
 
 //for help post 
 router.get('/', (req,res,next) =>{
-    console.log(req.query)
+    
+    const uid = req.query.uid
+    const pid = req.query.pid
 
-    axios({
-        method: 'get',
-        url: 'https://helpmeapi-deploy.herokuapp.com/post',
-        params: {
-            uid: "8989898989",
-            pid: "Xtsd13Axd123zXc"
-        }
-    }).then(response => {
-        console.log(response.data)
-        const post = response.data
-        if (post.result == false) {
-            res.render('errorpage');
-        }
-        else {
-            //timeStamp will be converted to real time and date
-            const time = timeStampToTimeData(response.data.timeStamp).time 
-            const date = timeStampToTimeData(response.data.timeStamp).date
-            res.render('help', { data: post, time: time, date: date })
-        }
-    })
-        .catch(err => console.error(err))
+    if (uid == null || pid == null 
+        || uid.length < 5 || pid.length < 5) {
+        res.render('errorpage');
+    }
+    else{
+        axios({
+            method: 'get',
+            url: 'https://helpmeapi-deploy.herokuapp.com/post',
+            params: {
+                uid: uid,
+                pid: pid
+            }
+        }).then(response => {
+            //console.log(response.data)
+            const post = response.data
+            if (post.result == false) {
+                res.render('errorpage');
+            }
+            else {
+                //timeStamp will be converted to real time and date
+                const time = timeStampToTimeData(response.data.timeStamp).time
+                const date = timeStampToTimeData(response.data.timeStamp).date
+                
+                res.render('help', { data: post, time: time, date: date })
+            }
+        })
+            .catch(err => console.error(err))
+    }
 })
 
 
-function timeStampToTimeData(unix_timestamp)
+//unix timestamp converter
+function timeStampToTimeData(timestamp)
 {
-     var date = new Date(unix_timestamp * 1000);
+    var date = new Date(timestamp*1000);
     var hours = date.getHours();
     var minutes = "0" + date.getMinutes();
     var seconds = "0" + date.getSeconds();
