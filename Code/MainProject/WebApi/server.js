@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express')
 const app = express();
-const postRouter = require('./routes/posts')
 const PORT = process.env.PORT || 3000
 const admin = require('firebase-admin')
 var Firebase = require('firebase');
