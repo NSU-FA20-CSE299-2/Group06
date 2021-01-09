@@ -31,8 +31,9 @@ router.get('/', (req,res,next) =>{
                 //timeStamp will be converted to real time and date
                 const time = timeStampToTimeData(response.data.timeStamp).time
                 const date = timeStampToTimeData(response.data.timeStamp).date
+                const maplink = `https://www.google.com/maps/search/?api=1&query=${post.latitude},${post.longitude}`
                 
-                res.render('help', { data: post, time: time, date: date })
+                res.render('help-old', { data: post, time: time, date: date, maplink: maplink })
             }
         })
             .catch(err => console.error(err))
