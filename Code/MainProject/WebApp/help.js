@@ -28,30 +28,16 @@ router.get('/', (req,res,next) =>{
                 res.render('errorpage');
             }
             else {
-                //timeStamp will be converted to real time and date
-                const time = timeStampToTimeData(response.data.timeStamp).time
-                const date = timeStampToTimeData(response.data.timeStamp).date
+                //Todo: Add date and time diffently while creating help post (Dont use timeStamp) 
+                const time = "12:10 pm"
+                const date = "05-Jan-2021"
                 const maplink = `https://www.google.com/maps/search/?api=1&query=${post.latitude},${post.longitude}`
                 
-                res.render('help-old', { data: post, time: time, date: date, maplink: maplink })
+                res.render('help', { data: post, time: time, date: date, maplink: maplink })
             }
         })
             .catch(err => console.error(err))
     }
 })
-
-
-//unix timestamp converter
-function timeStampToTimeData(timestamp)
-{
-    var date = new Date(timestamp*1000);
-    var hours = date.getHours();
-    var minutes = "0" + date.getMinutes();
-    var seconds = "0" + date.getSeconds();
-    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    var date = date.getDay() + "-" + date.getMonth() + "-" + date.getFullYear();
-    return { time: formattedTime, date: date}
-}
-
 
 module.exports = router
