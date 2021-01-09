@@ -1,8 +1,42 @@
+
 doctype html
-html
-    title Error! (404)
-    head
-        link(rel="stylesheet", href="css/style.css")
-    body
-        h2 Error: Post not found (Invalid link)!
-        img(src="../images/error.jpg" alt='help me' border='0' width='60%')
+head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(charset='utf-8')
+    title Error: Post not found
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm', crossorigin='anonymous')
+    link(rel='stylesheet', href='../css/style.css')
+    link(href='https://fonts.googleapis.com/css?family=Montserrat|Ubuntu' rel='stylesheet')
+    script(defer='' src='https://use.fontawesome.com/releases/v5.6.3/js/all.js' integrity='sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1' crossorigin='anonymous')
+    script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
+section#title
+    // Nav Bar
+    .container-fluid
+        nav.navbar.navbar-expand-lg.navbar-dark
+            a.navbar-brand(href='/') Help Me App
+            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.ml-auto
+                    li.nav-item
+                        a.nav-link(href='#') Contact
+                    li.nav-item
+                        a.nav-link(href='#') About
+        // Error Section
+        .errorImage
+            img.errorImage(src='../images/error.jpg', alt='help post image')
+        // Footer
+        footer#footer
+            #social-icon
+                a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
+                    i.fab.fa-facebook-f
+                a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
+                    i.fab.fa-twitter
+                a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
+                    i.fab.fa-linkedin
+                a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
+                    i.fas.fa-envelope
+            p &copy; Copyright 2020 Help Me App
