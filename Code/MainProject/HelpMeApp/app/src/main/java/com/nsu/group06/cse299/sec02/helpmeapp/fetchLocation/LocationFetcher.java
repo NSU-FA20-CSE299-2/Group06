@@ -9,7 +9,7 @@ Abstraction for location fetching
 public abstract class LocationFetcher {
 
     // request code for showing dialog when location request fails
-    public static final int REQUEST_CHECK_SETTINGS = 694;
+    public static final int REQUEST_CHECK_LOCATION_SETTINGS = 694;
 
     // location update intervals in milliseconds
     protected long interval;

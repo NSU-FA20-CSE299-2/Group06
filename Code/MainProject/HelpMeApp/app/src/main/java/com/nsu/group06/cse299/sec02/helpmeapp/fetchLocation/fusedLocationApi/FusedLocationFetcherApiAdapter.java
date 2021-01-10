@@ -107,7 +107,7 @@ public class FusedLocationFetcherApiAdapter extends LocationFetcher {
                     // and check the result in onActivityResult().
                     ResolvableApiException resolvable = (ResolvableApiException) e;
                     resolvable.startResolutionForResult(activity,
-                            REQUEST_CHECK_SETTINGS);
+                            REQUEST_CHECK_LOCATION_SETTINGS);
                 } catch (IntentSender.SendIntentException sendEx) {
                     // Ignore the error.
                 }

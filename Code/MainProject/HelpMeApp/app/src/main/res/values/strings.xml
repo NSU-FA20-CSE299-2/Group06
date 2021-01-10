@@ -68,7 +68,7 @@
     <string name="helpPost_capturedPhoto_ImageView_Alt">taken_image</string>
     <string name="helpPost_takePhoto_Button_label">Take Photo</string>
     <string name="helpPost_Address_EditText_hint">address of your current location (Optional)</string>
-    <string name="helpPost_PickLocation_Button_label">Pick Location</string>
+    <string name="helpPost_PickLocation_Button_label">Fetch Location</string>
     <string name="helpPost_makePublic_CheckBox_label">Make post public</string>
     <string name="helpPost_Post_Button_label">Post</string>
     <string name="sign_up_title">Sign up</string>
@@ -78,6 +78,15 @@
     <string name="setup_profile_title">Setup Profile</string>
     <string name="help_post_title">Help Post</string>
     <string name="no_default_camera_app_found">No default camera app found</string>
+    <string name="fetching_location">Fetching Location…</string>
+    <string name="location_fetched">Location Fetched!</string>
+    <string name="location_fetch_failed">Location fetch failed, please try again</string>
+    <string name="location_settings">Location Settings</string>
+    <string name="location_settings_explanation">We need Location, Wifi and Bluetooth enabled to get your accurate location</string>
+    <string name="ok">OK</string>
+    <string name="location_permission">Location Permission</string>
+    <string name="location_permission_permanantely_denied_explanation">Please allow location from for the app from your device Settings.</string>
+    <string name="location_permission_explanation">Location permission is required to fetch your current location, permission MUST be provided!</string>
 
 
 </resources>
