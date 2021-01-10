@@ -92,6 +92,9 @@
     <string name="retry">Retry</string>
     <string name="ignore_and_send">ignore</string>
     <string name="no_location_error">No location fethced!</string>
+    <string name="image_upload_failed">Failed to upload the photo, try again.</string>
+    <string name="posting">Posting…</string>
+    <string name="posted">Sent!</string>
 
 
 </resources>

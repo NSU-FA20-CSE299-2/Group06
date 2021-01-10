@@ -30,11 +30,16 @@ import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.FetchedLocation;
 import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.LocationFetcher;
 import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.fusedLocationApi.FusedLocationFetcherApiAdapter;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.CapturedImage;
+import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.FileUploader;
+import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.firebaseStorage.FirebaseStorageFileUploader;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.HelpPost;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.RemoteStoragePathsUtils;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.SessionUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -82,7 +87,6 @@ public class HelpPostActivity extends AppCompatActivity {
 
     // variables used to fetch location
     private LocationFetcher mLocationFetcher;
-
     private LocationFetcher.LocationSettingsSetupListener mLocationSettingsSetupListener =
             new LocationFetcher.LocationSettingsSetupListener() {
                 @Override
@@ -100,7 +104,6 @@ public class HelpPostActivity extends AppCompatActivity {
                     Log.d(TAG, "onLocationSettingsSetupFailed: location settings setup failed ->" + message);
                 }
             };
-
     private LocationFetcher.LocationUpdateListener mLocationUpdateListener =
             new LocationFetcher.LocationUpdateListener() {
                 @Override
@@ -141,6 +144,41 @@ public class HelpPostActivity extends AppCompatActivity {
                     Log.d(TAG, "onError: location update error -> "+message);
                 }
             };
+
+
+    // variables to upload photo to firebase storage
+    private FirebaseStorageFileUploader mFileUploader;
+    private FileUploader.FileUploadCallbacks mFileUploadCallbacks = new FileUploader.FileUploadCallbacks() {
+        @Override
+        public void onUploadComplete(Uri uploadedImageLink) {
+
+            try {
+
+                URL link = new URL(uploadedImageLink.toString());
+
+                Log.d(TAG, "onUploadComplete: image upload url = "+link.toString());
+
+                mHelpPost.setmPhotoURL(link.toString());
+
+                // TODO: upload help post to database
+
+            } catch (MalformedURLException e) {
+
+                Log.d(TAG, "onUploadComplete: image upload error->"+e.getStackTrace());
+            }
+        }
+
+        @Override
+        public void onUploadFailed(String message) {
+
+            imageUploadFailedUI();
+
+            sendHelpPostFailedUI();
+
+            Log.d(TAG, "onUploadFailed: error->" + message);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,6 +271,8 @@ public class HelpPostActivity extends AppCompatActivity {
                 mLocationSettingsSetupListener,
                 mLocationUpdateListener
         );
+
+        mFileUploader = new FirebaseStorageFileUploader();
     }
 
     /**
@@ -253,8 +293,7 @@ public class HelpPostActivity extends AppCompatActivity {
 
         try {
 
-            // initialize an mImage object only the first time 'addFoodPhoto' button was pressed
-            if(mCapturedImage==null) mCapturedImage = CapturedImage.build(this);
+            mCapturedImage = CapturedImage.build(this);
 
             dispatchTakePictureIntent(mCapturedImage);
 
@@ -398,8 +437,22 @@ public class HelpPostActivity extends AppCompatActivity {
             stopLocationUpdates(mLocationFetcher);
             if(!checkFetchedLocationAccuracy(mFetchedLocation)) showInaccurateLocationDialog();
 
-            sendHelpPost(mHelpPost, mImageWasCaptured);
+            forwardHelpPost();
         }
+    }
+
+    /*
+    send the help post to emergency contacts as well as database
+     */
+    private void forwardHelpPost() {
+
+        smsToEmergencyContacts(mHelpPost);
+
+        sendHelpPostInProgressUI();
+
+        if(mImageWasCaptured) sendHelpPostWithPhoto(mCapturedImage, mFileUploader, mFileUploadCallbacks);
+
+        else sendHelpPostWithoutPhoto(mHelpPost);
     }
 
 
@@ -449,23 +502,25 @@ public class HelpPostActivity extends AppCompatActivity {
 
 
     /**
-     * forward help post to all receipients
+     * send help post to database without photo
      * @param helpPost model object for a help post
-     * @param imageWasCaptured check if image is attached to the pos
      */
-    private void sendHelpPost(HelpPost helpPost, boolean imageWasCaptured) {
+    private void sendHelpPostWithoutPhoto(HelpPost helpPost) {
 
-        smsToEmergencyContacts(helpPost);
+        // TODO: upload help post without any image
+    }
 
-        if(imageWasCaptured) {
+    /**
+     * send help post to database with photo
+     * @param capturedImage captured photo model
+     * @param fileUploader uploader object
+     * @param fileUploadCallbacks callback for uploading status
+     */
+    private void sendHelpPostWithPhoto(CapturedImage capturedImage, FirebaseStorageFileUploader fileUploader,
+                                       FileUploader.FileUploadCallbacks fileUploadCallbacks) {
 
-            // TODO: upload image first
-        }
 
-        else {
-
-            // TODO: upload help post without any image
-        }
+        uploadImage(fileUploader, fileUploadCallbacks, capturedImage);
     }
 
     /**
@@ -475,6 +530,22 @@ public class HelpPostActivity extends AppCompatActivity {
     private void smsToEmergencyContacts(HelpPost helpPost) {
 
         // TODO: implement
+    }
+
+    /**
+     * upload captured food image to remote data storage
+     * @param fileUploader file uploader object
+     * @param image object for image to be uploaded
+     */
+    private void uploadImage(FirebaseStorageFileUploader fileUploader,
+                             FileUploader.FileUploadCallbacks fileUploadCallbacks,
+                             CapturedImage image){
+
+        fileUploader.uploadFile(
+                image,
+                RemoteStoragePathsUtils.HELP_POST_PHOTO_NODE + "/" + image.getmPhotoFileName(),
+                fileUploadCallbacks
+        );
     }
 
 
@@ -546,16 +617,14 @@ public class HelpPostActivity extends AppCompatActivity {
 
                 .setNegativeButton(getString(R.string.ignore_and_send), (dialog, which) -> {
 
-                    sendHelpPost(mHelpPost, mImageWasCaptured);
+                    forwardHelpPost();
                     dialog.dismiss();
                 })
 
                 .show();
     }
 
-    /*
-    UI event for when location is being fetched
-     */
+
     private void fetchLocationInProgressUI(){
 
         mAddressEditText.setVisibility(View.GONE);
@@ -564,9 +633,7 @@ public class HelpPostActivity extends AppCompatActivity {
         mFetchLocationButton.setText(R.string.fetching_location);
     }
 
-    /*
-    UI event for when location fetch success
-     */
+
     private void fetchLocationSuccessUI(){
 
         mAddressEditText.setVisibility(View.VISIBLE);
@@ -575,15 +642,36 @@ public class HelpPostActivity extends AppCompatActivity {
         mFetchLocationButton.setText(R.string.location_fetched);
     }
 
-    /*
-    UI event for when location fetch failed
-     */
+
     private void fetchLocationFailedUI(){
 
         showToast(getString(R.string.location_fetch_failed));
 
         mFetchLocationButton.setEnabled(true);
         mFetchLocationButton.setText(R.string.helpPost_PickLocation_Button_label);
+    }
+
+    private void sendHelpPostInProgressUI(){
+
+        mPostButton.setEnabled(false);
+        mPostButton.setText(getString(R.string.posting));
+    }
+
+    private void sendHelpPostSuccessUI(){
+
+        showToast(getString(R.string.posted));
+        finish();
+    }
+
+    private void sendHelpPostFailedUI(){
+
+        mPostButton.setEnabled(true);
+        mPostButton.setText(getString(R.string.helpPost_Post_Button_label));
+    }
+
+    private void imageUploadFailedUI() {
+
+        showToast(getString(R.string.image_upload_failed));
     }
 
     private void showToast(String message){
