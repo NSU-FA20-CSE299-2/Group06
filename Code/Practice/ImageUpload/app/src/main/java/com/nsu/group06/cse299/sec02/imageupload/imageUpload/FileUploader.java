@@ -1,24 +1,30 @@
 package com.nsu.group06.cse299.sec02.imageupload.imageUpload;
 
+import android.net.Uri;
+
 /**
  * Abstraction for file upload/download codes
  * @param <UploadFileType> file type that is to be directly uploaded
  * @param <DownloadLinkType> link type that can be directly downloaded from
+ * @param <UploadPathType> uploading remote storage path type
  */
-public abstract class FileUploader<UploadFileType, DownloadLinkType> {
+public abstract class FileUploader<UploadFileType, DownloadLinkType, UploadPathType> {
 
-    public abstract void uploadFile(UploadFileType file);
-    public abstract void downloadFile(DownloadLinkType downloadLink);
+    public FileUploader() {
+    }
 
-    public interface FileUploadCallbacks<UploadedImageLinkType>{
+    public abstract void uploadFile(UploadFileType file, UploadPathType path, FileUploadCallbacks fileUploadCallbacks);
+    public abstract void downloadFile(DownloadLinkType downloadLink, FileDownloadCallbacks fileDownloadCallbacks);
 
-        void onUploadComplete(UploadedImageLinkType uploadedImageLink);
+    public interface FileUploadCallbacks{
+
+        void onUploadComplete(Uri uploadedImageLink);
         void onUploadFailed(String message);
     }
 
-    public interface FileDownloadCallbacks<DownloadedImageType>{
+    public interface FileDownloadCallbacks{
 
-        void onDownloadComplete(DownloadedImageType downloadedImage);
+        void onDownloadComplete(Uri downloadedImage);
         void onDownloadFailed(String message);
     }
 

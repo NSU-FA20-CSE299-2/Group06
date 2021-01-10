@@ -1,7 +1,6 @@
 package com.nsu.group06.cse299.sec02.imageupload.imageUpload;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 
@@ -13,7 +12,7 @@ import java.util.Date;
 /**
  * Model class for image taken for an help post
  */
-public class TakenImage {
+public class CapturedImage {
 
     private File mPhotoFile;
     private Uri mPhotoUri;
@@ -21,12 +20,12 @@ public class TakenImage {
     private String mPhotoFilePath;
     private String mPhotoFileName;
 
-    public static TakenImage build(Context context) throws IOException {
+    public static CapturedImage build(Context context) throws IOException {
 
-        return new TakenImage(context);
+        return new CapturedImage(context);
     }
 
-    private TakenImage(Context context) throws IOException {
+    private CapturedImage(Context context) throws IOException {
 
         createImageFile(context);
     }
