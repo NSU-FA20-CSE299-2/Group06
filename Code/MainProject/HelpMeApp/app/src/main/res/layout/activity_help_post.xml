@@ -6,109 +6,123 @@
     android:layout_height="match_parent"
     tools:context=".HelpPostActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/helpPostContent_EditText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/custom_edittext"
-            android:ems="10"
-            android:fontFamily="@font/segoeui"
-            android:gravity="start|top"
-            android:hint="@string/helpPostContent_EditText_hint"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:padding="16dp" />
-
-        <ImageView
-            android:id="@+id/helpPost_capturedPhoto_ImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/helpPost_capturedPhoto_ImageView_Alt"
-            android:visibility="gone"
-            app:srcCompat="@android:drawable/ic_menu_report_image" />
-
-        <Button
-            android:id="@+id/helpPost_takePhoto_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/custom_button2"
-            android:fontFamily="@font/segoebold"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/helpPost_takePhoto_Button_label"
-            android:textAllCaps="false"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/helpPost_Address_EditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/custom_edittext"
-            android:ems="10"
-            android:fontFamily="@font/segoeui"
-            android:hint="@string/helpPost_Address_EditText_hint"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:padding="16dp"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/helpPost_PickLocation_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/custom_button2"
-            android:fontFamily="@font/segoebold"
-            android:padding="16dp"
-            android:text="@string/helpPost_PickLocation_Button_label"
-            android:textAllCaps="false"
-            android:textSize="18sp" />
-
-        <CheckBox
-            android:id="@+id/helpPost_makePublic_CheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/segoebold"
-            android:text="@string/helpPost_makePublic_CheckBox_label" />
-
-        <Button
-            android:id="@+id/helpPost_Post_Button"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/custom_button"
-            android:fontFamily="@font/segoebold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/helpPost_Post_Button_label"
-            android:textColor="@color/white" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/helpPostContent_EditText"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext"
+                android:ems="10"
+                android:fontFamily="@font/segoeui"
+                android:gravity="start|top"
+                android:hint="@string/helpPostContent_EditText_hint"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:padding="16dp" />
+
+            <ImageView
+                android:id="@+id/helpPost_capturedPhoto_ImageView"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/helpPost_capturedPhoto_ImageView_Alt"
+                android:foregroundGravity="center"
+                android:visibility="gone"
+                app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+            <Button
+                android:id="@+id/helpPost_takePhoto_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_button2"
+                android:fontFamily="@font/segoebold"
+                android:gravity="center"
+                android:onClick="takePhotoClick"
+                android:padding="16dp"
+                android:text="@string/helpPost_takePhoto_Button_label"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/helpPost_Address_EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext"
+                android:ems="10"
+                android:fontFamily="@font/segoeui"
+                android:hint="@string/helpPost_Address_EditText_hint"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:padding="16dp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/helpPost_PickLocation_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_button2"
+                android:fontFamily="@font/segoebold"
+                android:onClick="pickLocationClick"
+                android:padding="16dp"
+                android:text="@string/helpPost_PickLocation_Button_label"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/helpPost_makePublic_CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/segoebold"
+                android:gravity="center"
+                android:text="@string/helpPost_makePublic_CheckBox_label" />
+
+            <Button
+                android:id="@+id/helpPost_Post_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/custom_button"
+                android:fontFamily="@font/segoebold"
+                android:gravity="center"
+                android:onClick="postClick"
+                android:padding="16dp"
+                android:text="@string/helpPost_Post_Button_label"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>
