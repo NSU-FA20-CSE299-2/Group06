@@ -41,4 +41,9 @@ public class MenuActivity extends AppCompatActivity {
 
         startActivity(new Intent(this, SetupProfileActivity.class));
     }
+
+    public void postHelpClick(View view) {
+
+        startActivity(new Intent(this, HelpPostActivity.class));
+    }
 }

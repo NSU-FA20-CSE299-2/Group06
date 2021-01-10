@@ -84,6 +84,7 @@
                 android:padding="5dp"
                 android:text="@string/emergency_contacts"
                 android:textColor="#FF2B2B" />
+
             <Button
                 android:id="@+id/btn_postForHelp"
                 android:layout_width="150dp"
@@ -92,9 +93,10 @@
                 android:background="@drawable/menu_button"
                 android:drawableTop="@drawable/ic_help_menu"
                 android:fontFamily="@font/segoeui"
+                android:onClick="postHelpClick"
+                android:padding="5dp"
                 android:text="@string/post_for_help"
-                android:textColor="#FF2B2B"
-                android:padding="5dp"/>
+                android:textColor="#FF2B2B" />
 
         </LinearLayout>
 

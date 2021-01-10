@@ -77,6 +77,7 @@
     <string name="emergency_contacts_title">Emergency Contacts</string>
     <string name="setup_profile_title">Setup Profile</string>
     <string name="help_post_title">Help Post</string>
+    <string name="no_default_camera_app_found">No default camera app found</string>
 
 
 </resources>
