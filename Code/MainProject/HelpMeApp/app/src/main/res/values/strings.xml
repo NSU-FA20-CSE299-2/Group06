@@ -71,6 +71,12 @@
     <string name="helpPost_PickLocation_Button_label">Pick Location</string>
     <string name="helpPost_makePublic_CheckBox_label">Make post public</string>
     <string name="helpPost_Post_Button_label">Post</string>
+    <string name="sign_up_title">Sign up</string>
+    <string name="login_title">Login</string>
+    <string name="menu_title">Menu</string>
+    <string name="emergency_contacts_title">Emergency Contacts</string>
+    <string name="setup_profile_title">Setup Profile</string>
+    <string name="help_post_title">Help Post</string>
 
 
 </resources>

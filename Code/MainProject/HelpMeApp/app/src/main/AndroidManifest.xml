@@ -17,16 +17,14 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.nsu.group06.cse299.sec02.imageupload.fileprovider"
+            android:authorities="com.nsu.group06.cse299.sec02.helpmeapp.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".HelpPostActivity" />
-        <activity android:name=".SetupProfileActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,16 +34,24 @@
         </activity>
         <activity
             android:name=".SignupActivity"
-            android:label="Signup" />
+            android:label="@string/sign_up_title" />
         <activity
             android:name=".LoginActivity"
-            android:label="Login" />
+            android:label="@string/login_title" />
         <activity
             android:name=".MenuActivity"
-            android:label="Menu" />
+            android:label="@string/menu_title" />
         <activity
             android:name=".EmergencyContactsActivity"
-            android:label="Emergency Contacts" />
+            android:label="@string/emergency_contacts_title" />
+
+        <activity
+            android:name=".SetupProfileActivity"
+            android:label="@string/setup_profile_title" />
+
+        <activity
+            android:name=".HelpPostActivity"
+            android:label="@string/help_post_title" />
     </application>
 
 </manifest>
