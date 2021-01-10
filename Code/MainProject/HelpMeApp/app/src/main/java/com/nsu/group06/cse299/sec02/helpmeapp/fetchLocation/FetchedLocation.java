@@ -8,8 +8,9 @@ public class FetchedLocation {
     private double mLatitude, mLongitude, mAltitude, mAccuracy;
     private String mAddress = "";
 
-    // TODO: calculate this value properly
+    // TODO: calculate the values properly
     private static final double SIGNIFICANT_DIFFERENCE_DISTANCE = 20.00d; // in meters
+    private static final double MINIMUM_ACCURACY_REQUIREMENT = 30.00d; // in meters
 
     public FetchedLocation() {
     }
@@ -42,6 +43,16 @@ public class FetchedLocation {
 
         return distanceBetween(location1.getmLatitude(), location2.getmLatitude(), location1.getmLongitude(), location2.getmLongitude())
                 >= SIGNIFICANT_DIFFERENCE_DISTANCE;
+    }
+
+    /**
+     * check a location is accurate enough
+     * @param fetchedLocation location object to be checked
+     * @return accurate enough or not
+     */
+    public static boolean isLocationAccurateEnough(FetchedLocation fetchedLocation){
+
+        return fetchedLocation.getmAccuracy() <= MINIMUM_ACCURACY_REQUIREMENT;
     }
 
     /*

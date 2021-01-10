@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/helpPostContent_EditText"
+                android:id="@+id/helpPost_description_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginStart="4dp"
@@ -107,6 +107,7 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/segoebold"
                 android:gravity="center"
+                android:onClick="makePublicCheckboxClick"
                 android:text="@string/helpPost_makePublic_CheckBox_label" />
 
             <Button

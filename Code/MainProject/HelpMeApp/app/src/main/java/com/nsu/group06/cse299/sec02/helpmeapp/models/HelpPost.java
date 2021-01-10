@@ -7,19 +7,20 @@ public class HelpPost {
 
     private String mPostId;
     private String mAuthorId;
-    private String mAuthor;
+    private String mAuthor = "anonymous";
     private String mContent;
     private double mLongitude, mLatitude, mAltitude;
-    private String mAddress;
-    private String mPhotoURL;
+    private String mAddress = "";
+    private String mPhotoURL = "";
     private String mTimeStamp;
+    private boolean mIsPublic = false;
 
     public HelpPost() {
     }
 
     public HelpPost(String mPostId, String mAuthorId, String mAuthor, String mContent,
                     double mLongitude, double mLatitude, double mAltitude, String mAddress,
-                    String mPhotoURL, String mTimeStamp) {
+                    String mPhotoURL, String mTimeStamp, boolean mIsPublic) {
 
         this.mPostId = mPostId;
         this.mAuthorId = mAuthorId;
@@ -31,6 +32,7 @@ public class HelpPost {
         this.mAddress = mAddress;
         this.mPhotoURL = mPhotoURL;
         this.mTimeStamp = mTimeStamp;
+        this.mIsPublic = mIsPublic;
     }
 
     public String getmPostId() {
@@ -111,5 +113,13 @@ public class HelpPost {
 
     public void setmTimeStamp(String mTimeStamp) {
         this.mTimeStamp = mTimeStamp;
+    }
+
+    public boolean ismIsPublic() {
+        return mIsPublic;
+    }
+
+    public void setmIsPublic(boolean mIsPublic) {
+        this.mIsPublic = mIsPublic;
     }
 }

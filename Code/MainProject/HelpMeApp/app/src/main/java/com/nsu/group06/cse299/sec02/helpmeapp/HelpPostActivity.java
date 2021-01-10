@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,6 +35,9 @@ import com.nsu.group06.cse299.sec02.helpmeapp.utils.SessionUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class HelpPostActivity extends AppCompatActivity {
 
@@ -48,11 +52,13 @@ public class HelpPostActivity extends AppCompatActivity {
     // ui
     private ImageView mCapturedImageView;
     private Button mTakeImageButton, mFetchLocationButton, mPostButton;
+    private EditText mPostDescriptionEditText, mAddressEditText;
 
     // model
     private CapturedImage mCapturedImage;
     private boolean mImageWasCaptured = false; // necessary for when user presses take photo but doesn't take a photo
     private FetchedLocation mFetchedLocation;
+    private boolean mLocationWasFethced = false;
     private HelpPost mHelpPost;
 
     // variables used for fetching user uid
@@ -100,7 +106,19 @@ public class HelpPostActivity extends AppCompatActivity {
                 @Override
                 public void onNewLocationUpdate(FetchedLocation fetchedLocation) {
 
-                    // TODO: save most accurate fetched location
+                    if(!mLocationWasFethced){
+
+                        fetchLocationSuccessUI();
+
+                        mLocationWasFethced = true;
+                        mFetchedLocation = fetchedLocation;
+                    }
+
+                    else if(mFetchedLocation.getmAccuracy() > fetchedLocation.getmAccuracy()
+                            || FetchedLocation.isLocationSignificantlyDifferent(mFetchedLocation, fetchedLocation)) {
+
+                        mFetchedLocation = fetchedLocation;
+                    }
 
                     Log.d(TAG, "onNewLocationUpdate: location -> "+fetchedLocation.toString());
                 }
@@ -153,6 +171,11 @@ public class HelpPostActivity extends AppCompatActivity {
                 mCapturedImageView.setVisibility(View.VISIBLE);
                 mCapturedImageView.setImageURI(mCapturedImage.getmPhotoUri());
 
+                // location fetching stops when user leaves this activity to take image
+                // enable user to fetch location again
+                mFetchLocationButton.setEnabled(true);
+                mFetchLocationButton.setText(R.string.helpPost_PickLocation_Button_label);
+
                 break;
 
             case LocationFetcher.REQUEST_CHECK_LOCATION_SETTINGS:
@@ -193,6 +216,8 @@ public class HelpPostActivity extends AppCompatActivity {
         mTakeImageButton = findViewById(R.id.helpPost_takePhoto_Button);
         mFetchLocationButton = findViewById(R.id.helpPost_PickLocation_Button);
         mPostButton = findViewById(R.id.helpPost_Post_Button);
+        mPostDescriptionEditText = findViewById(R.id.helpPost_description_EditText);
+        mAddressEditText = findViewById(R.id.helpPost_Address_EditText);
 
         mHelpPost = new HelpPost();
         mHelpPost.setmAuthor("anonymous");
@@ -202,6 +227,7 @@ public class HelpPostActivity extends AppCompatActivity {
 
         mImageWasCaptured = false;
 
+        mLocationWasFethced = false;
         mLocationFetcher = new FusedLocationFetcherApiAdapter(
                 1000, this,
                 mLocationSettingsSetupListener,
@@ -268,7 +294,6 @@ public class HelpPostActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
     /*
@@ -345,6 +370,115 @@ public class HelpPostActivity extends AppCompatActivity {
 
 
     /*
+    'make public' checkbox click
+     */
+    public void makePublicCheckboxClick(View view) {
+
+        mHelpPost.setmIsPublic(!mHelpPost.ismIsPublic());
+    }
+
+    /*
+    'Post' button click
+     */
+    public void postClick(View view) {
+
+        String description = mPostDescriptionEditText.getText().toString().trim();
+        String address = mAddressEditText.getText().toString().trim();
+
+        if(validateInputs(description, mLocationWasFethced)){
+
+            mHelpPost.setmAuthor("anonymous");
+            mHelpPost.setmContent(description);
+            mHelpPost.setmLatitude(mFetchedLocation.getmLatitude());
+            mHelpPost.setmLongitude(mFetchedLocation.getmLongitude());
+            mHelpPost.setmAltitude(mFetchedLocation.getmAltitude());
+            mHelpPost.setmAddress(address);
+            mHelpPost.setmTimeStamp(getCurrentTime());
+
+            stopLocationUpdates(mLocationFetcher);
+            if(!checkFetchedLocationAccuracy(mFetchedLocation)) showInaccurateLocationDialog();
+
+            sendHelpPost(mHelpPost, mImageWasCaptured);
+        }
+    }
+
+
+    /**
+     * validate user inputs
+     * @param description content of the help post
+     * @param locationWasFetched location fetch flag
+     * @return valid or not
+     */
+    private boolean validateInputs(String description, boolean locationWasFetched) {
+
+        boolean isValid = locationWasFetched;
+
+        if(description.isEmpty()){
+
+            isValid = false;
+            mPostDescriptionEditText.setError(getString(R.string.invalid_description));
+        }
+
+        if(!locationWasFetched) showToast(getString(R.string.no_location_error));
+
+        return isValid;
+    }
+
+    /**
+     * check location accuracy
+     * @param fetchedLocation location to be checked
+     * @return if fetched location is accurate enough
+     */
+    private boolean checkFetchedLocationAccuracy(FetchedLocation fetchedLocation) {
+
+        return FetchedLocation.isLocationAccurateEnough(fetchedLocation);
+    }
+
+    /**
+     * get current time
+     * @return time string format- Date/Month/Year, hour:minutes:second
+     * courtesy - <https://stackoverflow.com/questions/5175728/how-to-get-the-current-date-time-in-java>
+     */
+    private String getCurrentTime() {
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        return dateFormat.format(date);
+    }
+
+
+    /**
+     * forward help post to all receipients
+     * @param helpPost model object for a help post
+     * @param imageWasCaptured check if image is attached to the pos
+     */
+    private void sendHelpPost(HelpPost helpPost, boolean imageWasCaptured) {
+
+        smsToEmergencyContacts(helpPost);
+
+        if(imageWasCaptured) {
+
+            // TODO: upload image first
+        }
+
+        else {
+
+            // TODO: upload help post without any image
+        }
+    }
+
+    /**
+     * send sms to all saved emergency contacts
+     * @param helpPost help post model object
+     */
+    private void smsToEmergencyContacts(HelpPost helpPost) {
+
+        // TODO: implement
+    }
+
+
+    /*
     show alert dialog explaining why location permission is a MUST
     with a simple dialog, quit activity if permission is permanently denied
     courtesy - <https://stackoverflow.com/questions/26097513/android-simple-alert-dialog
@@ -393,19 +527,38 @@ public class HelpPostActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
     /*
-    'Post' button click
+    user attempted to post but the fetched location was inaccurate
+    show alert asking to retry or fetch again
+    courtesy - <https://stackoverflow.com/questions/26097513/android-simple-alert-dialog
      */
-    public void postClick(View view) {
+    private void showInaccurateLocationDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(getString(R.string.location_is_innaccurate))
+
+                .setPositiveButton(getString(R.string.retry), (dialog, which) -> {
+
+                    startFetchingLocation();
+                    dialog.dismiss();
+                })
+
+                .setNegativeButton(getString(R.string.ignore_and_send), (dialog, which) -> {
+
+                    sendHelpPost(mHelpPost, mImageWasCaptured);
+                    dialog.dismiss();
+                })
+
+                .show();
     }
-
-
 
     /*
     UI event for when location is being fetched
      */
     private void fetchLocationInProgressUI(){
+
+        mAddressEditText.setVisibility(View.GONE);
 
         mFetchLocationButton.setEnabled(false);
         mFetchLocationButton.setText(R.string.fetching_location);
@@ -415,6 +568,8 @@ public class HelpPostActivity extends AppCompatActivity {
     UI event for when location fetch success
      */
     private void fetchLocationSuccessUI(){
+
+        mAddressEditText.setVisibility(View.VISIBLE);
 
         mFetchLocationButton.setEnabled(false);
         mFetchLocationButton.setText(R.string.location_fetched);

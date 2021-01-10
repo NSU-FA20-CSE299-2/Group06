@@ -67,7 +67,7 @@
     <string name="helpPostContent_EditText_hint">Write post description…</string>
     <string name="helpPost_capturedPhoto_ImageView_Alt">taken_image</string>
     <string name="helpPost_takePhoto_Button_label">Take Photo</string>
-    <string name="helpPost_Address_EditText_hint">address of your current location (Optional)</string>
+    <string name="helpPost_Address_EditText_hint">address (Optional)</string>
     <string name="helpPost_PickLocation_Button_label">Fetch Location</string>
     <string name="helpPost_makePublic_CheckBox_label">Make post public</string>
     <string name="helpPost_Post_Button_label">Post</string>
@@ -87,6 +87,11 @@
     <string name="location_permission">Location Permission</string>
     <string name="location_permission_permanantely_denied_explanation">Please allow location from for the app from your device Settings.</string>
     <string name="location_permission_explanation">Location permission is required to fetch your current location, permission MUST be provided!</string>
+    <string name="invalid_description">invalid description</string>
+    <string name="location_is_innaccurate">Location is innacurate. Do you want retry fetching location?</string>
+    <string name="retry">Retry</string>
+    <string name="ignore_and_send">ignore</string>
+    <string name="no_location_error">No location fethced!</string>
 
 
 </resources>
