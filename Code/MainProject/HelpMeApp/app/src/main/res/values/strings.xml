@@ -63,6 +63,14 @@
     <string name="loading">Loading…</string>
     <string name="success">success</string>
 
+    <!--Help Post Activity -->
+    <string name="helpPostContent_EditText_hint">Write post description…</string>
+    <string name="helpPost_capturedPhoto_ImageView_Alt">taken_image</string>
+    <string name="helpPost_takePhoto_Button_label">Take Photo</string>
+    <string name="helpPost_Address_EditText_hint">address of your current location (Optional)</string>
+    <string name="helpPost_PickLocation_Button_label">Pick Location</string>
+    <string name="helpPost_makePublic_CheckBox_label">Make post public</string>
+    <string name="helpPost_Post_Button_label">Post</string>
 
 
 </resources>
