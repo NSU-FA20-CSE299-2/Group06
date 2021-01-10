@@ -49,6 +49,12 @@ dependencies {
     // Declare the dependency for the Cloud Storage library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-storage'
+
+    // permissions library
+    implementation 'com.karumi:dexter:6.2.2'
+
+    // fused location api
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 }
 
 // ADD THIS AT THE BOTTOM for firebase
