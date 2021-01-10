@@ -13,14 +13,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.nsu.group06.cse299.sec02.helpmeapp.auth.Authentication;
+import com.nsu.group06.cse299.sec02.helpmeapp.auth.AuthenticationUser;
+import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.CapturedImage;
+import com.nsu.group06.cse299.sec02.helpmeapp.models.HelpPost;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.SessionUtils;
 
 import java.io.File;
 import java.io.IOException;
 
 public class HelpPostActivity extends AppCompatActivity {
 
-    private static final String TAG = "MA-debug";
+    private static final String TAG = "HPA-debug";
 
     // request code for camera intent
     private static final int REQUEST_IMAGE_CAPTURE = 935;
@@ -33,6 +38,26 @@ public class HelpPostActivity extends AppCompatActivity {
 
     // model
     private CapturedImage mCapturedImage;
+    private HelpPost mHelpPost;
+
+    // variables used for fetching user uid
+    private Authentication mAuth;
+    private Authentication.AuthenticationCallbacks mAuthCallbacks =
+            new Authentication.AuthenticationCallbacks() {
+                @Override
+                public void onAuthenticationSuccess(AuthenticationUser user) {
+
+                    mHelpPost.setmAuthorId(user.getmUid());
+
+                    Log.d(TAG, "onAuthenticationSuccess: uid = "+user.getmUid());
+                }
+
+                @Override
+                public void onAuthenticationFailure(String message) {
+
+                    SessionUtils.doHardLogout(HelpPostActivity.this, mAuth);
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +87,23 @@ public class HelpPostActivity extends AppCompatActivity {
     private void init() {
 
         mCapturedImageView = findViewById(R.id.helpPost_capturedPhoto_ImageView);
+
+        mHelpPost = new HelpPost();
+        mHelpPost.setmAuthor("anonymous");
+
+        mAuth = new FirebaseEmailPasswordAuthentication();
+        authenticateUserLoginState(mAuth, mAuthCallbacks);
+    }
+
+    /**
+     * authenticate if user is logged in
+     * @param auth authenticator object
+     * @param authCallbacks authentication sucess/failure callback
+     */
+    private void authenticateUserLoginState(Authentication auth, Authentication.AuthenticationCallbacks authCallbacks) {
+
+        auth.setmAuthenticationCallbacks(authCallbacks);
+        auth.authenticateUser();
     }
 
     /*
