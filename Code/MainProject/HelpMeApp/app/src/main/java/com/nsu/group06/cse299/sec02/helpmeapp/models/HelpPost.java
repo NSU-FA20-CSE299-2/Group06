@@ -10,15 +10,15 @@ import java.util.Date;
  */
 public class HelpPost {
 
-    private String mPostId;
-    private String mAuthorId;
-    private String mAuthor = "anonymous";
-    private String mContent;
-    private double mLongitude, mLatitude, mAltitude;
-    private String mAddress = "";
-    private String mPhotoURL = "";
-    private String mTimeStamp;
-    private boolean mIsPublic = false;
+    private String postId;
+    private String authorId;
+    private String author = "anonymous";
+    private String content;
+    private double longitude, latitude, altitude;
+    private String address = "";
+    private String photoURL = "";
+    private String timeStamp;
+    private boolean isPublic = false;
 
     public HelpPost() {
     }
@@ -27,17 +27,17 @@ public class HelpPost {
                     double mLongitude, double mLatitude, double mAltitude, String mAddress,
                     String mPhotoURL, String mTimeStamp, boolean mIsPublic) {
 
-        this.mPostId = mPostId;
-        this.mAuthorId = mAuthorId;
-        this.mAuthor = mAuthor;
-        this.mContent = mContent;
-        this.mLongitude = mLongitude;
-        this.mLatitude = mLatitude;
-        this.mAltitude = mAltitude;
-        this.mAddress = mAddress;
-        this.mPhotoURL = mPhotoURL;
-        this.mTimeStamp = mTimeStamp;
-        this.mIsPublic = mIsPublic;
+        this.postId = mPostId;
+        this.authorId = mAuthorId;
+        this.author = mAuthor;
+        this.content = mContent;
+        this.longitude = mLongitude;
+        this.latitude = mLatitude;
+        this.altitude = mAltitude;
+        this.address = mAddress;
+        this.photoURL = mPhotoURL;
+        this.timeStamp = mTimeStamp;
+        this.isPublic = mIsPublic;
     }
 
     /**
@@ -58,91 +58,91 @@ public class HelpPost {
         return uid+timeStamp;
     }
 
-    public String getmPostId() {
-        return mPostId;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setmPostId(String mPostId) {
-        this.mPostId = mPostId;
+    public void setPostId(String mPostId) {
+        this.postId = mPostId;
     }
 
-    public String getmAuthorId() {
-        return mAuthorId;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setmAuthorId(String mAuthorId) {
-        this.mAuthorId = mAuthorId;
+    public void setAuthorId(String mAuthorId) {
+        this.authorId = mAuthorId;
     }
 
-    public String getmAuthor() {
-        return mAuthor;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setmAuthor(String mAuthor) {
-        this.mAuthor = mAuthor;
+    public void setAuthor(String mAuthor) {
+        this.author = mAuthor;
     }
 
-    public String getmContent() {
-        return mContent;
+    public String getContent() {
+        return content;
     }
 
-    public void setmContent(String mContent) {
-        this.mContent = mContent;
+    public void setContent(String mContent) {
+        this.content = mContent;
     }
 
-    public double getmLongitude() {
-        return mLongitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setmLongitude(double mLongitude) {
-        this.mLongitude = mLongitude;
+    public void setLongitude(double mLongitude) {
+        this.longitude = mLongitude;
     }
 
-    public double getmLatitude() {
-        return mLatitude;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setmLatitude(double mLatitude) {
-        this.mLatitude = mLatitude;
+    public void setLatitude(double mLatitude) {
+        this.latitude = mLatitude;
     }
 
-    public double getmAltitude() {
-        return mAltitude;
+    public double getAltitude() {
+        return altitude;
     }
 
-    public void setmAltitude(double mAltitude) {
-        this.mAltitude = mAltitude;
+    public void setAltitude(double mAltitude) {
+        this.altitude = mAltitude;
     }
 
-    public String getmAddress() {
-        return mAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setmAddress(String mAddress) {
-        this.mAddress = mAddress;
+    public void setAddress(String mAddress) {
+        this.address = mAddress;
     }
 
-    public String getmPhotoURL() {
-        return mPhotoURL;
+    public String getPhotoURL() {
+        return photoURL;
     }
 
-    public void setmPhotoURL(String mPhotoURL) {
-        this.mPhotoURL = mPhotoURL;
+    public void setPhotoURL(String mPhotoURL) {
+        this.photoURL = mPhotoURL;
     }
 
-    public String getmTimeStamp() {
-        return mTimeStamp;
+    public String getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setmTimeStamp(String mTimeStamp) {
-        this.mTimeStamp = mTimeStamp;
+    public void setTimeStamp(String mTimeStamp) {
+        this.timeStamp = mTimeStamp;
     }
 
-    public boolean ismIsPublic() {
-        return mIsPublic;
+    public boolean isPublic() {
+        return isPublic;
     }
 
-    public void setmIsPublic(boolean mIsPublic) {
-        this.mIsPublic = mIsPublic;
+    public void setIsPublic(boolean mIsPublic) {
+        this.isPublic = mIsPublic;
     }
 }

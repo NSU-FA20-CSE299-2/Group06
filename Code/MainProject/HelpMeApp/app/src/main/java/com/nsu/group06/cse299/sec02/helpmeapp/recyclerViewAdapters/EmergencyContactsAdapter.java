@@ -5,9 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nsu.group06.cse299.sec02.helpmeapp.R;
-import com.nsu.group06.cse299.sec02.helpmeapp.database.ApiEndPoint;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBApiEndPoint;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBRealtime;
@@ -97,9 +94,9 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
 
                         // store emergency contacts read from the database to the local database
                         // if they aren't saved already
-                        if(!mEmergencyContactsSharedPref.doesPhoneNumberAlreadyExist(data.getmPhoneNumber())) {
+                        if(!mEmergencyContactsSharedPref.doesPhoneNumberAlreadyExist(data.getPhoneNumber())) {
 
-                            mEmergencyContactsSharedPref.addPhoneNumber(data.getmPhoneNumber());
+                            mEmergencyContactsSharedPref.addPhoneNumber(data.getPhoneNumber());
                         }
 
                         EmergencyContactsAdapter.this.notifyItemInserted(mEmergencyContacts.size()-1);
@@ -111,7 +108,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
                         int updatePosition = -1;
                         for(int i=0; i<mEmergencyContacts.size(); i++) {
 
-                            if (mEmergencyContacts.get(i).getmPhoneNumber().equals(data.getmPhoneNumber())){
+                            if (mEmergencyContacts.get(i).getPhoneNumber().equals(data.getPhoneNumber())){
 
                                 updatePosition = i;
                                 break;
@@ -119,7 +116,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
                         }
                         if(updatePosition==-1) return;
 
-                        mEmergencyContacts.get(updatePosition).setmName(data.getmName());
+                        mEmergencyContacts.get(updatePosition).setName(data.getName());
                         EmergencyContactsAdapter.this.notifyItemChanged(updatePosition);
                     }
 
@@ -129,7 +126,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
                         int removePosition = -1;
                         for(int i=0; i<mEmergencyContacts.size(); i++) {
 
-                            if (mEmergencyContacts.get(i).getmPhoneNumber().equals(data.getmPhoneNumber())){
+                            if (mEmergencyContacts.get(i).getPhoneNumber().equals(data.getPhoneNumber())){
 
                                 removePosition = i;
                                 break;
@@ -170,7 +167,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
                 "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_NODE
                         + "/" + mUid
                         + "/" + NosqlDatabasePathUtils.EMERGENCY_CONTACTS_PHONE_NODE
-                        + "/phoneNumber:" + emergencyContact.getmPhoneNumber()
+                        + "/phoneNumber:" + emergencyContact.getPhoneNumber()
         );
 
         mDeleteEmergencyContactSingleOperationDatabase =
@@ -206,7 +203,7 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
         mDeleteEmergencyContactSingleOperationDatabase.delete(emergencyContact);
 
         // delete from local storage
-        mEmergencyContactsSharedPref.removePhoneNumber(emergencyContact.getmPhoneNumber());
+        mEmergencyContactsSharedPref.removePhoneNumber(emergencyContact.getPhoneNumber());
     }
 
     public interface CallerActivityCallbacks{
@@ -226,8 +223,8 @@ public class EmergencyContactsAdapter extends RecyclerView.Adapter<EmergencyCont
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         EmergencyContact emergencyContact = mEmergencyContacts.get(position);
-        holder.nameTextView.setText(emergencyContact.getmName());
-        holder.phoneNumberTextView.setText(emergencyContact.getmPhoneNumber());
+        holder.nameTextView.setText(emergencyContact.getName());
+        holder.phoneNumberTextView.setText(emergencyContact.getPhoneNumber());
 
         // delete emergency contact click listener
         holder.deleteButton.setOnClickListener(v -> deleteEmergencyContact(emergencyContact));

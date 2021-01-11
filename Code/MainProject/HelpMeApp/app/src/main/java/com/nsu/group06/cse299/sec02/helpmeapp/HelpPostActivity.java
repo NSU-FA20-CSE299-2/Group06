@@ -77,7 +77,7 @@ public class HelpPostActivity extends AppCompatActivity {
                 @Override
                 public void onAuthenticationSuccess(AuthenticationUser user) {
 
-                    mHelpPost.setmAuthorId(user.getmUid());
+                    mHelpPost.setAuthorId(user.getmUid());
 
                     Log.d(TAG, "onAuthenticationSuccess: uid = "+user.getmUid());
                 }
@@ -160,10 +160,10 @@ public class HelpPostActivity extends AppCompatActivity {
 
                 URL link = new URL(uploadedImageLink.toString());
 
-                mHelpPost.setmPhotoURL(link.toString());
+                mHelpPost.setPhotoURL(link.toString());
 
                 // make database entry
-                mHelpPostSingleOperationDatabase.createWithId(mHelpPost.getmPostId(), mHelpPost);
+                mHelpPostSingleOperationDatabase.createWithId(mHelpPost.getPostId(), mHelpPost);
 
             } catch (MalformedURLException e) {
 
@@ -292,7 +292,7 @@ public class HelpPostActivity extends AppCompatActivity {
         mAddressEditText = findViewById(R.id.helpPost_Address_EditText);
 
         mHelpPost = new HelpPost();
-        mHelpPost.setmAuthor("anonymous");
+        mHelpPost.setAuthor("anonymous");
 
         mAuth = new FirebaseEmailPasswordAuthentication();
         authenticateUserLoginState(mAuth, mAuthCallbacks);
@@ -450,7 +450,7 @@ public class HelpPostActivity extends AppCompatActivity {
      */
     public void makePublicCheckboxClick(View view) {
 
-        mHelpPost.setmIsPublic(!mHelpPost.ismIsPublic());
+        mHelpPost.setIsPublic(!mHelpPost.isPublic());
     }
 
     /*
@@ -463,14 +463,14 @@ public class HelpPostActivity extends AppCompatActivity {
 
         if(validateInputs(description, mLocationWasFethced)){
 
-            mHelpPost.setmPostId(HelpPost.generateUniquePostId(mHelpPost.getmAuthorId()));
-            mHelpPost.setmAuthor("anonymous");
-            mHelpPost.setmContent(description);
-            mHelpPost.setmLatitude(mFetchedLocation.getmLatitude());
-            mHelpPost.setmLongitude(mFetchedLocation.getmLongitude());
-            mHelpPost.setmAltitude(mFetchedLocation.getmAltitude());
-            mHelpPost.setmAddress(address);
-            mHelpPost.setmTimeStamp(getCurrentTime());
+            mHelpPost.setPostId(HelpPost.generateUniquePostId(mHelpPost.getAuthorId()));
+            mHelpPost.setAuthor("anonymous");
+            mHelpPost.setContent(description);
+            mHelpPost.setLatitude(mFetchedLocation.getmLatitude());
+            mHelpPost.setLongitude(mFetchedLocation.getmLongitude());
+            mHelpPost.setAltitude(mFetchedLocation.getmAltitude());
+            mHelpPost.setAddress(address);
+            mHelpPost.setTimeStamp(getCurrentTime());
 
             stopLocationUpdates(mLocationFetcher);
             if(!checkFetchedLocationAccuracy(mFetchedLocation)) showInaccurateLocationDialog();
@@ -555,7 +555,7 @@ public class HelpPostActivity extends AppCompatActivity {
     private void sendHelpPostWithoutPhoto(Database.SingleOperationDatabase<HelpPost> helpPostSingleOperationDatabase,
                                           HelpPost helpPost) {
 
-        helpPostSingleOperationDatabase.createWithId(helpPost.getmPostId(), helpPost);
+        helpPostSingleOperationDatabase.createWithId(helpPost.getPostId(), helpPost);
     }
 
     /**

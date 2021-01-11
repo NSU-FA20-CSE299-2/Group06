@@ -16,16 +16,12 @@ import com.nsu.group06.cse299.sec02.helpmeapp.auth.AuthenticationUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBApiEndPoint;
-import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBRealtime;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.dialogFragments.AddEmergencyContactDialogFragment;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
-import com.nsu.group06.cse299.sec02.helpmeapp.models.User;
 import com.nsu.group06.cse299.sec02.helpmeapp.recyclerViewAdapters.EmergencyContactsAdapter;
 import com.nsu.group06.cse299.sec02.helpmeapp.sharedPreferences.EmergencyContactsSharedPref;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
-
-import java.util.ArrayList;
 
 /**
  * Activity for "Emergency Contact" screen
@@ -195,14 +191,14 @@ public class EmergencyContactsActivity extends AppCompatActivity
                             }
                         });
 
-            mAddEmergencyContactSingleOperationDatabase.createWithId(emergencyContact.getmPhoneNumber(), emergencyContact);
+            mAddEmergencyContactSingleOperationDatabase.createWithId(emergencyContact.getPhoneNumber(), emergencyContact);
 
     }
 
     private void saveToLocalDatabase(EmergencyContact emergencyContact) {
 
         mEmergencyContactsSharedPref = EmergencyContactsSharedPref.build(this);
-        mEmergencyContactsSharedPref.addPhoneNumber(emergencyContact.getmPhoneNumber());
+        mEmergencyContactsSharedPref.addPhoneNumber(emergencyContact.getPhoneNumber());
     }
 
 
