@@ -21,7 +21,7 @@ public class HelpPost {
     private String timeStamp;
     private boolean isPublic = false;
 
-    private static final String URL = "https://helpmeappweb.herokuapp.com/help/";
+    private static final String URL = "https://helpmeappweb.herokuapp.com/help?pid=";
 
     public HelpPost() {
     }
@@ -52,7 +52,7 @@ public class HelpPost {
             message += ", " + helpPost.getAddress();
         }
 
-        String url = URL + "?pid="+helpPost.getPostId();
+        String url = URL + helpPost.getPostId();
         message+=", "+url;
 
         return message;
@@ -73,7 +73,7 @@ public class HelpPost {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-        return uid+timeStamp;
+        return timeStamp+uid;
     }
 
     public String getPostId() {

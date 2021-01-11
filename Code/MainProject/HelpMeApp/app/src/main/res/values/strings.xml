@@ -101,6 +101,13 @@
     <string name="helpPost_phoneNumber_editTextHint">Your 11 digit phone number</string>
     <string name="failed_to_send_sms">Failed to send SMS! check your SIM network/balance</string>
     <string name="failed_to_send_sms_but_uploaded_to_database">Failed to send SMS! but post saved to server.</string>
+    <string name="phoneNumber_singleHelpPost_TextView_placeholder">+88012345678910</string>
+    <string name="address_singleHelpPost_TextView_placeholder">some, provided, address</string>
+    <string name="time_singleHelpPost_TextView_placeholder">12/07/98 12:24:47</string>
+    <string name="content_singleHelpPost_TextView_placeholder">The content containing brief description provided by the person who posted this help post</string>
+    <string name="contact_singleHelpPost_Button_label">Contact</string>
+    <string name="showLocation_singleHelpPost_Button_label">Show Location</string>
+    <string name="helpPost_photo_alt">post_photo</string>
 
 
 </resources>

@@ -2,14 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nsu.group06.cse299.sec02.helpmeapp">
 
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
     <application
@@ -49,14 +49,13 @@
         <activity
             android:name=".EmergencyContactsActivity"
             android:label="@string/emergency_contacts_title" />
-
         <activity
             android:name=".SetupProfileActivity"
             android:label="@string/setup_profile_title" />
-
         <activity
             android:name=".HelpPostActivity"
             android:label="@string/help_post_title" />
+        <activity android:name=".SingleHelpPostActivity" />
     </application>
 
 </manifest>
