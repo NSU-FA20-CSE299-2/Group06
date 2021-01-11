@@ -6,10 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -35,10 +41,13 @@ import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.fusedLocationApi.Fus
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.CapturedImage;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.FileUploader;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.firebaseStorage.FirebaseStorageFileUploader;
+import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.HelpPost;
+import com.nsu.group06.cse299.sec02.helpmeapp.sharedPreferences.EmergencyContactsSharedPref;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.RemoteStoragePathsUtils;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.SessionUtils;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.UserInputValidator;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +55,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class HelpPostActivity extends AppCompatActivity {
@@ -61,7 +71,7 @@ public class HelpPostActivity extends AppCompatActivity {
     // ui
     private ImageView mCapturedImageView;
     private Button mTakeImageButton, mFetchLocationButton, mPostButton;
-    private EditText mPostDescriptionEditText, mAddressEditText;
+    private EditText mPostDescriptionEditText, mAddressEditText, mPhoneNumberEditText;
 
     // model
     private CapturedImage mCapturedImage;
@@ -69,6 +79,7 @@ public class HelpPostActivity extends AppCompatActivity {
     private FetchedLocation mFetchedLocation;
     private boolean mLocationWasFethced = false;
     private HelpPost mHelpPost;
+    private ArrayList<String> emergencyContactPhoneNumbers;
 
     // variables used for fetching user uid
     private Authentication mAuth;
@@ -142,7 +153,8 @@ public class HelpPostActivity extends AppCompatActivity {
                 @Override
                 public void onError(String message) {
 
-                    fetchLocationFailedUI();
+                    if(!mLocationWasFethced) fetchLocationFailedUI();
+
                     mLocationFetcher.stopLocationUpdate();
 
                     Log.d(TAG, "onError: location update error -> "+message);
@@ -213,6 +225,13 @@ public class HelpPostActivity extends AppCompatActivity {
 
     // help post sms and database upload flags
     private boolean mHelpPostSmsSendDone = false, mHelpPostDatabaseSendDone = false;
+
+
+    // variables for sending sms to emergency contacts
+    private EmergencyContactsSharedPref mEmergencyContactsSharedPref;
+    private int NUMBER_OF_EMERGENCY_CONTACTS_SENT_TO = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -290,12 +309,12 @@ public class HelpPostActivity extends AppCompatActivity {
         mPostButton = findViewById(R.id.helpPost_Post_Button);
         mPostDescriptionEditText = findViewById(R.id.helpPost_description_EditText);
         mAddressEditText = findViewById(R.id.helpPost_Address_EditText);
+        mPhoneNumberEditText = findViewById(R.id.helpPost_phoneNumber_editText);
 
         mHelpPost = new HelpPost();
         mHelpPost.setAuthor("anonymous");
 
         mAuth = new FirebaseEmailPasswordAuthentication();
-        authenticateUserLoginState(mAuth, mAuthCallbacks);
 
         mImageWasCaptured = false;
 
@@ -308,8 +327,14 @@ public class HelpPostActivity extends AppCompatActivity {
 
         mFileUploader = new FirebaseStorageFileUploader();
 
+        mEmergencyContactsSharedPref = EmergencyContactsSharedPref.build(this);
+
         mHelpPostSmsSendDone = false;
         mHelpPostSmsSendDone = false;
+
+        authenticateUserLoginState(mAuth, mAuthCallbacks);
+
+        getSmsPermission();
     }
 
     /**
@@ -322,6 +347,36 @@ public class HelpPostActivity extends AppCompatActivity {
         auth.setmAuthenticationCallbacks(authCallbacks);
         auth.authenticateUser();
     }
+
+    /*
+    Ask for location access permission
+    using the open source library- <https://github.com/Karumi/Dexter>
+     */
+    private void getSmsPermission(){
+
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.SEND_SMS)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        // not doing anything immediately after permission approval
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+
+                        showSmsPermissionExplanationDialog(permissionDeniedResponse.isPermanentlyDenied());
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        // ignore for now
+                        permissionToken.continuePermissionRequest();
+                    }
+                })
+                .check();
+    }
+
 
     /*
     'Take Photo' button click
@@ -377,7 +432,10 @@ public class HelpPostActivity extends AppCompatActivity {
      */
     public void pickLocationClick(View view) {
 
+        mLocationWasFethced = false;
+
         fetchLocationInProgressUI();
+
         startFetchingLocation();
     }
 
@@ -460,11 +518,14 @@ public class HelpPostActivity extends AppCompatActivity {
 
         String description = mPostDescriptionEditText.getText().toString().trim();
         String address = mAddressEditText.getText().toString().trim();
+        String phoneNumber = mPhoneNumberEditText.getText().toString().trim();
+        if(!phoneNumber.startsWith("+88")) phoneNumber = "+88" + phoneNumber;
 
-        if(validateInputs(description, mLocationWasFethced)){
+        if(validateInputs(description, phoneNumber, mLocationWasFethced)){
 
             mHelpPost.setPostId(HelpPost.generateUniquePostId(mHelpPost.getAuthorId()));
             mHelpPost.setAuthor("anonymous");
+            mHelpPost.setAuthorPhoneNumber(phoneNumber);
             mHelpPost.setContent(description);
             mHelpPost.setLatitude(mFetchedLocation.getmLatitude());
             mHelpPost.setLongitude(mFetchedLocation.getmLongitude());
@@ -484,9 +545,9 @@ public class HelpPostActivity extends AppCompatActivity {
      */
     private void forwardHelpPost() {
 
-        smsToEmergencyContacts(mHelpPost);
-
         sendHelpPostInProgressUI();
+
+        smsToEmergencyContacts(mHelpPost, mEmergencyContactsSharedPref);
 
         mApiEndPoint = new FirebaseRDBApiEndPoint("/" + NosqlDatabasePathUtils.HELP_POSTS_NODE);
 
@@ -506,9 +567,10 @@ public class HelpPostActivity extends AppCompatActivity {
      * validate user inputs
      * @param description content of the help post
      * @param locationWasFetched location fetch flag
+     * @param phoneNumber help poster phone number
      * @return valid or not
      */
-    private boolean validateInputs(String description, boolean locationWasFetched) {
+    private boolean validateInputs(String description, String phoneNumber, boolean locationWasFetched) {
 
         boolean isValid = locationWasFetched;
 
@@ -516,6 +578,12 @@ public class HelpPostActivity extends AppCompatActivity {
 
             isValid = false;
             mPostDescriptionEditText.setError(getString(R.string.invalid_description));
+        }
+
+        if(!UserInputValidator.isPhoneNumberValid(phoneNumber)){
+
+            isValid = false;
+            mPhoneNumberEditText.setError(getString(R.string.invalid_phone_number));
         }
 
         if(!locationWasFetched) showToast(getString(R.string.no_location_error));
@@ -574,11 +642,67 @@ public class HelpPostActivity extends AppCompatActivity {
     /**
      * send sms to all saved emergency contacts
      * @param helpPost help post model object
+     * @param emergencyContactsSharedPref shared pref with emergency contact phone numbers saved
      */
-    private void smsToEmergencyContacts(HelpPost helpPost) {
+    private void smsToEmergencyContacts(HelpPost helpPost,
+                                        EmergencyContactsSharedPref emergencyContactsSharedPref) {
 
-        // TODO: implement
-        mHelpPostSmsSendDone = true;
+        /*
+         * to check if sms was sent, we need to register a broadcast receiver
+         * courtesy- <https://stackoverflow.com/questions/3875354/android-sms-message-delivery-report-intent>
+         */
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent("sent_intent"), 0);
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                int resultCode = getResultCode();
+
+                if(resultCode!=RESULT_OK){
+
+                    mHelpPostSmsSendDone = false;
+                    failedToSendSMSUI();
+                }
+
+                else {
+
+                    NUMBER_OF_EMERGENCY_CONTACTS_SENT_TO--;
+
+                    if(NUMBER_OF_EMERGENCY_CONTACTS_SENT_TO==0){
+
+                        mHelpPostSmsSendDone = true;
+                        sendHelpPostSuccessUI();
+                    }
+                }
+
+                Log.d(TAG, "sms intent onReceive: data->"+getResultData());
+            }
+        }, new IntentFilter("sent_intent"));
+        /* END */
+
+        ArrayList<String> emergencyContactPhoneNumbers =
+                emergencyContactsSharedPref.getPhoneNumbers();
+
+        NUMBER_OF_EMERGENCY_CONTACTS_SENT_TO = emergencyContactPhoneNumbers.size();
+
+        String message = HelpPost.getSMSBody(helpPost);
+        Log.d(TAG, "smsToEmergencyContacts: message = "+message + " "+message.length());
+
+        for(String phoneNumber : emergencyContactPhoneNumbers){
+
+            try {
+
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNumber,null,message, sentPI,null);
+
+                Log.d(TAG, "smsToEmergencyContacts: "+phoneNumber);
+
+            } catch (Exception e){
+
+                showToast(getString(R.string.failed_to_send_sms));
+
+                Log.d(TAG, "smsToEmergencyContacts: failed to send sms to "+phoneNumber + "error->"+e.getStackTrace());
+            }
+        }
     }
 
     /**
@@ -597,6 +721,36 @@ public class HelpPostActivity extends AppCompatActivity {
         );
     }
 
+
+    /*
+    show alert dialog explaining why sms permission is a MUST
+    with a simple dialog, quit activity if permission is permanently denied
+    courtesy - <https://stackoverflow.com/questions/26097513/android-simple-alert-dialog
+     */
+    private void showSmsPermissionExplanationDialog(boolean isPermissionPermanentlyDenied) {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(HelpPostActivity.this).create();
+
+        String title = getString(R.string.sms_permission);
+        String explanation;
+
+        if(isPermissionPermanentlyDenied)
+            explanation = getString(R.string.sms_permission_permanantely_denied_explanation);
+        else
+            explanation = getString(R.string.sms_permission_explanation);
+
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(explanation);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
+                (dialog, which) -> {
+                    if(!isPermissionPermanentlyDenied)
+                        getSmsPermission();
+                    else
+                        finish();
+                });
+
+        alertDialog.show();
+    }
 
     /*
     show alert dialog explaining why location permission is a MUST
@@ -712,6 +866,11 @@ public class HelpPostActivity extends AppCompatActivity {
             showToast(getString(R.string.posted));
             finish();
         }
+
+        else if(mHelpPostDatabaseSendDone){
+
+            showToast(getString(R.string.failed_to_send_sms_but_uploaded_to_database));
+        }
     }
 
     private void sendHelpPostFailedUI(){
@@ -723,6 +882,14 @@ public class HelpPostActivity extends AppCompatActivity {
     private void imageUploadFailedUI() {
 
         showToast(getString(R.string.image_upload_failed));
+    }
+
+    private void failedToSendSMSUI(){
+
+        View view = findViewById(R.id.helpPost_main_layout);
+        Snackbar.make(view, R.string.failed_to_send_sms, Snackbar.LENGTH_INDEFINITE)
+        .setAction(R.string.retry, v -> smsToEmergencyContacts(mHelpPost, mEmergencyContactsSharedPref))
+        .show();
     }
 
     private void showToast(String message){
