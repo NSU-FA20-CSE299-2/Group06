@@ -95,6 +95,12 @@
     <string name="image_upload_failed">Failed to upload the photo, try again.</string>
     <string name="posting">Posting…</string>
     <string name="posted">Sent!</string>
+    <string name="sms_permission">SMS Permission</string>
+    <string name="sms_permission_permanantely_denied_explanation">Please allow SMS permission from your device settings, which is necessary to reach your emergency contacts.</string>
+    <string name="sms_permission_explanation">We need SMS permission to reach your emergency contacts. Sorry for the interruption</string>
+    <string name="helpPost_phoneNumber_editTextHint">Your 11 digit phone number</string>
+    <string name="failed_to_send_sms">Failed to send SMS! check your SIM network/balance</string>
+    <string name="failed_to_send_sms_but_uploaded_to_database">Failed to send SMS! but post saved to server.</string>
 
 
 </resources>

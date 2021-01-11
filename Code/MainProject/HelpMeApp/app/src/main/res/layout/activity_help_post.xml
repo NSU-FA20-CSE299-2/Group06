@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/helpPost_main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -20,6 +21,23 @@
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/helpPost_phoneNumber_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/custom_edittext"
+                android:drawableStart="@drawable/ic_phone_icon"
+                android:drawablePadding="4dp"
+                android:ems="10"
+                android:hint="@string/helpPost_phoneNumber_editTextHint"
+                android:inputType="phone"
+                android:padding="16dp"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/helpPost_description_EditText"
