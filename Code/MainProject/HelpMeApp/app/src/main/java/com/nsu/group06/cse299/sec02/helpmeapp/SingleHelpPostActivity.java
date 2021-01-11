@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBApiEndPoint;
 import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
@@ -136,9 +137,19 @@ public class SingleHelpPostActivity extends AppCompatActivity {
         if( helpPost.getAddress() !=null && !helpPost.getAddress().isEmpty()) mAddressTextView.setText(helpPost.getAddress());
         else mAddressTextView.setText(R.string.no_address);
 
-        mTimeTextView.setText(mHelpPost.getTimeStamp());
+        mTimeTextView.setText(helpPost.getTimeStamp());
 
-        mContentTextView.setText(mHelpPost.getContent());
+        mContentTextView.setText(helpPost.getContent());
+
+        if(helpPost.getPhotoURL() != null && !helpPost.getPhotoURL().isEmpty()){
+
+            mPhotoImageView.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(helpPost.getPhotoURL())
+                    .override(250, 250)
+                    .fitCenter() // scale to fit entire image within ImageView
+                    .into(mPhotoImageView);
+        }
 
     }
 
@@ -170,10 +181,13 @@ public class SingleHelpPostActivity extends AppCompatActivity {
     private void failedToLoadHelpPostUI() {
 
         mSearchingTextView.setText(R.string.failed_to_load_post);
+        mSearchingTextView.setEnabled(true);
     }
 
     public void retryClick(View view) {
 
         loadHelpPost(mRetrievedPostId);
+        mSearchingTextView.setText(R.string.searching_singleHelpPost_TextView);
+        mSearchingTextView.setEnabled(false);
     }
 }
