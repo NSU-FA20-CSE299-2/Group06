@@ -26,6 +26,9 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.Authentication;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.AuthenticationUser;
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
+import com.nsu.group06.cse299.sec02.helpmeapp.database.Database;
+import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBApiEndPoint;
+import com.nsu.group06.cse299.sec02.helpmeapp.database.firebase_database.FirebaseRDBSingleOperation;
 import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.FetchedLocation;
 import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.LocationFetcher;
 import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.fusedLocationApi.FusedLocationFetcherApiAdapter;
@@ -33,6 +36,7 @@ import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.CapturedImage;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.FileUploader;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.firebaseStorage.FirebaseStorageFileUploader;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.HelpPost;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.RemoteStoragePathsUtils;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.SessionUtils;
 
@@ -156,11 +160,10 @@ public class HelpPostActivity extends AppCompatActivity {
 
                 URL link = new URL(uploadedImageLink.toString());
 
-                Log.d(TAG, "onUploadComplete: image upload url = "+link.toString());
-
                 mHelpPost.setmPhotoURL(link.toString());
 
-                // TODO: upload help post to database
+                // make database entry
+                mHelpPostSingleOperationDatabase.createWithId(mHelpPost.getmPostId(), mHelpPost);
 
             } catch (MalformedURLException e) {
 
@@ -179,6 +182,37 @@ public class HelpPostActivity extends AppCompatActivity {
         }
     };
 
+
+    // variables to store help post to database
+    private Database.SingleOperationDatabase<HelpPost> mHelpPostSingleOperationDatabase;
+    private FirebaseRDBApiEndPoint mApiEndPoint;
+    private Database.SingleOperationDatabase.SingleOperationDatabaseCallback<HelpPost> mHelpPostSingleOperationDatabaseCallback =
+            new Database.SingleOperationDatabase.SingleOperationDatabaseCallback<HelpPost>() {
+                @Override
+                public void onDataRead(HelpPost data) {
+                    // keep black, no reading anything
+                }
+
+                @Override
+                public void onDatabaseOperationSuccess() {
+
+                    mHelpPostDatabaseSendDone = true;
+
+                    sendHelpPostSuccessUI();
+                }
+
+                @Override
+                public void onDatabaseOperationFailed(String message) {
+
+                    sendHelpPostFailedUI();
+
+                    Log.d(TAG, "onDatabaseOperationFailed: help post database upload failed -> "+message);
+                }
+            };
+
+
+    // help post sms and database upload flags
+    private boolean mHelpPostSmsSendDone = false, mHelpPostDatabaseSendDone = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,11 +243,6 @@ public class HelpPostActivity extends AppCompatActivity {
                 mCapturedImageView.setVisibility(View.VISIBLE);
                 mCapturedImageView.setImageURI(mCapturedImage.getmPhotoUri());
 
-                // location fetching stops when user leaves this activity to take image
-                // enable user to fetch location again
-                mFetchLocationButton.setEnabled(true);
-                mFetchLocationButton.setText(R.string.helpPost_PickLocation_Button_label);
-
                 break;
 
             case LocationFetcher.REQUEST_CHECK_LOCATION_SETTINGS:
@@ -238,6 +267,11 @@ public class HelpPostActivity extends AppCompatActivity {
         super.onStop();
 
         try{
+
+            // need to stop location fetching when activity stops
+            // enable user to fetch location again
+            mFetchLocationButton.setEnabled(true);
+            mFetchLocationButton.setText(R.string.helpPost_PickLocation_Button_label);
 
             stopLocationUpdates(mLocationFetcher);
 
@@ -273,6 +307,9 @@ public class HelpPostActivity extends AppCompatActivity {
         );
 
         mFileUploader = new FirebaseStorageFileUploader();
+
+        mHelpPostSmsSendDone = false;
+        mHelpPostSmsSendDone = false;
     }
 
     /**
@@ -426,6 +463,7 @@ public class HelpPostActivity extends AppCompatActivity {
 
         if(validateInputs(description, mLocationWasFethced)){
 
+            mHelpPost.setmPostId(HelpPost.generateUniquePostId(mHelpPost.getmAuthorId()));
             mHelpPost.setmAuthor("anonymous");
             mHelpPost.setmContent(description);
             mHelpPost.setmLatitude(mFetchedLocation.getmLatitude());
@@ -450,9 +488,17 @@ public class HelpPostActivity extends AppCompatActivity {
 
         sendHelpPostInProgressUI();
 
+        mApiEndPoint = new FirebaseRDBApiEndPoint("/" + NosqlDatabasePathUtils.HELP_POSTS_NODE);
+
+        mHelpPostSingleOperationDatabase = new FirebaseRDBSingleOperation<HelpPost>(
+                HelpPost.class,
+                mApiEndPoint,
+                mHelpPostSingleOperationDatabaseCallback
+        );
+
         if(mImageWasCaptured) sendHelpPostWithPhoto(mCapturedImage, mFileUploader, mFileUploadCallbacks);
 
-        else sendHelpPostWithoutPhoto(mHelpPost);
+        else sendHelpPostWithoutPhoto(mHelpPostSingleOperationDatabase, mHelpPost);
     }
 
 
@@ -503,11 +549,13 @@ public class HelpPostActivity extends AppCompatActivity {
 
     /**
      * send help post to database without photo
+     * @param helpPostSingleOperationDatabase database operation object
      * @param helpPost model object for a help post
      */
-    private void sendHelpPostWithoutPhoto(HelpPost helpPost) {
+    private void sendHelpPostWithoutPhoto(Database.SingleOperationDatabase<HelpPost> helpPostSingleOperationDatabase,
+                                          HelpPost helpPost) {
 
-        // TODO: upload help post without any image
+        helpPostSingleOperationDatabase.createWithId(helpPost.getmPostId(), helpPost);
     }
 
     /**
@@ -530,6 +578,7 @@ public class HelpPostActivity extends AppCompatActivity {
     private void smsToEmergencyContacts(HelpPost helpPost) {
 
         // TODO: implement
+        mHelpPostSmsSendDone = true;
     }
 
     /**
@@ -659,8 +708,10 @@ public class HelpPostActivity extends AppCompatActivity {
 
     private void sendHelpPostSuccessUI(){
 
-        showToast(getString(R.string.posted));
-        finish();
+        if(mHelpPostSmsSendDone && mHelpPostDatabaseSendDone) {
+            showToast(getString(R.string.posted));
+            finish();
+        }
     }
 
     private void sendHelpPostFailedUI(){

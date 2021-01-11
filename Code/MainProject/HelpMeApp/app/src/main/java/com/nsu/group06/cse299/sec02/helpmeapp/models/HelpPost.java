@@ -1,5 +1,10 @@
 package com.nsu.group06.cse299.sec02.helpmeapp.models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
+
 /**
  * Model class for a help post
  */
@@ -33,6 +38,24 @@ public class HelpPost {
         this.mPhotoURL = mPhotoURL;
         this.mTimeStamp = mTimeStamp;
         this.mIsPublic = mIsPublic;
+    }
+
+    /**
+     * generate an unique help post by combining user auth id with current time
+     * @param uid user auth id
+     * @return unique post id
+     */
+    public static String generateUniquePostId(String uid){
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            Instant instant = Instant.now();
+
+            return uid+instant.toEpochMilli();
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        return uid+timeStamp;
     }
 
     public String getmPostId() {

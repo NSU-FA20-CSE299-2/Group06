@@ -17,5 +17,5 @@ public class NosqlDatabasePathUtils {
     public static final String PHONE_NUMBER = "mPhoneNumber";
     public static final String NAME = "mName";
 
-
+    public static final String HELP_POSTS_NODE = "helpPosts";
 }
