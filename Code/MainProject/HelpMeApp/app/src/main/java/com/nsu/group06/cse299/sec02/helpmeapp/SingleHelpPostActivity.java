@@ -146,12 +146,25 @@ public class SingleHelpPostActivity extends AppCompatActivity {
     "Contact" button click listener
      */
     public void contactClick(View view) {
+
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + mHelpPost.getAuthorPhoneNumber()));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     /*
     "Show Location" button click listener
      */
     public void showLocationClick(View view) {
+
+        Uri geolocation = Uri.parse("geo:0,0?q="+mHelpPost.getLatitude()+","+mHelpPost.getLongitude()+"(Distress Location)&z=17");
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geolocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     private void failedToLoadHelpPostUI() {
