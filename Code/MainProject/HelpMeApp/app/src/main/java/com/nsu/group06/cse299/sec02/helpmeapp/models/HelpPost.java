@@ -13,6 +13,7 @@ public class HelpPost {
     private String postId;
     private String authorId;
     private String author = "anonymous";
+    private String authorPhoneNumber;
     private String content;
     private double longitude, latitude, altitude;
     private String address = "";
@@ -20,24 +21,41 @@ public class HelpPost {
     private String timeStamp;
     private boolean isPublic = false;
 
+    private static final String URL = "https://helpmeappweb.herokuapp.com/help/";
+
     public HelpPost() {
     }
 
-    public HelpPost(String mPostId, String mAuthorId, String mAuthor, String mContent,
-                    double mLongitude, double mLatitude, double mAltitude, String mAddress,
-                    String mPhotoURL, String mTimeStamp, boolean mIsPublic) {
+    public HelpPost(String postId, String authorId, String author, String content,
+                    double longitude, double latitude, double altitude, String address,
+                    String authorPhoneNumber, String photoURL, String timeStamp, boolean isPublic) {
 
-        this.postId = mPostId;
-        this.authorId = mAuthorId;
-        this.author = mAuthor;
-        this.content = mContent;
-        this.longitude = mLongitude;
-        this.latitude = mLatitude;
-        this.altitude = mAltitude;
-        this.address = mAddress;
-        this.photoURL = mPhotoURL;
-        this.timeStamp = mTimeStamp;
-        this.isPublic = mIsPublic;
+        this.postId = postId;
+        this.authorId = authorId;
+        this.author = author;
+        this.authorPhoneNumber = authorPhoneNumber;
+        this.content = content;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.altitude = altitude;
+        this.address = address;
+        this.photoURL = photoURL;
+        this.timeStamp = timeStamp;
+        this.isPublic = isPublic;
+    }
+
+    public static String getSMSBody(HelpPost helpPost){
+
+        String message = "Distress call from " + helpPost.getAuthorPhoneNumber() + "!";
+
+        if(helpPost.getAddress()!=null && !helpPost.getAddress().isEmpty()) {
+            message += ", " + helpPost.getAddress();
+        }
+
+        String url = URL + "?pid="+helpPost.getPostId();
+        message+=", "+url;
+
+        return message;
     }
 
     /**
@@ -80,6 +98,14 @@ public class HelpPost {
 
     public void setAuthor(String mAuthor) {
         this.author = mAuthor;
+    }
+
+    public String getAuthorPhoneNumber() {
+        return authorPhoneNumber;
+    }
+
+    public void setAuthorPhoneNumber(String authorPhoneNumber) {
+        this.authorPhoneNumber = authorPhoneNumber;
     }
 
     public String getContent() {
