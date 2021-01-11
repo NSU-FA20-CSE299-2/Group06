@@ -55,7 +55,19 @@
         <activity
             android:name=".HelpPostActivity"
             android:label="@string/help_post_title" />
-        <activity android:name=".SingleHelpPostActivity" />
+        <activity android:name=".SingleHelpPostActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="helpmeappweb.herokuapp.com"
+                    android:pathPrefix="/help" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
