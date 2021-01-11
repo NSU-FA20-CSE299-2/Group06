@@ -108,6 +108,7 @@
     <string name="contact_singleHelpPost_Button_label">Contact</string>
     <string name="showLocation_singleHelpPost_Button_label">Show Location</string>
     <string name="helpPost_photo_alt">post_photo</string>
+    <string name="searching_singleHelpPost_TextView">Searching for the help post please wait…</string>
 
 
 </resources>

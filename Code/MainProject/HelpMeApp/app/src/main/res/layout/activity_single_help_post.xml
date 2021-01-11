@@ -7,18 +7,20 @@
     tools:context=".SingleHelpPostActivity">
 
     <ScrollView
+        android:id="@+id/singleHelpPost_mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
             <TextView
@@ -114,6 +116,7 @@
                     android:background="@drawable/custom_button2"
                     android:drawableStart="@drawable/ic_entypo_old_phone"
                     android:fontFamily="@font/segoebold"
+                    android:onClick="contactClick"
                     android:padding="20dp"
                     android:text="@string/contact_singleHelpPost_Button_label"
                     android:textAlignment="center" />
@@ -128,10 +131,20 @@
                     android:background="@drawable/custom_button2"
                     android:drawableStart="@drawable/ic_location"
                     android:fontFamily="@font/segoebold"
+                    android:onClick="showLocationClick"
                     android:padding="16.5dp"
                     android:text="@string/showLocation_singleHelpPost_Button_label" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/searching_singleHelpPost_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/segoeui"
+        android:text="@string/searching_singleHelpPost_TextView"
+        android:textSize="18sp" />
 
 </RelativeLayout>
