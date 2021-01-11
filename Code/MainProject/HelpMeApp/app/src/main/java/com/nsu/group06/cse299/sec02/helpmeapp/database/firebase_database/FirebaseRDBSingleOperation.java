@@ -29,7 +29,7 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
     }
 
         public FirebaseRDBSingleOperation(Class<T> mTypeParameterClass, FirebaseRDBApiEndPoint apiEndPoint,
-                                      Database.SingleOperationDatabase.SingleOperationDatabaseCallback singleOperationDatabaseCallback) {
+                                      Database.SingleOperationDatabase.SingleOperationDatabaseCallback<T> singleOperationDatabaseCallback) {
 
         super(singleOperationDatabaseCallback);
 
@@ -82,9 +82,11 @@ public class FirebaseRDBSingleOperation<T> extends Database.SingleOperationDatab
                     Log.d(TAG, "onDataChange: data -> "+data.toString());
 
                     singleOperationDatabaseCallback.onDataRead(data);
+
+                    singleOperationDatabaseCallback.onDatabaseOperationSuccess();
                 }
 
-                singleOperationDatabaseCallback.onDatabaseOperationSuccess();
+                else singleOperationDatabaseCallback.onDatabaseOperationFailed("data not found");
             }
 
             @Override
