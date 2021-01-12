@@ -5,12 +5,9 @@ const path = require('path')
 
 //for help post 
 router.get('/', (req,res,next) =>{
-    
-    const uid = req.query.uid
     const pid = req.query.pid
-
-    if (uid == null || pid == null 
-        || uid.length < 5 || pid.length < 5) {
+    
+    if ( pid == null || pid.length < 5) {
         res.render('errorpage');
     }
     else{
@@ -18,7 +15,6 @@ router.get('/', (req,res,next) =>{
             method: 'get',
             url: 'https://helpmeapi-deploy.herokuapp.com/post',
             params: {
-                uid: uid,
                 pid: pid
             }
         }).then(response => {
