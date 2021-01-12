@@ -29,7 +29,8 @@ router.get('/', (req,res,next) =>{
                 {
                     post.photoURL = "../images/no-image.png"
                 }
-
+                post.author = post.author.charAt(0).toUpperCase() + post.author.substring(1).toLowerCase()
+                
                 const time = post.timeStamp.split(' ')[1]
                 const date = post.timeStamp.split(' ')[0]
                 const maplink = `https://www.google.com/maps/search/?api=1&query=${post.latitude},${post.longitude}`

@@ -8,8 +8,7 @@ const fs = require('fs');
 const { default: axios } = require('axios')
 const geoCodingRoute = require('./geocoding')
 
-
-var serviceAccount = require("./api-testing-b6ee5-firebase-adminsdk-zu5i1-53b9ce1a66.json");
+var serviceAccount = require("./sdk/helpme-262819-firebase-adminsdk-t2rzf-72094842b8.json");
 
 app.use(function (req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -21,23 +20,20 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://api-testing-b6ee5-default-rtdb.firebaseio.com"
+    databaseURL: "https://helpme-262819-default-rtdb.firebaseio.com"
 });
 
 Firebase.initializeApp({
-
-    databaseURL: "https://api-testing-b6ee5-default-rtdb.firebaseio.com/",
-
+    databaseURL: "https://helpme-262819-default-rtdb.firebaseio.com",
     serviceAccount: serviceAccount, //downloaded from Firebase Console
-
 });
 
-app.use('/geocode', geoCodingRoute)
-
-
-// app.use('/', postRouter)
 var db = Firebase.database();
 var usersRef = db.ref("helpPosts");
+
+
+//Router for geocoding
+app.use('/geocode', geoCodingRoute)
 
 
 //For viewing post by PID(user)
@@ -87,7 +83,6 @@ app.get('/post', function (req, res) {
 app.get('/', (req,res)=>{
     res.send("<center><h1>Help Post API Home</h1></center>")
 })
-
 
 
 
