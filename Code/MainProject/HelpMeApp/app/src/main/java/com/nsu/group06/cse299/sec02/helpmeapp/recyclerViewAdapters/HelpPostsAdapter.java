@@ -53,8 +53,9 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
 
                     Log.d(TAG, "onDataAddition: data added -> "+data.toString());
 
-                    mHelpPosts.add(data);
-                    HelpPostsAdapter.this.notifyItemInserted(mHelpPosts.size()-1);
+                    // add elements to top
+                    mHelpPosts.add(0, data);
+                    HelpPostsAdapter.this.notifyItemInserted(0);
 
                     if(mDataListEmpty){
 
