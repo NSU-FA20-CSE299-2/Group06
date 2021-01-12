@@ -5,7 +5,6 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".HelpFeedActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -65,9 +65,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="helpmeappweb.herokuapp.com"
-                    android:pathPrefix="/help" />
+                    android:pathPrefix="/help"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
     </application>
