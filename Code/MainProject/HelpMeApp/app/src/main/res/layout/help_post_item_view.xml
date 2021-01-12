@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:background="@drawable/custom_ec_itemview_background"
+    android:elevation="4dp"
     android:orientation="vertical"
     android:padding="8dp">
 
