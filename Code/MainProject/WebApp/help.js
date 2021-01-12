@@ -19,14 +19,19 @@ router.get('/', (req,res,next) =>{
             }
         }).then(response => {
             //console.log(response.data)
-            const post = response.data
+            let post = response.data
             if (post.result == false) {
                 res.render('errorpage');
             }
             else {
-                //Todo: Add date and time diffently while creating help post (Dont use timeStamp) 
-                const time = "12:10 pm"
-                const date = "05-Jan-2021"
+                
+                if (post.photoURL == "" || post.photoURL == null)
+                {
+                    post.photoURL = "../images/no-image.png"
+                }
+
+                const time = post.timeStamp.split(' ')[1]
+                const date = post.timeStamp.split(' ')[0]
                 const maplink = `https://www.google.com/maps/search/?api=1&query=${post.latitude},${post.longitude}`
                 
                 res.render('help', { data: post, time: time, date: date, maplink: maplink })
