@@ -65,15 +65,19 @@ public class HelpPost {
      */
     public static String generateUniquePostId(String uid){
 
+        String generatedId;
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             Instant instant = Instant.now();
-
-            return uid+instant.toEpochMilli();
+            generatedId = instant.toEpochMilli()+uid;
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        else {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            generatedId = timeStamp+uid;
+        }
 
-        return timeStamp+uid;
+        return generatedId;
     }
 
     public String getPostId() {
@@ -164,11 +168,29 @@ public class HelpPost {
         this.timeStamp = mTimeStamp;
     }
 
-    public boolean isPublic() {
+    public boolean getIsPublic() {
         return isPublic;
     }
 
     public void setIsPublic(boolean mIsPublic) {
         this.isPublic = mIsPublic;
+    }
+
+    @Override
+    public String toString() {
+        return "HelpPost{" +
+                "postId='" + postId + '\'' +
+                ", authorId='" + authorId + '\'' +
+                ", author='" + author + '\'' +
+                ", authorPhoneNumber='" + authorPhoneNumber + '\'' +
+                ", content='" + content + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", altitude=" + altitude +
+                ", address='" + address + '\'' +
+                ", photoURL='" + photoURL + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", isPublic=" + isPublic +
+                '}';
     }
 }

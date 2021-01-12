@@ -114,6 +114,7 @@
                 android:background="@drawable/menu_button"
                 android:drawableTop="@drawable/ic_social_media_menu"
                 android:fontFamily="@font/segoeui"
+                android:onClick="helpFeedClick"
                 android:padding="5dp"
                 android:text="@string/help_feed"
                 android:textColor="#FF2B2B" />

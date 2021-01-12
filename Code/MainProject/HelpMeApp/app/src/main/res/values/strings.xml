@@ -111,6 +111,7 @@
     <string name="searching_singleHelpPost_TextView">Loading please wait…</string>
     <string name="failed_to_load_post">Failed to load post. Tap to try again.</string>
     <string name="no_address">No Address Provided</string>
+    <string name="helpFeed_empty_TextView">Nothing found.</string>
 
 
 </resources>

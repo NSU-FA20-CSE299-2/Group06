@@ -1,11 +1,11 @@
 package com.nsu.group06.cse299.sec02.helpmeapp.recyclerViewAdapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +24,9 @@ import java.util.ArrayList;
 
 public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.ViewHolder> {
 
+    private static final String TAG = "HPA-debug";
+
+    // calling activity/fragment
     private Context mContext;
 
     // calling activity/fragment callbacks
@@ -43,8 +46,15 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
                 @Override
                 public void onDataAddition(HelpPost data) {
 
+                    // TODO:
+                    //  put public and private posts on different nodes
+                    //  and remove this client side filtration
+                    if(!data.getIsPublic()) return;
+
+                    Log.d(TAG, "onDataAddition: data added -> "+data.toString());
+
                     mHelpPosts.add(data);
-                    notifyItemInserted(mHelpPosts.size()-1);
+                    HelpPostsAdapter.this.notifyItemInserted(mHelpPosts.size()-1);
 
                     if(mDataListEmpty){
 
@@ -68,6 +78,7 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
                     if(updatePosition==-1) return;
 
                     mHelpPosts.set(updatePosition, data);
+                    HelpPostsAdapter.this.notifyItemChanged(updatePosition);
                 }
 
                 @Override
@@ -85,7 +96,7 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
                     if(removePosition==-1) return;
 
                     mHelpPosts.remove(removePosition);
-                   notifyItemRemoved(removePosition);
+                    HelpPostsAdapter.this.notifyItemRemoved(removePosition);
                 }
 
                 @Override
@@ -133,7 +144,12 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
         HelpPost helpPost = mHelpPosts.get(position);
 
         holder.timeTextView.setText(helpPost.getTimeStamp());
-        holder.addressTextView.setText(helpPost.getAddress());
+
+        if(helpPost.getAddress()!=null && !helpPost.getAddress().isEmpty()) {
+            holder.addressTextView.setText(R.string.no_address);
+        }
+        else holder.addressTextView.setText(helpPost.getAddress());
+
         holder.contentTextView.setText(helpPost.getContent());
 
         if(helpPost.getPhotoURL()!=null && !helpPost.getPhotoURL().isEmpty()){
