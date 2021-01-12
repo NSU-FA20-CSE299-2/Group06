@@ -41,7 +41,6 @@ import com.nsu.group06.cse299.sec02.helpmeapp.fetchLocation.fusedLocationApi.Fus
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.CapturedImage;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.FileUploader;
 import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.firebaseStorage.FirebaseStorageFileUploader;
-import com.nsu.group06.cse299.sec02.helpmeapp.models.EmergencyContact;
 import com.nsu.group06.cse299.sec02.helpmeapp.models.HelpPost;
 import com.nsu.group06.cse299.sec02.helpmeapp.sharedPreferences.EmergencyContactsSharedPref;
 import com.nsu.group06.cse299.sec02.helpmeapp.utils.NosqlDatabasePathUtils;
@@ -96,7 +95,7 @@ public class HelpPostActivity extends AppCompatActivity {
                 @Override
                 public void onAuthenticationFailure(String message) {
 
-                    SessionUtils.doHardLogout(HelpPostActivity.this, mAuth);
+                    SessionUtils.logout(HelpPostActivity.this, mAuth);
                 }
             };
 
@@ -508,7 +507,7 @@ public class HelpPostActivity extends AppCompatActivity {
      */
     public void makePublicCheckboxClick(View view) {
 
-        mHelpPost.setIsPublic(!mHelpPost.isPublic());
+        mHelpPost.setIsPublic(!mHelpPost.getIsPublic());
     }
 
     /*
@@ -683,6 +682,7 @@ public class HelpPostActivity extends AppCompatActivity {
                 emergencyContactsSharedPref.getPhoneNumbers();
 
         NUMBER_OF_EMERGENCY_CONTACTS_SENT_TO = emergencyContactPhoneNumbers.size();
+        if(NUMBER_OF_EMERGENCY_CONTACTS_SENT_TO == 0) mHelpPostSmsSendDone = true;
 
         String message = HelpPost.getSMSBody(helpPost);
         Log.d(TAG, "smsToEmergencyContacts: message = "+message + " "+message.length());

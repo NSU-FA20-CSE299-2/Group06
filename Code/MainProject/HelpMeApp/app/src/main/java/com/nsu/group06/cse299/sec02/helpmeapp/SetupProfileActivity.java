@@ -49,7 +49,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         @Override
         public void onAuthenticationFailure(String message) {
 
-            SessionUtils.doHardLogout(SetupProfileActivity.this, mAuth);
+            SessionUtils.logout(SetupProfileActivity.this, mAuth);
         }
     };
 

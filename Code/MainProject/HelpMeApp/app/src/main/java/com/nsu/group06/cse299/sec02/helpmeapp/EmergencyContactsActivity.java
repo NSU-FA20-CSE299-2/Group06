@@ -108,10 +108,10 @@ public class EmergencyContactsActivity extends AppCompatActivity
 
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
 
         mEmergencyContactsAdapter.onDestroy();
-        super.onStop();
+        super.onDestroy();
     }
 
     /*

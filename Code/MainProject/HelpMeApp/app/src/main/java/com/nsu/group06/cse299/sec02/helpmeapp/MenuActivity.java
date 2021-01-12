@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.nsu.group06.cse299.sec02.helpmeapp.auth.FirebaseEmailPasswordAuthentication;
+import com.nsu.group06.cse299.sec02.helpmeapp.utils.SessionUtils;
 
 /**
  * App home page, which is a menu
@@ -21,6 +22,8 @@ public class MenuActivity extends AppCompatActivity {
 
     // METHOD JUST FOR TESTING LOGOUT BACKEND WILL BE REMOVED
     public void logoutClick(View view) {
+
+        SessionUtils.logout(this, new FirebaseEmailPasswordAuthentication());
 
         new FirebaseEmailPasswordAuthentication().signOut();
 
@@ -45,5 +48,10 @@ public class MenuActivity extends AppCompatActivity {
     public void postHelpClick(View view) {
 
         startActivity(new Intent(this, HelpPostActivity.class));
+    }
+
+    public void helpFeedClick(View view) {
+
+        startActivity(new Intent(this, HelpFeedActivity.class));
     }
 }
