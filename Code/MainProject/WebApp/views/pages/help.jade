@@ -74,8 +74,9 @@ html(lang='en')
               |                                 
               a(href='#{maplink}')
                 .text-muted
-                  i.fas.fa-map-marked-alt  
-                  |   Address: #{data.address}
+                  p.address
+                    i.fas.fa-map-marked-alt  
+                    |   Address: #{data.address}
             |                             
             img.card-img-top(src='#{data.photoURL}', alt='help post image')
             |                             
