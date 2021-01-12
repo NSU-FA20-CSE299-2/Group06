@@ -8,7 +8,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
         <LinearLayout
             android:id="@+id/helpPost_main_layout"
@@ -35,9 +38,9 @@
                 android:drawablePadding="4dp"
                 android:ems="10"
                 android:hint="@string/helpPost_phoneNumber_editTextHint"
+                android:importantForAutofill="no"
                 android:inputType="phone"
-                android:padding="16dp"
-                android:importantForAutofill="no" />
+                android:padding="16dp" />
 
             <EditText
                 android:id="@+id/helpPost_description_EditText"
