@@ -38,7 +38,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         @Override
         public void onAuthenticationSuccess(AuthenticationUser user) {
 
-            mUser.setmUid(user.getmUid());
+            mUser.setUid(user.getmUid());
 
             // setup database variables
             initDatabaseVars();
@@ -49,7 +49,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         @Override
         public void onAuthenticationFailure(String message) {
 
-            SessionUtils.doHardLogout(SetupProfileActivity.this, mAuth);
+            SessionUtils.logout(SetupProfileActivity.this, mAuth);
         }
     };
 
@@ -112,7 +112,7 @@ public class SetupProfileActivity extends AppCompatActivity {
 
         mUserInfoApiEndPoint = new FirebaseRDBApiEndPoint(
                 "/"+ NosqlDatabasePathUtils.USER_NODE +
-                        ":" + mUser.getmUid());
+                        ":" + mUser.getUid());
 
         mUserInfoFirebaseRDBSingleOperation =
                 new FirebaseRDBSingleOperation(User.class, mUserInfoApiEndPoint, mUserInfoSingleOperationDatabaseCallback);
@@ -132,10 +132,10 @@ public class SetupProfileActivity extends AppCompatActivity {
      */
     private void showReadUserInfoInUI() {
 
-        mUsernameEditText.setText(mUser.getmUsername());
-        mDateOfBirhtEditText.setText(mUser.getmDateOfBirth());
-        mAddressEditText.setText(mUser.getmAddress());
-        mPhoneNumberEditText.setText(mUser.getmPhoneNumber());
+        mUsernameEditText.setText(mUser.getUsername());
+        mDateOfBirhtEditText.setText(mUser.getDateOfBirth());
+        mAddressEditText.setText(mUser.getAddress());
+        mPhoneNumberEditText.setText(mUser.getPhoneNumber());
     }
 
 
@@ -169,16 +169,16 @@ public class SetupProfileActivity extends AppCompatActivity {
 
         else{
 
-            if(!mUser.getmUsername().equals(name)
-                    || !mUser.getmDateOfBirth().equals(dateOfBirth)
-                    || !mUser.getmAddress().equals(address)
-                    || !mUser.getmPhoneNumber().equals(phoneNumber)
+            if(!mUser.getUsername().equals(name)
+                    || !mUser.getDateOfBirth().equals(dateOfBirth)
+                    || !mUser.getAddress().equals(address)
+                    || !mUser.getPhoneNumber().equals(phoneNumber)
             ){
 
-                mUser.setmUsername(name);
-                mUser.setmDateOfBirth(dateOfBirth);
-                mUser.setmAddress(address);
-                mUser.setmPhoneNumber(phoneNumber);
+                mUser.setUsername(name);
+                mUser.setDateOfBirth(dateOfBirth);
+                mUser.setAddress(address);
+                mUser.setPhoneNumber(phoneNumber);
 
                 return true;
             }

@@ -1,10 +1,11 @@
-package com.nsu.group06.cse299.sec02.imageupload.imageUpload;
+package com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.firebaseStorage;
 
 import android.net.Uri;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
+import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.CapturedImage;
+import com.nsu.group06.cse299.sec02.helpmeapp.imageUpload.FileUploader;
 
 /**
  * Class for firestore upload image implementation

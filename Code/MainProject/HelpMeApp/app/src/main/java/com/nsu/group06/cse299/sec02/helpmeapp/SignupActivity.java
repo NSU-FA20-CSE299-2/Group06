@@ -90,17 +90,17 @@ public class SignupActivity extends AppCompatActivity {
     private void storeUserInformationInDatabase() {
 
         mUser = new User();
-        mUser.setmUid(mEmailPasswordAuthUser.getmUid());
-        mUser.setmEmail(mEmailPasswordAuthUser.getmEmail());
+        mUser.setUid(mEmailPasswordAuthUser.getmUid());
+        mUser.setEmail(mEmailPasswordAuthUser.getmEmail());
         // username = part of email before @
         String username = mEmailPasswordAuthUser.getmEmail();
         username = username.substring(0, username.indexOf('@'));
-        mUser.setmUsername(username);
+        mUser.setUsername(username);
 
         mCreateUserSingleOperationDatabase =
                 new FirebaseRDBSingleOperation(User.class, mCreateUserApiEndPoint, mCreateUserSingleOperationDatabaseCallback);
 
-        mCreateUserSingleOperationDatabase.createWithId(mUser.getmUid(), mUser);
+        mCreateUserSingleOperationDatabase.createWithId(mUser.getUid(), mUser);
     }
 
 

@@ -71,8 +71,8 @@ public class AddEmergencyContactDialogFragment extends DialogFragment {
         String username = mUsernameEditText.getText().toString();
         String phoneNumber = mPhoneNumberEditText.getText().toString();
 
-        mEmergencyContact.setmName(username);
-        mEmergencyContact.setmPhoneNumber(phoneNumber);
+        mEmergencyContact.setName(username);
+        mEmergencyContact.setPhoneNumber(phoneNumber);
 
         if(!mEmergencyContact.isNameValid() || !mEmergencyContact.isPhoneNumberValid()){
 

@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.nsu.group06.cse299.sec02.imageupload.imageUpload.FileUploader;
 import com.nsu.group06.cse299.sec02.imageupload.imageUpload.FirebaseStorageFileUploader;
-import com.nsu.group06.cse299.sec02.imageupload.imageUpload.TakenImage;
+import com.nsu.group06.cse299.sec02.imageupload.imageUpload.CapturedImage;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,14 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
     // ui
     private Button mTakeImageButton, mUploadImageButton;
+    private ImageView mTakenImageImageView;
 
     // model
-    private TakenImage mTakenImage;
+    private CapturedImage mCapturedImage;
     private boolean mImageIsTaken = false;
 
     // variables to upload photo to firebase storage
     private FirebaseStorageFileUploader mFirebaseStorageFileUploader;
-    private FileUploader.FileUploadCallbacks<Uri> mFileUploadCallbacks = new FileUploader.FileUploadCallbacks<Uri>() {
+    private FileUploader.FileUploadCallbacks mFileUploadCallbacks = new FileUploader.FileUploadCallbacks() {
         @Override
         public void onUploadComplete(Uri uploadedImageLink) {
 
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
                 mImageIsTaken = true;
 
+                mTakenImageImageView.setImageURI(mCapturedImage.getmPhotoUri());
+
                 break;
         }
     }
@@ -93,16 +96,16 @@ public class MainActivity extends AppCompatActivity {
 
         mTakeImageButton = findViewById(R.id.takePhoto_Button);
         mUploadImageButton = findViewById(R.id.uploadPhoto_Button);
+        mTakenImageImageView = findViewById(R.id.takenImage_ImageView);
 
-        mFirebaseStorageFileUploader = new FirebaseStorageFileUploader(mFileUploadCallbacks,
-                "testImages");
+        mFirebaseStorageFileUploader = new FirebaseStorageFileUploader();
     }
 
     public void takePhotoClick(View view) {
 
         try {
 
-            mTakenImage = TakenImage.build(this);
+            mCapturedImage = CapturedImage.build(this);
 
             dispatchTakePictureIntent();
 
@@ -122,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
-            File photoFile = mTakenImage.getmPhotoFile();
+            File photoFile = mCapturedImage.getmPhotoFile();
 
             if (photoFile != null) {
 
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         photoFile
                 );
 
-                mTakenImage.setmPhotoUri(photoURI);
+                mCapturedImage.setmPhotoUri(photoURI);
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
@@ -143,13 +146,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void uploadPhotoClick(View view) {
 
-        if(mTakenImage!=null && mImageIsTaken){
+        if(mCapturedImage !=null && mImageIsTaken){
 
             mImageIsTaken = false;
-            mFirebaseStorageFileUploader.setmDBPath("testImages/"+mTakenImage.getmPhotoFileName());
-            mFirebaseStorageFileUploader.uploadFile(mTakenImage);
 
             uploadingImageUI();
+
+            mFirebaseStorageFileUploader.uploadFile(
+                    mCapturedImage,
+                    "testImages/"+ mCapturedImage.getmPhotoFileName(),
+                    mFileUploadCallbacks
+            );
         }
 
         else showToast("Take a photo first man");

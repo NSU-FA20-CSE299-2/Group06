@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nsu.group06.cse299.sec02.helpmeapp">
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,8 +20,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".HelpPostActivity" />
-        <activity android:name=".SetupProfileActivity" />
+        <activity android:name=".HelpFeedActivity"></activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.nsu.group06.cse299.sec02.helpmeapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,16 +41,35 @@
         </activity>
         <activity
             android:name=".SignupActivity"
-            android:label="Signup" />
+            android:label="@string/sign_up_title" />
         <activity
             android:name=".LoginActivity"
-            android:label="Login" />
+            android:label="@string/login_title" />
         <activity
             android:name=".MenuActivity"
-            android:label="Menu" />
+            android:label="@string/menu_title" />
         <activity
             android:name=".EmergencyContactsActivity"
-            android:label="Emergency Contacts" />
+            android:label="@string/emergency_contacts_title" />
+        <activity
+            android:name=".SetupProfileActivity"
+            android:label="@string/setup_profile_title" />
+        <activity
+            android:name=".HelpPostActivity"
+            android:label="@string/help_post_title" />
+        <activity android:name=".SingleHelpPostActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="helpmeappweb.herokuapp.com"
+                    android:pathPrefix="/help"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

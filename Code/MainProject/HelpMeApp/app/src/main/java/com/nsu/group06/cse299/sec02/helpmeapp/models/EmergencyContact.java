@@ -6,54 +6,54 @@ import java.util.Objects;
 
 public class EmergencyContact {
 
-    private String mName, mPhoneNumber;
+    private String name, phoneNumber;
 
     public EmergencyContact() {
     }
 
     public EmergencyContact(String mName, String mPhoneNumber) {
-        this.mName = mName;
-        this.mPhoneNumber = mPhoneNumber;
+        this.name = mName;
+        this.phoneNumber = mPhoneNumber;
     }
 
     @Exclude // otherwise unnecessarily gets saved in firebase
     public boolean isNameValid(){
 
-        return mName!=null && !mName.isEmpty();
+        return name!=null && !name.isEmpty();
     }
 
     @Exclude // otherwise unnecessarily gets saved in firebase
     public boolean isPhoneNumberValid(){
 
-        if(mPhoneNumber!=null && !mPhoneNumber.startsWith("+88")) {
+        if(phoneNumber!=null && !phoneNumber.startsWith("+88")) {
 
-            mPhoneNumber = "+88" + mPhoneNumber;
+            phoneNumber = "+88" + phoneNumber;
         }
 
-        return mPhoneNumber!=null && mPhoneNumber.length()==14;
+        return phoneNumber!=null && phoneNumber.length()==14;
     }
 
-    public String getmName() {
-        return mName;
+    public String getName() {
+        return name;
     }
 
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setName(String mName) {
+        this.name = mName;
     }
 
-    public String getmPhoneNumber() {
-        return mPhoneNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setmPhoneNumber(String mPhoneNumber) {
-        this.mPhoneNumber = mPhoneNumber;
+    public void setPhoneNumber(String mPhoneNumber) {
+        this.phoneNumber = mPhoneNumber;
     }
 
     @Override
     public String toString() {
         return "EmergencyContact{" +
-                "mName='" + mName + '\'' +
-                ", mPhoneNumber='" + mPhoneNumber + '\'' +
+                "mName='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 
@@ -62,11 +62,11 @@ public class EmergencyContact {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmergencyContact that = (EmergencyContact) o;
-        return mPhoneNumber.equals(that.mPhoneNumber);
+        return phoneNumber.equals(that.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mPhoneNumber);
+        return Objects.hash(phoneNumber);
     }
 }
