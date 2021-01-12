@@ -69,6 +69,20 @@
                 android:textSize="14sp"
                 app:drawableStartCompat="@drawable/ic_calendar" />
 
+            <ImageView
+                android:id="@+id/photo_singleHelpPost_ImageView"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/helpPost_photo_alt"
+                android:foregroundGravity="center"
+                android:visibility="visible"
+                tools:srcCompat="@tools:sample/avatars" />
+
             <TextView
                 android:id="@+id/content_singleHelpPost_TextView"
                 android:layout_width="match_parent"
@@ -83,20 +97,6 @@
                 android:text="@string/content_singleHelpPost_TextView_placeholder"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/photo_singleHelpPost_ImageView"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:contentDescription="@string/helpPost_photo_alt"
-                android:foregroundGravity="center"
-                android:visibility="gone"
-                tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
                 android:layout_width="match_parent"
