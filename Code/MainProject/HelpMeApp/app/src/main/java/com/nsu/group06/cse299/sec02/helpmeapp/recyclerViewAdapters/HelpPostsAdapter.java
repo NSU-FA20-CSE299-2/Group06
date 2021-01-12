@@ -146,9 +146,9 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
         holder.timeTextView.setText(helpPost.getTimeStamp());
 
         if(helpPost.getAddress()!=null && !helpPost.getAddress().isEmpty()) {
-            holder.addressTextView.setText(R.string.no_address);
+            holder.addressTextView.setText(helpPost.getAddress());
         }
-        else holder.addressTextView.setText(helpPost.getAddress());
+        else holder.addressTextView.setText(R.string.no_address);
 
         holder.contentTextView.setText(helpPost.getContent());
 
