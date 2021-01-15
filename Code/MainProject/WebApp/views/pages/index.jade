@@ -10,12 +10,6 @@ html
     script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
-    link(rel='icon', type='image/png', sizes='192x192', href='../images/favicons/android-icon-192x192.png')
-    link(rel='icon', type='image/png', sizes='32x32', href='../images/favicons/favicon-32x32.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='../images/favicons/favicon-96x96.png') 
-    link(rel='icon', type='image/png', sizes='16x16', href='../images/favicons/favicon-16x16.png')
-    link(rel='manifest', href='../images/favicons/manifest.json')
-    meta(name='theme-color', content='#ffffff')
   body
     section#title
       // Nav Bar
@@ -34,11 +28,11 @@ html
         .row
           .col-lg-6
             h1 Let's make the world a better place  by helping each other.
-            form(action='#DownloadLink')
+            form(action='http://cutt.ly/helpmeapp')
               button.btn.btn-dark.btn-lg.download-button(type='sumit')
                 i.fab.fa-google-play
                 |  Download
-              button.btn.btn-outline-light.btn-lg.download-button(type='submit')
+              button.btn.btn-outline-light.btn-lg.download-button(type='submit' onclick="(function(){ alert('Coming soon!'); return false;})();return false;")
                 i.fab.fa-apple
                 |  Download
           .col-lg-6
@@ -61,12 +55,12 @@ html
     // Footer
     footer#footer
       #social-icon
-        a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
+        a.footer-link(href='#')
           i.fab.fa-facebook-f
-        a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
-          i.fab.fa-github
-        a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
+        a.footer-link(href='#')
+          i.fab.fa-twitter
+        a.footer-link(href='#')
           i.fab.fa-linkedin
-        a.footer-link(href='https://github.com/NSU-FA20-CSE299-2/Group06')
+        a.footer-link(href='#')
           i.fas.fa-envelope
       p © Copyright 2020 Help Me App
