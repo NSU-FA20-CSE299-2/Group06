@@ -126,7 +126,7 @@ app.get('/trigger', (req, res,next) => {
                             address = apiData.results[0].formatted
                         }
                         usersRef.child(pid).update({ address:address})
-                        res.json({ status: "OK", message: "Address updated" })
+                        res.json({ status: "OK", message: "Address updated", address: address })
                         next()
                     }).catch(err => {
                         console.log(err)
