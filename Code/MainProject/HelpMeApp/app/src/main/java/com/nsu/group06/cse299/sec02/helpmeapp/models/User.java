@@ -7,12 +7,12 @@ import com.google.firebase.database.Exclude;
  */
 public class User {
 
-    private String mUid;
-    private String mUsername = "";
-    private String mEmail = "";
-    private String mDateOfBirth = "";
-    private String mAddress = "";
-    private String mPhoneNumber = "";
+    private String uid;
+    private String username = "";
+    private String email = "";
+    private String dateOfBirth = "";
+    private String address = "";
+    private String phoneNumber = "";
 
     public User() {
         /*
@@ -21,54 +21,54 @@ public class User {
     }
 
     public User(String mUid) {
-        this.mUid = mUid;
+        this.uid = mUid;
     }
 
-    public String getmUid() {
-        return mUid;
+    public String getUid() {
+        return uid;
     }
 
-    public void setmUid(String mUid) {
-        this.mUid = mUid;
+    public void setUid(String mUid) {
+        this.uid = mUid;
     }
 
-    public String getmUsername() {
-        return mUsername;
+    public String getUsername() {
+        return username;
     }
 
-    public void setmUsername(String mUsername) {
-        this.mUsername = mUsername;
+    public void setUsername(String mUsername) {
+        this.username = mUsername;
     }
 
-    public String getmEmail() {
-        return mEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public void setEmail(String mEmail) {
+        this.email = mEmail;
     }
 
-    public String getmDateOfBirth() {
-        return mDateOfBirth;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setmDateOfBirth(String mDateOfBirth) {
-        this.mDateOfBirth = mDateOfBirth;
+    public void setDateOfBirth(String mDateOfBirth) {
+        this.dateOfBirth = mDateOfBirth;
     }
 
-    public String getmAddress() {
-        return mAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setmAddress(String mAddress) {
-        this.mAddress = mAddress;
+    public void setAddress(String mAddress) {
+        this.address = mAddress;
     }
 
-    public String getmPhoneNumber() {
-        return mPhoneNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setmPhoneNumber(String mPhoneNumber) {
-        this.mPhoneNumber = mPhoneNumber;
+    public void setPhoneNumber(String mPhoneNumber) {
+        this.phoneNumber = mPhoneNumber;
     }
 }

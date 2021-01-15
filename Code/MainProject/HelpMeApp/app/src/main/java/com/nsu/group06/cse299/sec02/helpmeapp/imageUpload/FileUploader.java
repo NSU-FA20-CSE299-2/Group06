@@ -1,4 +1,4 @@
-package com.nsu.group06.cse299.sec02.imageupload.imageUpload;
+package com.nsu.group06.cse299.sec02.helpmeapp.imageUpload;
 
 import android.net.Uri;
 
