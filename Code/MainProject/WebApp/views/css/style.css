@@ -209,8 +209,8 @@ h1 {
 
 @media (max-width: 576px) {
     .container-fluid {
-        padding-left: 5px;
-        padding-right: 5px;
+        padding-left: 5.5px;
+        padding-right: 5.5px;
     }
 
     .row {
