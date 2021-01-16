@@ -127,6 +127,7 @@
                 android:textAllCaps="false"
                 android:textAlignment="textStart"
                 android:fontFamily="@font/segoeui"
+                android:onClick="logoutClick"
                 />
         </LinearLayout>
     </LinearLayout>

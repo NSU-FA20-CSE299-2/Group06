@@ -20,16 +20,6 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
     }
 
-    // METHOD JUST FOR TESTING LOGOUT BACKEND WILL BE REMOVED
-    public void logoutClick(View view) {
-
-        SessionUtils.logout(this, new FirebaseEmailPasswordAuthentication());
-
-        new FirebaseEmailPasswordAuthentication().signOut();
-
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
-    }
 
     /**
      * Menu option click listeners
