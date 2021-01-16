@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity {
         new Splashy(this)
                 .setLogo(R.drawable.ic_applogo)
                 .setTitle("Help Me App")
-                .setTitleColor("#272727")
+                .setTitleColor("#2E2E2E")
                 .setSubTitle("Stand against the social violence around you")
                 .setSubTitleColor("#374045")
                 .setBackgroundResource(R.drawable.custom_gradient_color)
                 .setProgressColor("#FFFFFF")
                 .setFullScreen(true)
-                .setDuration(3000)
+                .setDuration(300000)
                 .show();
     }
 }

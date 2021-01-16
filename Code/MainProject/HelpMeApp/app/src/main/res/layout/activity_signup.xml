@@ -102,7 +102,7 @@
                 android:text="@string/already_have_an_account_log_in_here"
                 android:textAlignment="center"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#797979" />
+                android:textColor="#FF5A5A" />
 
             <Button
                 android:id="@+id/signupButton"

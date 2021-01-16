@@ -113,5 +113,9 @@
     <string name="no_address">No Address Provided</string>
     <string name="helpFeed_empty_TextView">Nothing found.</string>
 
+    <!--Splash Screen-->
+    <string name="subtitle">Stand against the social violence around you</string>
+    <string name="appTitle">Help Me App</string>
+
 
 </resources>
