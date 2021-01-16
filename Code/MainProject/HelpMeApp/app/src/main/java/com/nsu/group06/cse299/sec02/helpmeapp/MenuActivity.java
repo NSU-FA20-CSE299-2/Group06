@@ -54,4 +54,9 @@ public class MenuActivity extends AppCompatActivity {
 
         startActivity(new Intent(this, HelpFeedActivity.class));
     }
+
+    public void settingsClick(View view) {
+
+        startActivity(new Intent(this, SettingsActivity.class));
+    }
 }

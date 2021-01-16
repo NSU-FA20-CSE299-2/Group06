@@ -163,6 +163,7 @@
                 android:fontFamily="@font/segoeui"
                 android:padding="5dp"
                 android:text="@string/settings"
+                android:onClick="settingsClick"
                 android:textColor="#FF2B2B" />
 
         </LinearLayout>
