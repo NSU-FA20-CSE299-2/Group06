@@ -213,6 +213,7 @@ public class SetupProfileActivity extends AppCompatActivity {
         mDateOfBirhtEditText.setEnabled(false);
         mAddressEditText.setEnabled(false);
         mPhoneNumberEditText.setEnabled(false);
+        showToast("User info saved!");
     }
 
     /*

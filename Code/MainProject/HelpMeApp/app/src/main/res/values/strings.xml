@@ -61,7 +61,7 @@
     <string name="invalid_address">Invalid address</string>
     <string name="saving">Saving…</string>
     <string name="loading">Loading…</string>
-    <string name="success">success</string>
+    <string name="success">User info loaded</string>
 
     <!--Help Post Activity -->
     <string name="helpPostContent_EditText_hint">Write post description…</string>
