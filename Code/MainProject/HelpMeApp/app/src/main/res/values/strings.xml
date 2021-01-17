@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Help Me App</string>
+    <string name="app_name">Help Me</string>
 
     <!--Signup Activity -->
     <string name="invalid_email">invalid email!</string>

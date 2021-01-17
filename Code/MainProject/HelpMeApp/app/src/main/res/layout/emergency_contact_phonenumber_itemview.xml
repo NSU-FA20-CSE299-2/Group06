@@ -59,6 +59,7 @@
         android:background="@color/whiteTransparent"
         android:foregroundGravity="center"
         android:padding="8dp"
-        app:srcCompat="@drawable/ic_action_delete"
+
+        android:src="@drawable/ic_delete"
         android:contentDescription="@string/delete_icon_Alt" />
 </LinearLayout>
