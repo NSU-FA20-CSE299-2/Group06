@@ -213,7 +213,6 @@ public class SetupProfileActivity extends AppCompatActivity {
         mDateOfBirhtEditText.setEnabled(false);
         mAddressEditText.setEnabled(false);
         mPhoneNumberEditText.setEnabled(false);
-        showToast("User info saved!");
     }
 
     /*
@@ -228,8 +227,6 @@ public class SetupProfileActivity extends AppCompatActivity {
         mDateOfBirhtEditText.setEnabled(true);
         mAddressEditText.setEnabled(true);
         mPhoneNumberEditText.setEnabled(true);
-
-        showToast(getString(R.string.success));
     }
 
     private void showToast(String message){

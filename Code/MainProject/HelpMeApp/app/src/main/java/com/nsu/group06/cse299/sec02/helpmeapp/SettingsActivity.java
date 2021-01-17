@@ -19,10 +19,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void logoutClick(View view) {
+
         SessionUtils.logout(this, new FirebaseEmailPasswordAuthentication());
-        new FirebaseEmailPasswordAuthentication().signOut();
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
-        Toast.makeText(this, "User logged out successfully!", Toast.LENGTH_SHORT).show();
     }
 }
