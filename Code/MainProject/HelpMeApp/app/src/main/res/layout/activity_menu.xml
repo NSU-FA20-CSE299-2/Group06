@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MenuActivity">
 
 
@@ -12,29 +13,31 @@
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/ic_vector_header"
-        android:elevation="-.1dp"/>
+        android:elevation="-.1dp" />
 
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true">
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_applogo"/>
+            android:src="@drawable/ic_applogo" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/segoeui"
             android:layout_marginStart="10dp"
-            android:textSize="25sp"
+            android:fontFamily="@font/segoeui"
+            android:text="@string/menu"
             android:textColor="#FFF"
-            android:text="@string/menu"/>
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -42,20 +45,21 @@
         android:id="@+id/menuButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_below="@id/header"
         android:layout_centerInParent="true"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/menu_button"
         android:elevation="1.5dp"
-        android:layout_below="@id/header"
-        android:background="@drawable/menu_button">
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_emgContacts"
@@ -122,9 +126,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginBottom="15dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_monitorUser"
@@ -146,16 +150,15 @@
                 android:background="@drawable/menu_button"
                 android:drawableTop="@drawable/ic_settings_menu"
                 android:fontFamily="@font/segoeui"
+                android:onClick="settingsClick"
                 android:padding="5dp"
                 android:text="@string/settings"
-                android:onClick="settingsClick"
                 android:textColor="#FF2B2B" />
 
         </LinearLayout>
 
 
     </LinearLayout>
-
 
 
 </RelativeLayout>
