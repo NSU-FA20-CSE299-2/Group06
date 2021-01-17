@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ public class HelpFeedActivity extends AppCompatActivity implements HelpPostsAdap
     private TextView mNoDataFoundTextView;
     private RecyclerView mHelpPostsRecyclerView;
     private HelpPostsAdapter mHelpPostsAdapter;
+    private View headerView;
+    private LinearLayout headerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class HelpFeedActivity extends AppCompatActivity implements HelpPostsAdap
         mHelpPostsAdapter = new HelpPostsAdapter(this, this);
         mHelpPostsRecyclerView.setAdapter(mHelpPostsAdapter);
         mHelpPostsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        headerLayout = findViewById(R.id.header);
+        headerView = findViewById(R.id.headerId);
     }
 
     @Override
@@ -62,5 +67,7 @@ public class HelpFeedActivity extends AppCompatActivity implements HelpPostsAdap
 
         mNoDataFoundTextView.setVisibility(View.GONE);
         mHelpPostsRecyclerView.setVisibility(View.VISIBLE);
+        headerView.setVisibility(View.VISIBLE);
+        headerLayout.setVisibility(View.VISIBLE);
     }
 }

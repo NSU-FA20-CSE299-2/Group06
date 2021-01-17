@@ -158,7 +158,7 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
             holder.photoImageView.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load(helpPost.getPhotoURL())
-                    .override(250, 250)
+                    .override(400, 400)
                     .fitCenter() // scale to fit entire image within ImageView
                     .error(R.drawable.ftl_image_placeholder)
                     .into(holder.photoImageView);
@@ -166,7 +166,7 @@ public class HelpPostsAdapter extends RecyclerView.Adapter<HelpPostsAdapter.View
         else{
             Glide.with(mContext)
                     .load(R.drawable.no_image_placeholder)
-                    .override(250, 250)
+                    .override(400, 400)
                     .fitCenter() // scale to fit entire image within ImageView
                     .into(holder.photoImageView);
         }

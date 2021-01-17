@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="7.5dp"
     android:background="@drawable/custom_ec_itemview_background"
     android:elevation="4dp"
     android:orientation="vertical"
@@ -23,7 +23,7 @@
         android:fontFamily="@font/segoeui"
         android:text="@string/address_singleHelpPost_TextView_placeholder"
         android:textSize="14sp"
-        app:drawableStartCompat="@drawable/ic_location" />
+        app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
 
     <TextView
         android:id="@+id/time_helpPostItemView_TextView"
@@ -42,12 +42,10 @@
 
     <ImageView
         android:id="@+id/photo_helpPostItemView_ImageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/helpPost_photo_alt"
         android:foregroundGravity="center"
