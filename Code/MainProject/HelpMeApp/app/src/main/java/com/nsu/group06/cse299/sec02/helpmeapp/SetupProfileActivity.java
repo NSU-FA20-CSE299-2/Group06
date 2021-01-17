@@ -156,35 +156,48 @@ public class SetupProfileActivity extends AppCompatActivity {
      */
     private boolean validateInputs() {
 
+        boolean isValid = true;
+
         String name = mUsernameEditText.getText().toString();
         String dateOfBirth = mDateOfBirhtEditText.getText().toString();
         String address = mAddressEditText.getText().toString();
         String phoneNumber = mPhoneNumberEditText.getText().toString();
         if(phoneNumber.charAt(0)=='0') phoneNumber = "+88" + phoneNumber;
 
-        if(!UserInputValidator.isNameValid(name)) mUsernameEditText.setError(getString(R.string.invalid_username));
-        if(!UserInputValidator.isDateOfBirthValid(dateOfBirth)) mDateOfBirhtEditText.setError(getString(R.string.invalid_date_of_birth));
-        if(!UserInputValidator.isAddressValid(address)) mAddressEditText.setError(getString(R.string.invalid_address));
-        if(!UserInputValidator.isPhoneNumberValid(phoneNumber)) mPhoneNumberEditText.setError(getString(R.string.invalid_phone_number));
-
-        else{
-
-            if(!mUser.getUsername().equals(name)
-                    || !mUser.getDateOfBirth().equals(dateOfBirth)
-                    || !mUser.getAddress().equals(address)
-                    || !mUser.getPhoneNumber().equals(phoneNumber)
-            ){
-
-                mUser.setUsername(name);
-                mUser.setDateOfBirth(dateOfBirth);
-                mUser.setAddress(address);
-                mUser.setPhoneNumber(phoneNumber);
-
-                return true;
-            }
+        if(!UserInputValidator.isNameValid(name)){
+            mUsernameEditText.setError(getString(R.string.invalid_username));
+            isValid = false;
+        }
+        if(!UserInputValidator.isDateOfBirthValid(dateOfBirth)){
+            mDateOfBirhtEditText.setError(getString(R.string.invalid_date_of_birth));
+            isValid = false;
+        }
+        if(!UserInputValidator.isAddressValid(address)){
+            mAddressEditText.setError(getString(R.string.invalid_address));
+            isValid = false;
+        }
+        if(!UserInputValidator.isPhoneNumberValid(phoneNumber)){
+            mPhoneNumberEditText.setError(getString(R.string.invalid_phone_number));
+            isValid = false;
         }
 
-        return false;
+        if(!isValid) return false;
+
+        if(mUser.getUsername().equals(name)
+                && mUser.getDateOfBirth().equals(dateOfBirth)
+                && mUser.getAddress().equals(address)
+                && mUser.getPhoneNumber().equals(phoneNumber)
+        ){
+            // user profile data was not changed
+            return false;
+        }
+
+        mUser.setUsername(name);
+        mUser.setDateOfBirth(dateOfBirth);
+        mUser.setAddress(address);
+        mUser.setPhoneNumber(phoneNumber);
+
+        return true;
     }
 
     /*
