@@ -3,7 +3,7 @@
 <p align="center"><strong><img src="https://media.dhakatribune.com/uploads/2016/11/nsulogo.jpg" alt="" width="307" height="172" /></strong></p>
 <p align="center"><strong>North South University</strong></p>
 <p align="center">Department of Electrical &amp; Computer Engineering</p>
-<p align="center"><strong>Project Proposal</strong></p>
+<p align="center"><strong>Project Report</strong></p>
 <p align="center"><strong>Group No</strong>: 06</p>
 <p align="center"><strong>Fall 2020</strong></p>
 <p align="center"><strong>Project Name</strong>: HELP ME APP</p>
@@ -33,7 +33,14 @@
 
 <br>
 
-<p><strong>FEATURES</strong></p>
+<p><strong>PROPOSED FEATURES</strong></p>
+
+<p>The features were extracted from the following use-case diagram,</p>
+
+![use-case-diagram](Documentation/use_cases.png)
+
+<p>The features are below,</p>
+
 <ol>
 <li><p>Signup with email or Facebook account & login,logout.</li>
 
@@ -85,6 +92,114 @@
 
 <br>
 
+<p><strong>INCOMPLETE FEATURES</strong></p>
+
+<p>Among the proposed features the following were not implemented-</p>
+
+<ul>
+
+<li>Add App users as emergency contacts (<strong>2i</strong>), only non-app users can be added as emergency users by their phone numbers.</li>
+
+<li>Reaching nearby people when posted for help was not implemented (<strong>4ii</strong>) because of unexpected behaviour of the API used (see Issue #5)</li>
+
+<li>Sign in with Facebook and post on Facebook feed (<strong>4iii</strong>).</li>
+
+<li>Automatically triggered help posts by gesture (<strong>5</strong>).</li>
+
+<li>Allowing emergency contacts to monitor in realtime (<strong>7</strong>)</li>
+
+</ul>
+
+<br>
+
+<br>
+
+<p><strong>PROJECT OVERVIEW</strong></p>
+
+<p>Brief description of parts of the project- app, web and database, are added below with appropriate screenshots.</p>
+
+<br>
+
+<p><strong>Help Me App (Android)</strong></p>
+
+<p>Add screenshots here</p>
+
+<br>
+
+<p><strong>Help Me Api (Express JS)</strong></p>
+
+<p>The web APIs in this project are developed with Expressjs framework which is a very popular javascript backend framework. The main purposes of the APIs are: to interact with the database and to provide reverse geolocation data. The Web App is thoroughly dependent on this Web API project. </p>
+
+<p><strong>Database Interaction: </strong>The major purpose of developing API is to interact with database service so that the Web App can send requests with query parameters (unique post id number in this case) and get the exact data from the database through API. This allows us to implement, integrate and set up the database SDK’s and services only one place which is in the API project. This helps to prevent using database services directly on the Web Appliaction, ensures security and to follow the best practices while developing softwares.</p>
+
+<p><strong>Reverse Geolocation: </strong>Another significant purpose of developing API is to decode users GPS data (lattitude and longitude) and convert them into formatted addresses. We used “OpenCage Geocoder”, a free geocoding API service in our API project to pursue this formatted address feature. The end point takes a unique post id number as a parameter and fetches that post’s latitude and longitude from the database. Then the API sends a request to the third-party Geocoder API and receives the response. After receiving the response it filters the data and only stores the formatted address data to that specific post’s address field in the database.
+</p>
+
+<p><strong>API endpoints and functions: </strong></p>
+<p>Add the table here</p>
+
+<br>
+
+<p><strong>Help Me Web App</strong></p>
+<p>The Web App project establishes the ‘Help Me’ App as a multiplatform application by adding new dimensions in the application. The Web App allows users to view ‘Help Posts’ without downloading or installing the application on their phone. The Web App comes with very simple features. It has only three pages in total and the whole application is backed by the Expressjs framework. For the front end we also used css, javascript, ajax and bootstrap framework. The Web App can be used from any browser and the application is also ‘mobile browser friendly’.</p>
+<p><strong>App Lander Page: </strong>The app landing page is specifically made for promoting our mobile app. It describes the app's features and value proposition so that the users are enticed to click through, download, and install. This is a static web page, download options redirects to another page for further operations.</p>
+
+<p>Add image here</p>
+
+<p><strong>Help Post Page: </strong>This is the main page of the Web App that shows the exact ‘Help Post’ that user posted. The ‘Emergency Contact’ users will get the link of this page as a sms and will be directed into the page showing the full help post. This is the only dynamic web page of this application. If the android app fails to get the formatted address as the post address, the user can view the formatted address by clicking on the address field of the post. The users can also view the location on map by clicking the address field of the post. This will take them to the google map and they can view the location from native google map application or on the web map.</p>
+
+<p>Add image here</p>
+
+<p><strong>The Error Page: </strong>Users will be redirected to this static error page if they try to open an invalid ‘Help Post’ link which does not exist.</p>
+
+<p>Add image here</p>
+
+<br>
+
+<p><strong>Database: </strong></p>
+<p>For database service we used Google’s ‘Firebase Realtime Database’ as our project’s main database. Firebase realtime database is a cloud-hosted nosql database. It stores data as JSON and synchronized in realtime to every connected client.</p>
+<p><strong>Database Structure: </strong></p>
+
+<p>Add image here</p>
+
+<br>
+
+
+<p><strong>TOOLS</strong></p>
+
+<ol>
+
+<li><em>Framework</em> <p>Android Studio with Java.</p></li>
+
+<li><em>Database</em>
+<p>Firebase real-time database was used for storing all relevant data of the project.</p>
+<p>Firebase storage was used for storing photos taken.</p>
+</li>
+
+<li><em>Third Party Support</em>
+
+<ul> <p>
+
+<li><a href="https://developers.facebook.com/docs/android/">Facebook SDK for Android</a> (<strong>The SDK was not used</strong>)</li>
+
+<li><a href="https://developers.google.com/nearby/connections/overview">Google Nearby Connections API</a> (<strong>Feature 4.ii</strong>)</li>
+
+<li><a href="https://developers.google.com/location-context/fused-location-provider">Google Fused Location Provider API</a> (<strong>Feature 3.ii</strong>)</li>
+
+<li><a href="https://developers.google.com/maps/documentation/android-sdk/overview">Google Maps SDK</a> (<strong>Was not required, default maps app was used to show location instead.</strong>)</li>
+
+<li>API for face blur (<strong>Subsequent feature was not implemented</strong>)</li>
+
+<li>API for phone shake gesture detection (<strong>Subsequent feature was not implemented</strong>)</li>
+
+</p></ul>
+
+</li>
+
+</ol>
+
+<br>
+
 <p><strong>SOCIAL BENEFITS</strong></p>
 <ul>
 
@@ -107,43 +222,7 @@
 
 <br>
 
-<p><strong>TOOLS</strong></p>
-
-<ol>
-
-<li><em>Framework</em> <p>Android Studio with Java.</p></li>
-
-<li><em>Database</em>
-<p>Firebase real-time database & Firebase functions for backend triggers.</p>
-<p>The real-time monitoring mentioned in <strong>Feature-7</strong> & app feed mentioned in <strong>Feature-4.iv</strong> is going to be implemented by the firebase realtime-database.
-</p>
-</li>
-
-<li><em>Third Party Support</em>
-
-<ul> <p>
-
-<li><a href="https://developers.facebook.com/docs/android/">Facebook SDK for Android</a> (<strong>Feature 1 & 4.iii</strong>)</li>
-
-<li><a href="https://developers.google.com/nearby/connections/overview">Google Nearby Connections API</a> (<strong>Feature 4.ii</strong>)</li>
-
-<li><a href="https://developers.google.com/location-context/fused-location-provider">Google Fused Location Provider API</a> (<strong>Feature 3.ii</strong>)</li>
-
-<li><a href="https://developers.google.com/maps/documentation/android-sdk/overview">Google Maps SDK</a> (<strong>Feature 3.ii</strong>)</li>
-
-<li>API for face blur (to be decided) (<strong>Feature 3.iii</strong>)</li>
-
-<li>API for phone shake gesture detection (to be decided) (<strong>Feature 5</strong>)</li>
-
-</p></ul>
-
-</li>
-
-</ol>
-
-<br>
-
-<p><strong>Monetization</strong></p>
+<p><strong>PLANS FOR MONETIZATION</strong></p>
 <ul>
 <li>Initially we plan to create a prototype using the free version of the tools mentioned. Presenting the prototype in various competitions/hackathons we hope to collect appropriate fundings for launching the app.</li>
 <li>If the idea is good enough we would also like to approach various charitable organizations for funding. However, we do not have a concrete plan on how and who to approach regarding this.</li>
