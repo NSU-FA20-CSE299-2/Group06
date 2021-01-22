@@ -124,42 +124,43 @@
 
 <center> <img src="https://i.ibb.co/YyCZpcM/screenshot-2021-01-22-21-19-07-712.png"
      alt="ERR" width="60%"/>
-     Signin Page
+     <p>Signin Page</p>
      </center>
 <br>
 <center> <img src="https://i.ibb.co/m5MnrK8/screenshot-2021-01-22-21-19-12-82.png"
      alt="ERR" width="60%"/>
-     Signup Page
+     <p>Signup Page</p>
      </center>
 <br>
 <center> <img src="https://i.ibb.co/9w5YBZY/screenshot-2021-01-22-21-17-58-434.png"
      alt="ERR" width="60%"/>
-     User Menu Page
+     <p>User Menu Page</p>
+     </center>
 <br>
 <center> <img src="https://i.ibb.co/vPWmv1F/screenshot-2021-01-22-21-18-52-842.png"
      alt="ERR" width="60%"/>
-     >User Profile Page
+     <p>User Profile Page</p>
      </center>
 <br>
 <center> <img src="https://i.ibb.co/0Z0bB0Y/screenshot-2021-01-22-21-18-20-538.png"
      alt="ERR" width="60%"/>
-     Emergency Contacts Page
+     <p>Emergency Contacts Page</p>
      </center>
 <br>
 <center> <img src="https://i.ibb.co/gdBzKC7/screenshot-2021-01-22-21-18-07-844.png"
      alt="ERR" width="60%"/>
-     Help Post Page
+     <p>Help Post Page</p>
      </center>
 <br>
 <center> <img src="https://i.ibb.co/vdrLzGD/screenshot-2021-01-22-21-18-38-15.png"
      alt="ERR" width="60%"/>
-     Help Feed Page
+     <p>Help Feed Page</p>
      </center>
 <br>
 
 <center> <img src="https://i.ibb.co/44TS2gd/screenshot-2021-01-22-21-18-03-343.png"
      alt="ERR" width="60%"/>
-     Settings Page
+     <p>Settings Page</p>
      </center>
 
 <br>
