@@ -122,7 +122,45 @@
 
 <p><strong>Help Me App (Android)</strong></p>
 
-<p>Add screenshots here</p>
+<figure> <center> <img src="https://i.ibb.co/YyCZpcM/screenshot-2021-01-22-21-19-07-712.png"
+     alt="ERR" width="60%"/>
+     <figcaption>Signin Page</figcaption>
+     </center></figure>
+<br>
+<figure> <center> <img src="https://i.ibb.co/m5MnrK8/screenshot-2021-01-22-21-19-12-82.png"
+     alt="ERR" width="60%"/>
+     <figcaption>Signup Page</figcaption>
+     </center></figure>
+<br>
+<figure> <center> <img src="https://i.ibb.co/9w5YBZY/screenshot-2021-01-22-21-17-58-434.png"
+     alt="ERR" width="60%"/>
+     <figcaption>User Menu Page</figcaption>
+     </center></figure>
+<br>
+<figure> <center> <img src="https://i.ibb.co/vPWmv1F/screenshot-2021-01-22-21-18-52-842.png"
+     alt="ERR" width="60%"/>
+     <figcaption>User Profile Page</figcaption>
+     </center></figure>
+<br>
+<figure> <center> <img src="https://i.ibb.co/0Z0bB0Y/screenshot-2021-01-22-21-18-20-538.png"
+     alt="ERR" width="60%"/>
+     <figcaption>Emergency Contacts Page</figcaption>
+     </center></figure>
+<br>
+<figure> <center> <img src="https://i.ibb.co/gdBzKC7/screenshot-2021-01-22-21-18-07-844.png"
+     alt="ERR" width="60%"/>
+     <figcaption>Help Post Page</figcaption>
+     </center></figure>
+<br>
+<figure> <center> <img src="https://i.ibb.co/vdrLzGD/screenshot-2021-01-22-21-18-38-15.png"
+     alt="ERR" width="60%"/>
+     <figcaption>Help Feed Page</figcaption>
+     </center></figure>
+<br>
+<figure> <center> <img src=" https://i.ibb.co/44TS2gd/screenshot-2021-01-22-21-18-03-343.png"
+     alt="ERR" width="60%"/>
+     <figcaption>Settings Page</figcaption>
+     </center></figure>
 
 <br>
 
@@ -136,7 +174,30 @@
 </p>
 
 <p><strong>API endpoints and functions: </strong></p>
-<p>Add the table here</p>
+<center>
+<table> 
+<tr>
+<td> <b>Endpoints </b> </td>
+<td> <b>Functions </b> </td>
+</tr>
+<tr>
+<td>/</td>
+<td>Shows API home </td>
+</tr>
+<tr>
+<td>/devlog</td>
+<td>Shows API logs</td>
+</tr>
+<tr>
+<td>/post?pid={unique post id} </td>
+<td>Sends help post as response</td>
+</tr>
+<tr>
+<td>/trigger?pid={unique post id} </td>
+<td>Uses geocoding services to fetch formatted address and place it into that post’s address field in the database</td>
+</tr>
+</table>
+</center>
 
 <br>
 
@@ -144,15 +205,18 @@
 <p>The Web App project establishes the ‘Help Me’ App as a multiplatform application by adding new dimensions in the application. The Web App allows users to view ‘Help Posts’ without downloading or installing the application on their phone. The Web App comes with very simple features. It has only three pages in total and the whole application is backed by the Expressjs framework. For the front end we also used css, javascript, ajax and bootstrap framework. The Web App can be used from any browser and the application is also ‘mobile browser friendly’.</p>
 <p><strong>App Lander Page: </strong>The app landing page is specifically made for promoting our mobile app. It describes the app's features and value proposition so that the users are enticed to click through, download, and install. This is a static web page, download options redirects to another page for further operations.</p>
 
-<p>Add image here</p>
+<p> <center> <img src="https://i.ibb.co/NVsLNj2/Capture.jpg"
+     alt="ERR" width="80%" /></center></p>
 
 <p><strong>Help Post Page: </strong>This is the main page of the Web App that shows the exact ‘Help Post’ that user posted. The ‘Emergency Contact’ users will get the link of this page as a sms and will be directed into the page showing the full help post. This is the only dynamic web page of this application. If the android app fails to get the formatted address as the post address, the user can view the formatted address by clicking on the address field of the post. The users can also view the location on map by clicking the address field of the post. This will take them to the google map and they can view the location from native google map application or on the web map.</p>
 
-<p>Add image here</p>
+<p><center><img src="https://i.ibb.co/MV8RK2k/2.png"
+     alt="ERR" width="80%" /></center></p>
 
 <p><strong>The Error Page: </strong>Users will be redirected to this static error page if they try to open an invalid ‘Help Post’ link which does not exist.</p>
 
-<p>Add image here</p>
+<p><center><img src="https://i.ibb.co/dkN56pp/3.jpg"
+     alt="ERR" width="80%" /> </center></p>
 
 <br>
 
@@ -160,7 +224,8 @@
 <p>For database service we used Google’s ‘Firebase Realtime Database’ as our project’s main database. Firebase realtime database is a cloud-hosted nosql database. It stores data as JSON and synchronized in realtime to every connected client.</p>
 <p><strong>Database Structure: </strong></p>
 
-<p>Add image here</p>
+<p><center><img src="https://i.ibb.co/Sn2dfCB/nosql-database-structure.png"
+     alt="ERR" width="80%" /> </center></p>
 
 <br>
 
