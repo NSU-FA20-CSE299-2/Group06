@@ -122,45 +122,46 @@
 
 <p><strong>Help Me App (Android)</strong></p>
 
-<figure> <center> <img src="https://i.ibb.co/YyCZpcM/screenshot-2021-01-22-21-19-07-712.png"
+<center> <img src="https://i.ibb.co/YyCZpcM/screenshot-2021-01-22-21-19-07-712.png"
      alt="ERR" width="60%"/>
-     <figcaption>Signin Page</figcaption>
-     </center></figure>
+     <p>Signin Page</p>
+     </center>
 <br>
-<figure> <center> <img src="https://i.ibb.co/m5MnrK8/screenshot-2021-01-22-21-19-12-82.png"
+<center> <img src="https://i.ibb.co/m5MnrK8/screenshot-2021-01-22-21-19-12-82.png"
      alt="ERR" width="60%"/>
-     <figcaption>Signup Page</figcaption>
-     </center></figure>
+     <p>Signup Page</p>
+     </center>
 <br>
-<figure> <center> <img src="https://i.ibb.co/9w5YBZY/screenshot-2021-01-22-21-17-58-434.png"
+<center> <img src="https://i.ibb.co/9w5YBZY/screenshot-2021-01-22-21-17-58-434.png"
      alt="ERR" width="60%"/>
-     <figcaption>User Menu Page</figcaption>
-     </center></figure>
+     <p>User Menu Page</p>
+     </center>
 <br>
-<figure> <center> <img src="https://i.ibb.co/vPWmv1F/screenshot-2021-01-22-21-18-52-842.png"
+<center> <img src="https://i.ibb.co/vPWmv1F/screenshot-2021-01-22-21-18-52-842.png"
      alt="ERR" width="60%"/>
-     <figcaption>User Profile Page</figcaption>
-     </center></figure>
+     <p>User Profile Page</p>
+     </center>
 <br>
-<figure> <center> <img src="https://i.ibb.co/0Z0bB0Y/screenshot-2021-01-22-21-18-20-538.png"
+<center> <img src="https://i.ibb.co/0Z0bB0Y/screenshot-2021-01-22-21-18-20-538.png"
      alt="ERR" width="60%"/>
-     <figcaption>Emergency Contacts Page</figcaption>
-     </center></figure>
+     <p>Emergency Contacts Page</p>
+     </center>
 <br>
-<figure> <center> <img src="https://i.ibb.co/gdBzKC7/screenshot-2021-01-22-21-18-07-844.png"
+<center> <img src="https://i.ibb.co/gdBzKC7/screenshot-2021-01-22-21-18-07-844.png"
      alt="ERR" width="60%"/>
-     <figcaption>Help Post Page</figcaption>
-     </center></figure>
+     <p>Help Post Page</p>
+     </center>
 <br>
-<figure> <center> <img src="https://i.ibb.co/vdrLzGD/screenshot-2021-01-22-21-18-38-15.png"
+<center> <img src="https://i.ibb.co/vdrLzGD/screenshot-2021-01-22-21-18-38-15.png"
      alt="ERR" width="60%"/>
-     <figcaption>Help Feed Page</figcaption>
-     </center></figure>
+     <p>Help Feed Page</p>
+     </center>
 <br>
-<figure> <center> <img src=" https://i.ibb.co/44TS2gd/screenshot-2021-01-22-21-18-03-343.png"
+
+<center> <img src="https://i.ibb.co/44TS2gd/screenshot-2021-01-22-21-18-03-343.png"
      alt="ERR" width="60%"/>
-     <figcaption>Settings Page</figcaption>
-     </center></figure>
+     <p>Settings Page</p>
+     </center>
 
 <br>
 
